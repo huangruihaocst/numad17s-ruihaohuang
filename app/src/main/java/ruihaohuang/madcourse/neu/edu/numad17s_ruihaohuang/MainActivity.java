@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -39,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.button_generate_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generateError();
+            }
+        });
+
     }
 
     @Override
@@ -61,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void generateError() {
+        String string = null;
+        System.out.println(string.length());  // NullPointerException
     }
 }
