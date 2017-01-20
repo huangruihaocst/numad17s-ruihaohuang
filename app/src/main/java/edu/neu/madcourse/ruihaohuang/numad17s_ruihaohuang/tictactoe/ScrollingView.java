@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 ***/
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,7 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 /**
  * This custom view draws a background image that scrolls indefinitely.

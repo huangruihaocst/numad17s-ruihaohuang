@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 ***/
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +18,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 public class GameActivity extends Activity {
    public static final String KEY_RESTORE = "key_restore";

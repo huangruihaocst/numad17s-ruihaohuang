@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 ***/
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageButton;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 public class Tile {
 

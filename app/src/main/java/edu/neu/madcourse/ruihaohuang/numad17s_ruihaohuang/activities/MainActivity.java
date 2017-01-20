@@ -1,4 +1,4 @@
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.activities;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 

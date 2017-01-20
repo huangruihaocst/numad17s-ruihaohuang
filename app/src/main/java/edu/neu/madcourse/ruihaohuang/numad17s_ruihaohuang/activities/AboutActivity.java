@@ -1,4 +1,4 @@
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.activities;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 public class AboutActivity extends AppCompatActivity {
 

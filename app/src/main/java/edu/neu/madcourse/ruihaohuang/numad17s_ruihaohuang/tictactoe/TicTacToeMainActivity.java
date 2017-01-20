@@ -6,13 +6,13 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 ***/
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 // this name is to distinguish with the real MainActivity
 public class TicTacToeMainActivity extends Activity {

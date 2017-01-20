@@ -6,7 +6,7 @@
  * We make no guarantees that this code is fit for any purpose. 
  * Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 ***/
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 
 import android.app.Fragment;
 import android.media.AudioManager;
@@ -22,7 +22,7 @@ import android.widget.ImageButton;
 import java.util.HashSet;
 import java.util.Set;
 
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
 public class GameFragment extends Fragment {
    static private int mLargeIds[] = {R.id.large1, R.id.large2, R.id.large3,

@@ -15,7 +15,7 @@
    android:elevation="@dimen/elevation_high"
    android:orientation="vertical"
    android:padding="@dimen/menu_padding"
-   tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity">
+   tools:context="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity">
 
    <TextView
       android:layout_width="wrap_content"

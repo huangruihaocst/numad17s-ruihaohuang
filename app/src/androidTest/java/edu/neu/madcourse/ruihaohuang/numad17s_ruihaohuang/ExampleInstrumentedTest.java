@@ -1,4 +1,4 @@
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

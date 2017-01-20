@@ -28,14 +28,14 @@
 
       <fragment
          android:id="@+id/fragment_game"
-         class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.GameFragment"
+         class="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.GameFragment"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          tools:layout="@layout/fragment_tictactoe_game"/>
 
       <fragment
          android:id="@+id/fragment_game_controls"
-         class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.ControlFragment"
+         class="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.ControlFragment"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          tools:layout="@layout/fragment_tictactoe_control"/>
