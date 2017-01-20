@@ -14,7 +14,7 @@
    tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.GameActivity">
 
    <include
-      layout="@layout/tic_tac_toe_large_board"
+      layout="@layout/tictactoe_large_board"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"/>
 

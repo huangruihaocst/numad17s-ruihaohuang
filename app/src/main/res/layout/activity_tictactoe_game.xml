@@ -30,7 +30,7 @@
          class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.GameFragment"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         tools:layout="@layout/fragment_tic_tac_toe_game"/>
+         tools:layout="@layout/fragment_tictactoe_game"/>
       <!-- Control fragment goes here... -->
 
       <fragment
@@ -38,10 +38,10 @@
          class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.ControlFragment"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         tools:layout="@layout/fragment_tic_tac_toe_control"/>
+         tools:layout="@layout/fragment_tictactoe_control"/>
 
    </LinearLayout>
 
-   <include layout="@layout/tic_tac_toe_thinking"/>
+   <include layout="@layout/tictactoe_thinking"/>
 
 </FrameLayout>

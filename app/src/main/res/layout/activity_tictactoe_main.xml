@@ -27,5 +27,5 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      tools:layout="@layout/fragment_tic_tac_toe"/>
+      tools:layout="@layout/fragment_tictactoe_main"/>
 </FrameLayout>

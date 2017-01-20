@@ -73,7 +73,7 @@ public class GameFragment extends Fragment {
    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
       View rootView =
-            inflater.inflate(R.layout.tic_tac_toe_large_board, container, false);
+            inflater.inflate(R.layout.tictactoe_large_board, container, false);
       initViews(rootView);
       updateAllTiles();
       return rootView;

@@ -22,7 +22,7 @@ public class ControlFragment extends Fragment {
    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
       View rootView =
-            inflater.inflate(R.layout.fragment_tic_tac_toe_control, container, false);
+            inflater.inflate(R.layout.fragment_tictactoe_control, container, false);
       View main = rootView.findViewById(R.id.button_main);
       View restart = rootView.findViewById(R.id.button_restart);
 

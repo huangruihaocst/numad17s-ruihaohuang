@@ -27,7 +27,7 @@ public class TicTacToeMainFragment extends Fragment {
    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
       View rootView =
-            inflater.inflate(R.layout.fragment_tic_tac_toe, container, false);
+            inflater.inflate(R.layout.fragment_tictactoe_main, container, false);
       // Handle buttons here...
       View newButton = rootView.findViewById(R.id.new_button);
       View continueButton = rootView.findViewById(R.id.continue_button);

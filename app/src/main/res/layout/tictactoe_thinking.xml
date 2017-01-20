@@ -15,7 +15,7 @@
    android:layout_height="match_parent"
    android:clickable="true"
    android:visibility="gone"
-   tools:showIn="@layout/activity_tic_tac_toe_game">
+   tools:showIn="@layout/activity_tictactoe_game">
 
    <ProgressBar
       android:background="@drawable/tic_tac_toe_thinking_background"

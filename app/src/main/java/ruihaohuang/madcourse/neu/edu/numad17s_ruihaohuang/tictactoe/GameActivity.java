@@ -30,7 +30,7 @@ public class GameActivity extends Activity {
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_tic_tac_toe_game);
+      setContentView(R.layout.activity_tictactoe_game);
       mGameFragment = (GameFragment) getFragmentManager()
             .findFragmentById(R.id.fragment_game);
       boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
