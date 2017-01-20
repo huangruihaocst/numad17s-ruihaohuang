@@ -1,4 +1,4 @@
-package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.activities;
+package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.main;
 
 import android.content.Intent;
 import android.os.Bundle;

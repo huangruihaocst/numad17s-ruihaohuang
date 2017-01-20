@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.activities.MainActivity"
+            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.activities.AboutActivity"
+            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.main.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
