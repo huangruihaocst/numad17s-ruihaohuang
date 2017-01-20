@@ -26,7 +26,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.my_name));
+        toolbar.setTitle(getResources().getStringArray(R.array.my_information)[0]);
         setSupportActionBar(toolbar);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -73,15 +73,13 @@ public class AboutActivity extends AppCompatActivity {
 
     String getMyBasicInformation() {
         String html = "";
-        html += "<p>";
-        html += String.format(getString(R.string.description_name), getString(R.string.my_name));
-        html += "</p><p>";
-        html += String.format(getString(R.string.description_email), getString(R.string.my_email));
-        html += "</p><p>";
-        html += String.format(getString(R.string.description_year), getString(R.string.my_year));
-        html += "</p><p>";
-        html += String.format(getString(R.string.description_degree_program), getString(R.string.my_degree_program));
-        html += "<p>";
+        String[] descriptions = getResources().getStringArray(R.array.descriptions);
+        String[] myInformation = getResources().getStringArray(R.array.my_information);
+        for (int i = 0; i < descriptions.length; ++i) {
+            html += "<p>";
+            html += String.format(descriptions[i], myInformation[i]);
+            html += "</p>";
+        }
 
         return html;
     }

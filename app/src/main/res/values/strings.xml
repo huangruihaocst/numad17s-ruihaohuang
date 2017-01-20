@@ -6,22 +6,26 @@
     <string name="title_activity_tic_tac_toe">TicTacToe</string>
     <string name="title_activity_game">Game</string>
 
-    <string name="my_name">Ruihao Huang</string>
-    <string name="my_email">huang.r@husky.neu.edu</string>
-    <string name="my_year">Junior</string>
-    <string name="my_degree_program">Undergraduate</string>
-
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
     <string name="button_tic_tac_toe">TicTacToe</string>
     <string name="button_quit">Quit</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
-    <string name="description_name">Name: %1$s</string>
-    <string name="description_email">Email: %1$s</string>
-    <string name="description_year">Year in School: %1$s</string>
-    <string name="description_degree_program">Degree Program: %1$s</string>
+    <string-array name="descriptions">
+        <item name="description_name">Name: %1$s</item>
+        <item name="description_email">Email: %1$s</item>
+        <item name="description_year">Year in School: %1$s</item>
+        <item name="description_degree_program">Degree Program: %1$s</item>
+    </string-array>
     <string name="description_IMEI">IMEI: %1$s</string>
+
+    <string-array name="my_information">
+        <item name="my_name">Ruihao Huang</item>
+        <item name="my_email">huang.r@husky.neu.edu</item>
+        <item name="my_year">Junior</item>
+        <item name="my_degree_program">Undergraduate</item>
+    </string-array>
 
     <string name="toast_request_permission_read_phone_state">Please allow the permission Phone in Settings to access IMEI</string>
 
