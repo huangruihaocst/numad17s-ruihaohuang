@@ -11,6 +11,8 @@ package edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.R;
 
@@ -22,7 +24,15 @@ public class TicTacToeMainActivity extends Activity {
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_tictactoe_main);
+
+       // Fullscreen
+       // Reference: http://stackoverflow.com/questions/2591036/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme
+       this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+       this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+               WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+       setContentView(R.layout.activity_tictactoe_main);
+
    }
 
    @Override
