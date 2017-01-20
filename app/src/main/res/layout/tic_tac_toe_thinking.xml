@@ -15,10 +15,10 @@
    android:layout_height="match_parent"
    android:clickable="true"
    android:visibility="gone"
-   tools:showIn="@layout/activity_game">
+   tools:showIn="@layout/activity_tic_tac_toe_game">
 
    <ProgressBar
-      android:background="@drawable/thinking_background"
+      android:background="@drawable/tic_tac_toe_thinking_background"
       android:elevation="@dimen/elevation_high"
       android:layout_marginTop="@dimen/activity_vertical_margin"
       android:layout_marginLeft="@dimen/activity_vertical_margin"

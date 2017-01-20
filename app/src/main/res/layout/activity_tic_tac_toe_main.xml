@@ -13,17 +13,17 @@
    android:layout_width="match_parent"
    android:layout_height="match_parent"
    android:clipChildren="false"
-   tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeActivity">
+   tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity">
 
    <ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.ScrollingView
       android:id="@+id/main_background"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:scrollingDrawable="@drawable/xando_background"/>
+      app:scrollingDrawable="@drawable/tic_tac_toe_xando_background"/>
 
    <fragment
       android:id="@+id/main_fragment"
-      class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeFragment"
+      class="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainFragment"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"

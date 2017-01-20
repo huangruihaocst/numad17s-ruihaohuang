@@ -14,14 +14,15 @@ import android.os.Bundle;
 
 import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
 
-public class TicTacToeActivity extends Activity {
+// this name is to distinguish with the real MainActivity
+public class TicTacToeMainActivity extends Activity {
    MediaPlayer mMediaPlayer;
    // ...
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_tic_tac_toe);
+      setContentView(R.layout.activity_tic_tac_toe_main);
    }
 
    @Override

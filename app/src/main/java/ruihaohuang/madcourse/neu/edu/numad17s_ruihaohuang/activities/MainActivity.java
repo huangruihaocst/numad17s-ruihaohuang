@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
-import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeActivity;
+import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_tic_tac_toe).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TicTacToeActivity.class));
+                startActivity(new Intent(MainActivity.this, TicTacToeMainActivity.class));
             }
         });
 

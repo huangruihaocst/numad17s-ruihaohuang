@@ -11,11 +11,11 @@
    xmlns:tools="http://schemas.android.com/tools"
    android:layout_width="wrap_content"
    android:layout_height="wrap_content"
-   android:background="@drawable/menu_background"
+   android:background="@drawable/tic_tac_toe_menu_background"
    android:elevation="@dimen/elevation_high"
    android:orientation="vertical"
    android:padding="@dimen/menu_padding"
-   tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeActivity">
+   tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity">
 
    <TextView
       android:layout_width="wrap_content"

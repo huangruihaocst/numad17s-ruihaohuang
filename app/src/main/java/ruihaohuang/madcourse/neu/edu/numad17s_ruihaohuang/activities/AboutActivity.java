@@ -43,7 +43,7 @@ public class AboutActivity extends AppCompatActivity {
                 .setText(fromHtml(getMyBasicInformation()));
         ((ImageView) findViewById(R.id.image_head_shot))
                 .setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
-                        R.drawable.image_head_shot));
+                        R.drawable.about_head_shot));
 
         // Initialize its content to PERMISSION DENIED
         ((TextView) findViewById(R.id.text_IMEI))

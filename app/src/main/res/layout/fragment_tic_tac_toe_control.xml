@@ -6,16 +6,28 @@
  ! We make no guarantees that this code is fit for any purpose. 
  ! Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 -->
-<RelativeLayout
+<LinearLayout
    xmlns:android="http://schemas.android.com/apk/res/android"
    xmlns:tools="http://schemas.android.com/tools"
    android:layout_width="wrap_content"
    android:layout_height="wrap_content"
+   android:orientation="horizontal"
+   android:padding="@dimen/control_padding"
    tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.tictactoe.GameActivity">
 
-   <include
-      layout="@layout/large_board"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"/>
+   <Button
+      android:id="@+id/button_restart"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/elevation_low"
+      android:drawableTop="@drawable/tic_tac_toe_restart"
+      android:text="@string/restart_label"/>
 
-</RelativeLayout>
+   <Button
+      android:id="@+id/button_main"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:elevation="@dimen/elevation_low"
+      android:drawableTop="@drawable/tic_tac_toe_home"
+      android:text="@string/main_menu_label"/>
+</LinearLayout>

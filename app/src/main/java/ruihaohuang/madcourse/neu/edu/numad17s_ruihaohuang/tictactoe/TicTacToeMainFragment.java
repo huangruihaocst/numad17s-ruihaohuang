@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 
 import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
 
-public class TicTacToeFragment extends Fragment {
+public class TicTacToeMainFragment extends Fragment {
 
    private AlertDialog mDialog;
 
