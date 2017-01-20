@@ -6,4 +6,9 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+    
+    <!-- tic tac toe-->
+    <style name="TicTacToeTheme"
+        parent="android:Theme.Material.Light.NoActionBar.Fullscreen">
+    </style>
 </resources>

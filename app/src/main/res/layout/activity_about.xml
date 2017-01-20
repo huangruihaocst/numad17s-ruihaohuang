@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.AboutActivity">
+    tools:context="ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.activities.AboutActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

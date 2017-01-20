@@ -1,11 +1,9 @@
-package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang;
+package ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.activities;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spanned;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import ruihaohuang.madcourse.neu.edu.numad17s_ruihaohuang.R;
 
 public class AboutActivity extends AppCompatActivity {
 
