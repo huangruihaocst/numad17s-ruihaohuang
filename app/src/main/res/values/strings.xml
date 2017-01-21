@@ -24,7 +24,7 @@
         <item name="my_name">Ruihao Huang</item>
         <item name="my_email">huang.r@husky.neu.edu</item>
         <item name="my_year">Junior</item>
-        <item name="my_degree_program">Undergraduate</item>
+        <item name="my_degree_program">Computer Science</item>
     </string-array>
 
     <string name="toast_request_permission_read_phone_state">Please allow the permission Phone in Settings to access IMEI</string>
