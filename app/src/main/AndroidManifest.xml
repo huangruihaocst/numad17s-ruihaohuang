@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang">
+    package="edu.neu.madcourse.ruihaohuang">
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.main.MainActivity"
+            android:name="edu.neu.madcourse.ruihaohuang.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
@@ -22,16 +21,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.main.AboutActivity"
+            android:name="edu.neu.madcourse.ruihaohuang.main.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity"
+            android:name="edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity"
             android:label="@string/title_activity_tic_tac_toe"
             android:theme="@style/TicTacToeTheme">
         </activity>
-        <activity android:name="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.GameActivity"
+        <activity android:name="edu.neu.madcourse.ruihaohuang.tictactoe.GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@style/TicTacToeTheme">
         </activity>

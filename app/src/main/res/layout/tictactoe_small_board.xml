@@ -14,7 +14,7 @@
    android:background="@drawable/tic_tac_toe_tile_background"
    android:elevation="@dimen/elevation_low"
    android:padding="@dimen/small_board_padding"
-   tools:context="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.GameActivity">
+   tools:context="edu.neu.madcourse.ruihaohuang.tictactoe.GameActivity">
 
    <ImageButton android:id="@+id/small1" style="@style/TileButton"
                 android:layout_column="0" android:layout_row="0"/>

@@ -13,7 +13,7 @@
    android:layout_height="wrap_content"
    android:orientation="vertical"
    android:padding="@dimen/control_padding"
-   tools:context="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.GameActivity">
+   tools:context="edu.neu.madcourse.ruihaohuang.tictactoe.GameActivity">
 
    <Button
       android:id="@+id/button_restart"

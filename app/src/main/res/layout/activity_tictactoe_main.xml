@@ -13,9 +13,9 @@
    android:layout_width="match_parent"
    android:layout_height="match_parent"
    android:clipChildren="false"
-   tools:context="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.TicTacToeMainActivity">
+   tools:context="edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity">
 
-   <edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.ScrollingView
+   <edu.neu.madcourse.ruihaohuang.tictactoe.ScrollingView
       android:id="@+id/main_background"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -23,7 +23,7 @@
 
    <fragment
       android:id="@+id/main_fragment"
-      class="edu.neu.madcourse.ruihaohuang.numad17s_ruihaohuang.tictactoe.TicTacToeMainFragment"
+      class="edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainFragment"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
