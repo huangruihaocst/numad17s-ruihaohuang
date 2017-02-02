@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity;
 import edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, TicTacToeMainActivity.class));
+            }
+        });
+
+        findViewById(R.id.button_dictionary).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, DictionaryActivity.class));
             }
         });
 

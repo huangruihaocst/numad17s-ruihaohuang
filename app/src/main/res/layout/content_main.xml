@@ -17,26 +17,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_about"
-        android:id="@+id/button_about"/>
+        android:id="@+id/button_about" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_generate_error"
         android:layout_below="@+id/button_about"
-        android:id="@+id/button_generate_error"/>
+        android:id="@+id/button_generate_error" />
     
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_tic_tac_toe"
         android:layout_below="@+id/button_generate_error"
-        android:id="@+id/button_tic_tac_toe"/>
+        android:id="@+id/button_tic_tac_toe" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_dictionary"
+        android:layout_below="@id/button_tic_tac_toe"
+        android:id="@+id/button_dictionary" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_quit"
-        android:id="@+id/button_quit"
-        android:layout_below="@+id/button_tic_tac_toe"/>
+        android:layout_below="@+id/button_dictionary"
+        android:id="@+id/button_quit" />
 </RelativeLayout>

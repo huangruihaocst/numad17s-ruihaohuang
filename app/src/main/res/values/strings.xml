@@ -5,10 +5,12 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_tic_tac_toe">TicTacToe</string>
     <string name="title_activity_game">Game</string>
+    <string name="title_activity_dictionary">Test Activity</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
-    <string name="button_tic_tac_toe">TicTacToe</string>
+    <string name="button_tic_tac_toe">Tic Tac Toe</string>
+    <string name="button_dictionary">Dictionary</string>
     <string name="button_quit">Quit</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
@@ -30,7 +32,7 @@
     <string name="toast_request_permission_read_phone_state">Please allow the permission Phone in Settings to access IMEI</string>
 
     <string name="info_permission_denied">Permission Denied</string>
-    
+
     <!-- tic tac toe-->
     <string name="long_app_name">Ultimate Tic Tac Toe</string>
     <string name="restart_label">Restart</string>
