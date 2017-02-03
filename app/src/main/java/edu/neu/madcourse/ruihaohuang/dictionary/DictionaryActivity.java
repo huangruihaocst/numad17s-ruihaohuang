@@ -1,5 +1,6 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.main.MainActivity;
 
 public class DictionaryActivity extends AppCompatActivity {
     DictionaryHelper helper;
@@ -28,6 +30,13 @@ public class DictionaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 wordInput.setText("");
+            }
+        });
+
+        findViewById(R.id.button_return).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
