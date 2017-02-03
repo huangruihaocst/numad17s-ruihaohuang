@@ -31,6 +31,8 @@
 
     <string name="toast_request_permission_read_phone_state">Please allow the permission Phone in Settings to access IMEI</string>
 
+    <string name="dialog_wait_create_database">Initializing database&#8230;</string>
+
     <string name="info_permission_denied">Permission Denied</string>
 
     <!-- tic tac toe-->

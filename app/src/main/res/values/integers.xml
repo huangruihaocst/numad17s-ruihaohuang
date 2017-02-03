@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--this word length is different from the meaning of word length in max_word_length-->
+    <!--it means a letter is contained of 5 bits-->
+    <!--same meaning with 64 bits CPU-->
+    <integer name="word_length">5</integer>
+    <!--this word length means a word can be at most 12 letters long-->
+    <integer name="max_word_length">12</integer>
+    <!--wc -l dictionary_word_list-->
+    <integer name="total_word_count">432334</integer>
+</resources>
