@@ -4,6 +4,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -81,6 +82,16 @@ public class DictionaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
+                builder.setTitle(getString(R.string.button_acknowledgements))
+                        .setMessage(getString(R.string.dialog_acknowledgements));
+                builder.create().show();
             }
         });
 

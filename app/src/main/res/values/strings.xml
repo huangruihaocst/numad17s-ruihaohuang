@@ -37,6 +37,20 @@
     <string name="toast_initialization_done">Initialization done</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;</string>
+    <string name="dialog_acknowledgements">\
+        Strategy of my dictionary: I mainly used the SQLite database for storage and query.\
+        Besides, I encoded the short words (not longer than 12 letters) to save space.\
+        It is about 10% of the size before I encoded them.\
+        To do this, I created two tables in my database. One is used for storing short words in integer,\
+        the other is used for storing long words in text.\
+        The database is created only once when you first open it but it is very time consuming.
+        I also created indexes for the two tables to reduce complexity from O(n) to O(logn).\
+        When querying if a word exists, I first determine if the word is a short word or a long word.\
+        Then I query it in the correspondent table.\
+        I did a test on its performance, which showed that 1000 times of querying takes about 200ms on an emulator,\
+        about 400ms on my Nexus phone.
+        
+    </string>
 
     <string name="info_permission_denied">Permission Denied</string>
 

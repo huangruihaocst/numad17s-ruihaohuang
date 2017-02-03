@@ -6,7 +6,7 @@
 
     <dimen name="about_text_size">20sp</dimen>
     <dimen name="dictionary_edit_text_size">20sp</dimen>
-    <dimen name="dictionary_word_list_text_size">15sp</dimen>
+    <dimen name="dictionary_word_list_text_size">10sp</dimen>
     <dimen name="dictionary_button_text_size">12sp</dimen>
     <dimen name="dictionary_button_clear_size">45dp</dimen>
 
