@@ -101,7 +101,8 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
     @Override
     protected void onPostExecute(Void result) {
         dialog.dismiss();
-        Toast.makeText(context, "Done.", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, context.getString(R.string.toast_initialization_done),
+                Toast.LENGTH_LONG).show();
         String databasePath;
         if(android.os.Build.VERSION.SDK_INT >= 17){
             databasePath = context.getApplicationInfo().dataDir + "/databases/";

@@ -1,9 +1,9 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
@@ -16,13 +16,6 @@ public class DictionaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dictionary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        findViewById(R.id.dictionary_main_layout).post(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
 
         helper = DictionaryHelper.getInstance(DictionaryActivity.this, this);
         helper.initializeHelper();
@@ -39,7 +32,15 @@ public class DictionaryActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        helper.initializeDb();
+        switch (requestCode) {
+            case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    helper.initializeDb();
+                }
+                return;
+            default:
+        }
     }
 
 }

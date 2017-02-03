@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -21,7 +20,7 @@ class DictionaryHelper {
     private final String tag = "DictionaryHelper";
     private static final int ASCII_OF_A = 97;  // lowercase
     private SQLiteDatabase db = null;
-    private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     private static DictionaryHelper ourInstance;
 
@@ -126,7 +125,7 @@ class DictionaryHelper {
     void testDatabase() {
         long start = System.currentTimeMillis();
         for(int i = 0;i < 1000; ++i) {
-            wordExists("jisjfsaijfklsjafkla");
+            wordExists("immew");
         }
         Toast.makeText(context, String.valueOf(System.currentTimeMillis() - start), Toast.LENGTH_LONG).show();
 

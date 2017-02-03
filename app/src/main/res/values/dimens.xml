@@ -5,6 +5,10 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="about_text_size">20sp</dimen>
+    <dimen name="dictionary_edit_text_size">20sp</dimen>
+    <dimen name="dictionary_list_text_size">20sp</dimen>
+    <dimen name="dictionary_button_text_size">12sp</dimen>
+    <dimen name="dictionary_button_clear_size">45dp</dimen>
 
     <!-- tic tac toe-->
     <dimen name="tile_size">30dp</dimen>

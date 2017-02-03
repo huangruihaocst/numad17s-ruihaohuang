@@ -12,6 +12,9 @@
     <string name="button_tic_tac_toe">Tic Tac Toe</string>
     <string name="button_dictionary">Dictionary</string>
     <string name="button_quit">Quit</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_return">Return to Menu</string>
+    <string name="button_acknowledgements">Acknowledgements</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -31,6 +34,7 @@
 
     <string name="toast_request_permission_read_phone_state">Please allow the permission in Settings to access IMEI</string>
     <string name="toast_request_permission_write_external_storage">Please allow the permission in Settings to set up database</string>
+    <string name="toast_initialization_done">Initialization done</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;</string>
 

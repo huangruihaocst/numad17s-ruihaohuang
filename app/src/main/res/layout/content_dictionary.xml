@@ -13,4 +13,56 @@
     tools:context="edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity"
     tools:showIn="@layout/activity_dictionary">
 
+    <Button
+        android:layout_width="@dimen/dictionary_button_clear_size"
+        android:layout_height="@dimen/dictionary_button_clear_size"
+        android:id="@+id/button_clear"
+        android:layout_gravity="end|center_vertical"
+        android:background="@android:drawable/ic_delete"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_text_dictionary"
+        android:textSize="@dimen/dictionary_edit_text_size"
+        android:inputType="text"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/button_clear"
+        android:layout_toStartOf="@+id/button_clear" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_acknowledgements"
+        android:text="@string/button_acknowledgements"
+        android:textSize="@dimen/dictionary_button_text_size"
+        android:layout_below="@+id/edit_text_dictionary"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/button_return"
+        android:layout_toStartOf="@+id/button_return" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_return"
+        android:text="@string/button_return"
+        android:textSize="@dimen/dictionary_button_text_size"
+        android:layout_below="@+id/edit_text_dictionary"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/words_list"
+        android:textSize="@dimen/dictionary_list_text_size"
+        android:layout_below="@+id/button_acknowledgements">
+    </ListView>
+
 </RelativeLayout>
