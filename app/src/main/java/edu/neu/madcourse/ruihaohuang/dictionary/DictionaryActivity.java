@@ -1,12 +1,8 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
@@ -20,6 +16,8 @@ public class DictionaryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DictionaryHelper helper = DictionaryHelper.getInstance();
+        helper.setContext(getApplicationContext());
+        helper.createDatabase();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

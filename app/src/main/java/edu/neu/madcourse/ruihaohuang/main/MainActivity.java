@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.about.AboutActivity;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity;
 import edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity;
 
