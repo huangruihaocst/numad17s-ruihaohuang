@@ -1,18 +1,23 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import edu.neu.madcourse.ruihaohuang.R;
-import edu.neu.madcourse.ruihaohuang.main.MainActivity;
 
 public class DictionaryActivity extends AppCompatActivity {
     DictionaryHelper helper;
+    private ArrayList<String> wordList;
+    private WordListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +26,34 @@ public class DictionaryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        wordList = new ArrayList<>();
+        adapter = new WordListAdapter(getApplicationContext(), wordList);
+        ((ListView) findViewById(R.id.word_list)).setAdapter(adapter);
+
         helper = DictionaryHelper.getInstance(DictionaryActivity.this, this);
         helper.initializeHelper();
 
         final EditText wordInput = (EditText) findViewById(R.id.edit_text_word);
+        wordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() >= getResources().getInteger(R.integer.min_word_length)
+                        && helper.wordExists(s.toString())) {
+                    wordList.add(s.toString());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         findViewById(R.id.button_clear).setOnClickListener(new View.OnClickListener() {
             @Override

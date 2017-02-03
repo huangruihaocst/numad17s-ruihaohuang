@@ -4,10 +4,12 @@
     <!--it means a letter is contained of 5 bits-->
     <!--same meaning with 64 bits CPU-->
     <integer name="word_length">5</integer>
-    <!--this word length means a word can be at most 12 letters long-->
+    <!--this word length means a word that needs to be encoded can be at most 12 letters long-->
     <integer name="max_word_length">12</integer>
     <!--wc -l dictionary_word_list-->
     <integer name="total_word_count">432334</integer>
     <!--insert 2000 words to database a time-->
     <integer name="insert_once">2000</integer>
+    <!--do recognize word less than 3 characters long-->
+    <integer name="min_word_length">3</integer>
 </resources>
