@@ -1,10 +1,9 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
 

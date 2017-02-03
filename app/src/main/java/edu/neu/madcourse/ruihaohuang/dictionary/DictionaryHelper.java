@@ -4,12 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.telephony.TelephonyManager;
-import android.widget.TextView;
+import android.util.Log;
 import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -19,12 +19,13 @@ import edu.neu.madcourse.ruihaohuang.R;
  */
 class DictionaryHelper {
     private final String tag = "DictionaryHelper";
+    private static final int ASCII_OF_A = 97;  // lowercase
     private SQLiteDatabase db = null;
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     private static DictionaryHelper ourInstance;
 
-    private Context context;
+    private static Context context;
     private Activity activity;
 
     static DictionaryHelper getInstance(Context context, Activity activity) {
@@ -40,6 +41,22 @@ class DictionaryHelper {
     }
 
     boolean wordExists(String word) {
+        String query = "SELECT * FROM ";
+        if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+            query += DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " WHERE "
+                    + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " = "
+                    + encodeWord(word);
+        } else {
+            query += DictionaryReaderContract.LongWordsEntry.TABLE_NAME + " WHERE "
+                    + DictionaryReaderContract.LongWordsEntry.COLUMN_WORDS_NAME + " = "
+                    + "'" + word + "'";
+        }
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
         return false;
     }
 
@@ -90,5 +107,28 @@ class DictionaryHelper {
         } else {  // database access
             initializeDb();
         }
+    }
+
+    static long encodeWord(String word) {
+        int length = word.length();
+        long code = 0;
+        for (int i = length - 1; i >= 0; --i) {
+            code |= encodeLetter(word.charAt(i)) << (context.getResources()
+                    .getInteger(R.integer.word_length) * (length - i - 1));
+        }
+        return code;
+    }
+
+    private static long encodeLetter(char letter) {
+        return (long) letter - ASCII_OF_A + 1;  // position in alphabet
+    }
+
+    void testDatabase() {
+        long start = System.currentTimeMillis();
+        for(int i = 0;i < 1000; ++i) {
+            wordExists("jisjfsaijfklsjafkla");
+        }
+        Toast.makeText(context, String.valueOf(System.currentTimeMillis() - start), Toast.LENGTH_LONG).show();
+
     }
 }

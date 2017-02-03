@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -21,7 +20,6 @@ import edu.neu.madcourse.ruihaohuang.R;
 
 class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
     private final String tag = "InitializeDatabaseTask";
-    private final int ASCII_OF_A = 97;  // lowercase
     private ProgressDialog dialog;
     private Context context;
     private Activity activity;
@@ -67,7 +65,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                     if ((word = reader.readLine()) != null) {
                         publishProgress((int) (100 * (count++) / total));
                         if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
-                            insertToShort += "(" + encodeWord(word) + ")" + DictionaryDbHelper.COMMA_SEP;
+                            insertToShort += "(" + DictionaryHelper.encodeWord(word) + ")" + DictionaryDbHelper.COMMA_SEP;
                         } else {
                             insertToLong += "('" + word + "')" + DictionaryDbHelper.COMMA_SEP;
                         }
@@ -113,19 +111,5 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         ((DictionaryActivity) activity).helper.setDb(SQLiteDatabase.openDatabase(databasePath
                 + DictionaryDbHelper.DATABASE_NAME, null,
                 SQLiteDatabase.OPEN_READONLY));
-    }
-
-    private long encodeWord(String word) {
-        int length = word.length();
-        long code = 0;
-        for (int i = length - 1; i >= 0; --i) {
-            code |= encodeLetter(word.charAt(i)) << (context.getResources()
-                    .getInteger(R.integer.word_length) * (length - i - 1));
-        }
-        return code;
-    }
-
-    private long encodeLetter(char letter) {
-        return (long) letter - ASCII_OF_A + 1;  // position in alphabet
     }
 }
