@@ -2,7 +2,6 @@ package edu.neu.madcourse.ruihaohuang.dictionary;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -43,7 +42,7 @@ public class WordListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO: use convertView to optimize 
+        // TODO: use convertView to optimize
         TextView wordText = new TextView(context);
         wordText.setText(wordList.get(position));
         wordText.setTextSize(context.getResources().getDimension(R.dimen.dictionary_word_list_text_size));

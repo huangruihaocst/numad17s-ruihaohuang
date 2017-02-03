@@ -1,6 +1,8 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +48,9 @@ public class DictionaryActivity extends AppCompatActivity {
                         && helper.wordExists(s.toString())) {
                     wordList.add(s.toString());
                     adapter.notifyDataSetChanged();
+                    // reference: http://stackoverflow.com/questions/12154940/how-to-make-a-beep-in-android
+                    new ToneGenerator(AudioManager.STREAM_ALARM, 100)
+                            .startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
                 }
             }
 
