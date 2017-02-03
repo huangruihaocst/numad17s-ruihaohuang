@@ -1,14 +1,15 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
 public class DictionaryActivity extends AppCompatActivity {
+    DictionaryHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,8 @@ public class DictionaryActivity extends AppCompatActivity {
 //            }
 //        });
 
-        DictionaryHelper helper = DictionaryHelper.getInstance(DictionaryActivity.this);
-        helper.initializeDatabase();
+        helper = DictionaryHelper.getInstance(DictionaryActivity.this, this);
+        helper.initializeHelper();
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +36,11 @@ public class DictionaryActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        helper.initializeDb();
     }
 
 }

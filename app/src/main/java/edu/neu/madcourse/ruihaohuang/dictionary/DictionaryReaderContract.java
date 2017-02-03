@@ -6,16 +6,18 @@ import android.provider.BaseColumns;
  * Created by huangruihao on 2017/2/3.
  */
 
-public class DictionaryReaderContract {
+class DictionaryReaderContract {
     private DictionaryReaderContract(){}
 
-    public static class ShortWordsEntry implements BaseColumns {
-        public static final String TABLE_NAME = "short";
-        public static final String COLUMN_WORDS_NAME = "words";
+    static class ShortWordsEntry implements BaseColumns {
+        static final String TABLE_NAME = "shorts";
+        static final String COLUMN_WORDS_NAME = "words";
+        static final String INDEX_NAME = "short_index";
     }
 
-    public static class LongWordsEntry implements BaseColumns {
-        public static final String TABLE_NAME = "longs";
-        public static final String COLUMN_WORDS_NAME = "words";
+    static class LongWordsEntry implements BaseColumns {
+        static final String TABLE_NAME = "longs";
+        static final String COLUMN_WORDS_NAME = "words";
+        static final String INDEX_NAME = "long_index";
     }
 }

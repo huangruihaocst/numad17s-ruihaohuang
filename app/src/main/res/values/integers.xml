@@ -8,4 +8,6 @@
     <integer name="max_word_length">12</integer>
     <!--wc -l dictionary_word_list-->
     <integer name="total_word_count">432334</integer>
+    <!--insert 2000 words to database a time-->
+    <integer name="insert_once">2000</integer>
 </resources>

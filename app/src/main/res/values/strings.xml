@@ -29,7 +29,8 @@
         <item name="my_degree_program">Computer Science</item>
     </string-array>
 
-    <string name="toast_request_permission_read_phone_state">Please allow the permission Phone in Settings to access IMEI</string>
+    <string name="toast_request_permission_read_phone_state">Please allow the permission in Settings to access IMEI</string>
+    <string name="toast_request_permission_write_external_storage">Please allow the permission in Settings to set up database</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;</string>
 
