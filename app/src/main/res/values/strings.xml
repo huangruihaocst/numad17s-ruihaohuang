@@ -6,6 +6,7 @@
     <string name="title_activity_tic_tac_toe">TicTacToe</string>
     <string name="title_activity_game">Game</string>
     <string name="title_activity_dictionary">Test Dictionary</string>
+    <string name="title_activity_acknowledgements">Acknowledgements</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
@@ -37,8 +38,10 @@
     <string name="toast_initialization_done">Initialization done</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;</string>
-    <string name="dialog_acknowledgements">\
-        Strategy of my dictionary: I mainly used the SQLite database for storage and query.\
+
+    <string name="text_acknowledgements">\
+        &lt;strong&gt;Strategy of my dictionary&lt;/strong&gt;
+        I mainly used the SQLite database for storage and query.\
         Besides, I encoded the short words (not longer than 12 letters) to save space.\
         It is about 10% of the size before I encoded them.\
         To do this, I created two tables in my database. One is used for storing short words in integer,\
@@ -48,8 +51,11 @@
         When querying if a word exists, I first determine if the word is a short word or a long word.\
         Then I query it in the correspondent table.\
         I did a test on its performance, which showed that 1000 times of querying takes about 200ms on an emulator,\
-        about 400ms on my Nexus phone.
-        
+        about 400ms on my Nexus phone.\n\n
+        Media Resources:\n
+            application icon: http://i396.photobucket.com/albums/pp42/ubinman/feather.png\n
+            BGM in the Tic Tac Toe game: http://www.bensound.com/royalty-free-music?download=cute, \
+        http://www.bensound.com/royalty-free-music?download=acousticbreeze
     </string>
 
     <string name="info_permission_denied">Permission Denied</string>

@@ -1,5 +1,6 @@
 package edu.neu.madcourse.ruihaohuang.dictionary;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.acknowledgements.AcknowledgementsActivity;
 
 public class DictionaryActivity extends AppCompatActivity {
     private final String tag = "DictionaryActivity";
@@ -88,10 +90,7 @@ public class DictionaryActivity extends AppCompatActivity {
         findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
-                builder.setTitle(getString(R.string.button_acknowledgements))
-                        .setMessage(getString(R.string.dialog_acknowledgements));
-                builder.create().show();
+                startActivity(new Intent(DictionaryActivity.this, AcknowledgementsActivity.class));
             }
         });
 

@@ -40,6 +40,12 @@
         <activity
             android:name=".dictionary.DictionaryActivity"
             android:label="@string/title_activity_dictionary"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".acknowledgements.AcknowledgementsActivity"
+            android:label="@string/title_activity_acknowledgements"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
