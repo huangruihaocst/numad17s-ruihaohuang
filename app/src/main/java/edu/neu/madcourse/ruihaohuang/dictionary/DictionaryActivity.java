@@ -13,10 +13,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
 public class DictionaryActivity extends AppCompatActivity {
+    private final String tag = "DictionaryActivity";
     DictionaryHelper helper;
     private ArrayList<String> wordList;
     private WordListAdapter adapter;
@@ -39,14 +41,22 @@ public class DictionaryActivity extends AppCompatActivity {
         wordInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<String> removeList = new ArrayList<>();
+                for (String word: wordList) {
+                    if (word.length() > s.length()) {  // deleting
+                        removeList.add(word);
+                    }
+                }
+                wordList.removeAll(removeList);  // avoid the Iterator problem
                 if (s.length() >= getResources().getInteger(R.integer.min_word_length)
                         && helper.wordExists(s.toString())) {
-                    wordList.add(s.toString());
+                    if (!wordList.contains(s.toString())) {
+                        wordList.add(s.toString());
+                    }
                     adapter.notifyDataSetChanged();
                     // reference: http://stackoverflow.com/questions/12154940/how-to-make-a-beep-in-android
                     new ToneGenerator(AudioManager.STREAM_ALARM, 100)
@@ -56,7 +66,6 @@ public class DictionaryActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -64,6 +73,7 @@ public class DictionaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 wordInput.setText("");
+                adapter.notifyDataSetChanged();
             }
         });
 

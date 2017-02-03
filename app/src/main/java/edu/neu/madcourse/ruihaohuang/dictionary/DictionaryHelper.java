@@ -122,6 +122,7 @@ class DictionaryHelper {
         return (long) letter - ASCII_OF_A + 1;  // position in alphabet
     }
 
+    // test speed of the database
     void testDatabase() {
         long start = System.currentTimeMillis();
         for(int i = 0;i < 1000; ++i) {
