@@ -4,6 +4,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.EditText;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
@@ -19,6 +21,15 @@ public class DictionaryActivity extends AppCompatActivity {
 
         helper = DictionaryHelper.getInstance(DictionaryActivity.this, this);
         helper.initializeHelper();
+
+        final EditText wordInput = (EditText) findViewById(R.id.edit_text_word);
+
+        findViewById(R.id.button_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wordInput.setText("");
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
