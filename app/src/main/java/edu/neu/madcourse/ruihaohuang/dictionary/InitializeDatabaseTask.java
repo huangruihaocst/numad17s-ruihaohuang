@@ -40,7 +40,6 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         int count = 0;
         int total = context.getResources().getInteger(R.integer.total_word_count);
         int left = total;
-        int once = context.getResources().getInteger(R.integer.insert_once);
 
         // references: about how to read lines from a file
         // [1] http://stackoverflow.com/questions/4081763/access-resource-files-in-android
@@ -56,28 +55,77 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         // reference: http://stackoverflow.com/questions/28977308/read-all-lines-with-bufferedreader
         try {
             String word;
-            while (left > 0) {
-                String insertToShort = "INSERT INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
-                        + " VALUES ";
-                String insertToLong = "INSERT INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
-                        + " VALUES ";
-                for (int i = 0; i < once; ++i) {
-                    if ((word = reader.readLine()) != null) {
-                        publishProgress((int) (100 * (count++) / total));
-                        if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
-                            insertToShort += "(" + DictionaryHelper.encodeWord(word) + ")" + DictionaryDbHelper.COMMA_SEP;
+            // reference: http://stackoverflow.com/questions/29040089/getting-android-sqlite-syntax-error-running-in-api-14
+            if (android.os.Build.VERSION.SDK_INT >= 16) {
+                int once = context.getResources().getInteger(R.integer.insert_once_api_over_16);
+                while (left > 0) {
+                    String insertIntoShort = "INSERT INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
+                            + " VALUES ";
+                    String insertIntoLong = "INSERT INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
+                            + " VALUES ";
+
+                    for (int i = 0; i < once; ++i) {
+                        if ((word = reader.readLine()) != null) {
+                            publishProgress((int) (100 * (count++) / total));
+                            if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+                                insertIntoShort += "(" + DictionaryHelper.encodeWord(word) + ")" + DictionaryDbHelper.COMMA_SEP;
+                            } else {
+                                insertIntoLong += "('" + word + "')" + DictionaryDbHelper.COMMA_SEP;
+                            }
                         } else {
-                            insertToLong += "('" + word + "')" + DictionaryDbHelper.COMMA_SEP;
+                            break;
                         }
-                    } else {
-                        break;
                     }
+
+                    insertIntoShort = insertIntoShort.substring(0, insertIntoShort.length() - 1) + ";";
+                    insertIntoLong = insertIntoLong.substring(0, insertIntoLong.length() - 1) + ";";
+                    db.execSQL(insertIntoShort);
+                    db.execSQL(insertIntoLong);
+                    left -= once;
                 }
-                insertToShort = insertToShort.substring(0, insertToShort.length() - 1) + ";";
-                insertToLong = insertToLong.substring(0, insertToLong.length() - 1) + ";";
-                db.execSQL(insertToShort);
-                db.execSQL(insertToLong);
-                left -= once;
+            } else {
+                int once = context.getResources().getInteger(R.integer.insert_once_api_below_15);
+                while (left > 0) {
+                    // reference: http://stackoverflow.com/questions/1609637/is-it-possible-to-insert-multiple-rows-at-a-time-in-an-sqlite-database
+                    String insertIntoShort = "INSERT INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
+                            + " SELECT ";
+                    String insertIntoLong = "INSERT INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
+                            + " SELECT ";
+
+                    for (int i = 0; i < once; ++i) {
+                        if ((word = reader.readLine()) != null) {
+                            publishProgress((int) (100 * (count++) / total));
+                            if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+                                if (!insertIntoShort.contains("AS")) {  // new sentence
+                                    insertIntoShort += DictionaryHelper.encodeWord(word) + " AS "
+                                            + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " ";
+                                } else {
+                                    insertIntoShort += "UNION ALL SELECT " + DictionaryHelper.encodeWord(word) + " ";
+                                }
+                            } else {
+                                if (!insertIntoLong.contains("AS")) {  // new sentence
+                                    insertIntoLong += "'" + word + "' AS "
+                                            + DictionaryReaderContract.LongWordsEntry.COLUMN_WORDS_NAME + " ";
+                                } else {
+                                    insertIntoLong += "UNION ALL SELECT '" + word + "' ";
+                                }
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+
+                    insertIntoShort = insertIntoShort.substring(0, insertIntoShort.length() - 1) + ";";
+                    insertIntoLong = insertIntoLong.substring(0, insertIntoLong.length() - 1) + ";";
+                    // does not contain "AS" means nothing to insert
+                    if (insertIntoShort.contains("AS")) {
+                        db.execSQL(insertIntoShort);
+                    }
+                    if (insertIntoLong.contains("AS")) {
+                        db.execSQL(insertIntoLong);
+                    }
+                    left -= once;
+                }
             }
         } catch (SQLiteException | IOException e) {
             e.printStackTrace();

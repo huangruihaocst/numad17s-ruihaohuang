@@ -8,8 +8,10 @@
     <integer name="max_word_length">12</integer>
     <!--wc -l dictionary_word_list-->
     <integer name="total_word_count">432334</integer>
-    <!--insert 2000 words to database a time-->
-    <integer name="insert_once">2000</integer>
+    <!--insert 2000 words to database a time on device with API 16 or higher-->
+    <integer name="insert_once_api_over_16">2000</integer>
+    <!--insert 500 words to database a time on device with API 15 or lower-->
+    <integer name="insert_once_api_below_15">500</integer>
     <!--do recognize word less than 3 characters long-->
     <integer name="min_word_length">3</integer>
 </resources>
