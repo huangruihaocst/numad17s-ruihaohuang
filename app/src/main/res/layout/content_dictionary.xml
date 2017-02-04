@@ -60,7 +60,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/word_list"
         android:textSize="@dimen/dictionary_word_list_text_size"
         android:layout_below="@+id/button_acknowledgements">
