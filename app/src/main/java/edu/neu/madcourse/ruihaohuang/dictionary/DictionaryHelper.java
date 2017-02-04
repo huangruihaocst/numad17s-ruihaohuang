@@ -19,6 +19,7 @@ import edu.neu.madcourse.ruihaohuang.R;
 class DictionaryHelper {
     private final String tag = "DictionaryHelper";
     private static final int ASCII_OF_A = 97;  // lowercase
+    private final String lastRecord = "28433685139";  // encoded last word in the word list
     private SQLiteDatabase db = null;
     static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
@@ -74,6 +75,9 @@ class DictionaryHelper {
             }
             db = SQLiteDatabase.openDatabase(databasePath + DictionaryDbHelper.DATABASE_NAME, null,
                     SQLiteDatabase.OPEN_READONLY);
+            if (!checkDatabaseIntegrity()) {
+                throw new SQLiteException();
+            }
         } catch (SQLiteException e) {
             e.printStackTrace();
             initializeDatabase();
@@ -130,5 +134,20 @@ class DictionaryHelper {
         }
         Toast.makeText(context, String.valueOf(System.currentTimeMillis() - start), Toast.LENGTH_LONG).show();
 
+    }
+
+    // if the exist database has the last word, it must be complete, otherwise incomplete
+    private boolean checkDatabaseIntegrity() {
+        String query = "SELECT * FROM ";
+        query += DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " WHERE "
+                + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " = "
+                + lastRecord;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
     }
 }

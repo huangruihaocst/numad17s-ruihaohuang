@@ -59,9 +59,9 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
             if (android.os.Build.VERSION.SDK_INT >= 16) {
                 int once = context.getResources().getInteger(R.integer.insert_once_api_over_16);
                 while (left > 0) {
-                    String insertIntoShort = "INSERT INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
+                    String insertIntoShort = "INSERT OR IGNORE INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
                             + " VALUES ";
-                    String insertIntoLong = "INSERT INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
+                    String insertIntoLong = "INSERT OR IGNORE INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
                             + " VALUES ";
 
                     for (int i = 0; i < once; ++i) {
@@ -87,9 +87,9 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                 int once = context.getResources().getInteger(R.integer.insert_once_api_below_15);
                 while (left > 0) {
                     // reference: http://stackoverflow.com/questions/1609637/is-it-possible-to-insert-multiple-rows-at-a-time-in-an-sqlite-database
-                    String insertIntoShort = "INSERT INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
+                    String insertIntoShort = "INSERT OR IGNORE INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
                             + " SELECT ";
-                    String insertIntoLong = "INSERT INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
+                    String insertIntoLong = "INSERT OR IGNORE INTO " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME
                             + " SELECT ";
 
                     for (int i = 0; i < once; ++i) {

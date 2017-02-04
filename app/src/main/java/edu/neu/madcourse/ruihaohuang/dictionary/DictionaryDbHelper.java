@@ -14,11 +14,13 @@ class DictionaryDbHelper extends SQLiteOpenHelper {
     static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_SHORT_ENTRIES =
             "CREATE TABLE " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " ("
-            + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + INTEGER_TYPE
+            + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + INTEGER_TYPE + COMMA_SEP
+                    + "UNIQUE(" + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + ")"
             + " )";
     private static final String SQL_CREATE_LONG_ENTRIES =
             "CREATE TABLE " + DictionaryReaderContract.LongWordsEntry.TABLE_NAME + " ("
-                    + DictionaryReaderContract.LongWordsEntry.COLUMN_WORDS_NAME + TEXT_TYPE
+                    + DictionaryReaderContract.LongWordsEntry.COLUMN_WORDS_NAME + TEXT_TYPE + COMMA_SEP
+                    + "UNIQUE(" + DictionaryReaderContract.LongWordsEntry.COLUMN_WORDS_NAME + ")"
                     + " )";
     private static final String SQL_DELETE_SHORT_ENTRIES =
             "DROP TABLE IF EXISTS " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME;
