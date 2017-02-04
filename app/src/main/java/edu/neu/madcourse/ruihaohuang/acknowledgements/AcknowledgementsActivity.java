@@ -3,6 +3,7 @@ package edu.neu.madcourse.ruihaohuang.acknowledgements;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -26,8 +27,11 @@ public class AcknowledgementsActivity extends AppCompatActivity {
 //            }
 //        });
 
-        ((TextView) findViewById(R.id.text_acknowledgements))
-                .setText(AboutActivity.fromHtml(getString(R.string.text_acknowledgements)));
+        TextView acknowledgementsTextView = ((TextView) findViewById(R.id.text_acknowledgements));
+        // reference: http://stackoverflow.com/questions/12119800/android-set-link-with-a-href-in-textview
+        acknowledgementsTextView.setClickable(true);
+        acknowledgementsTextView.setMovementMethod (LinkMovementMethod.getInstance());
+        acknowledgementsTextView.setText(AboutActivity.fromHtml(getString(R.string.text_acknowledgements)));
     }
 
 }

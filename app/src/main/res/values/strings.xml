@@ -40,8 +40,9 @@
     <string name="dialog_wait_create_database">Initializing database&#8230;</string>
 
     <string name="text_acknowledgements">\
-        &lt;strong&gt;Strategy of my dictionary&lt;/strong&gt;
-        I mainly used the SQLite database for storage and query.\
+        &lt;h3&gt;Strategy of my dictionary&lt;/h3&gt;
+        &lt;p&gt;
+        &#160;&#160;I mainly used the SQLite database for storage and query.\
         Besides, I encoded the short words (not longer than 12 letters) to save space.\
         It is about 10% of the size before I encoded them.\
         To do this, I created two tables in my database. One is used for storing short words in integer,\
@@ -51,11 +52,64 @@
         When querying if a word exists, I first determine if the word is a short word or a long word.\
         Then I query it in the correspondent table.\
         I did a test on its performance, which showed that 1000 times of querying takes about 200ms on an emulator,\
-        about 400ms on my Nexus phone.\n\n
-        Media Resources:\n
-            application icon: http://i396.photobucket.com/albums/pp42/ubinman/feather.png\n
-            BGM in the Tic Tac Toe game: http://www.bensound.com/royalty-free-music?download=cute, \
-        http://www.bensound.com/royalty-free-music?download=acousticbreeze
+        about 400ms on my Nexus phone.
+        &lt;/p&gt;
+        &lt;h3&gt;Assets&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Application icon:&#160;&lt;/strong&gt;
+        &lt;a href="http://i396.photobucket.com/albums/pp42/ubinman/feather.png"&gt;
+        http://i396.photobucket.com/albums/pp42/ubinman/feather.png&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+        &lt;strong&gt;BGM in the Tic Tac Toe game:&#160;&lt;/strong&gt;
+        &lt;a href="http://www.bensound.com/royalty-free-music?download=cute"&gt;
+        http://www.bensound.com/royalty-free-music?download=cute&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://www.bensound.com/royalty-free-music?download=acousticbreeze"&gt;
+        http://www.bensound.com/royalty-free-music?download=acousticbreeze&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;h3&gt;References&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;a href="http://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n"&gt;
+        http://stackoverflow.com/questions/37904739/html-fromhtml-deprecated-in-android-n&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/12119800/android-set-link-with-a-href-in-textview"&gt;
+        http://stackoverflow.com/questions/12119800/android-set-link-with-a-href-in-textview&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/12154940/how-to-make-a-beep-in-android"&gt;
+        http://stackoverflow.com/questions/12154940/how-to-make-a-beep-in-android&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application"&gt;
+        http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/17034511/android-database-sqlite-sqlitecantopendatabaseexception-unknown-error-code-14"&gt;
+        http://stackoverflow.com/questions/17034511/android-database-sqlite-sqlitecantopendatabaseexception-unknown-error-code-14&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/4081763/access-resource-files-in-android"&gt;
+        http://stackoverflow.com/questions/4081763/access-resource-files-in-android&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/7666589/using-getresources-in-non-activity-class"&gt;
+        http://stackoverflow.com/questions/7666589/using-getresources-in-non-activity-class&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/26419538/how-to-read-a-line-in-bufferedinputstream"&gt;
+        http://stackoverflow.com/questions/26419538/how-to-read-a-line-in-bufferedinputstream&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/28977308/read-all-lines-with-bufferedreader"&gt;
+        http://stackoverflow.com/questions/28977308/read-all-lines-with-bufferedreader&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/6355096/how-to-create-edittext-with-crossx-button-at-end-of-it"&gt;
+        http://stackoverflow.com/questions/6355096/how-to-create-edittext-with-crossx-button-at-end-of-it&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/2591036/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme"&gt;
+        http://stackoverflow.com/questions/2591036/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme&lt;/a&gt;,
+        &lt;br/&gt;
+        and Android Documentation.
+        &lt;/p&gt;
+        &lt;h3&gt;People who helped me&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Aocheng Wang (THU):&#160;&lt;/strong&gt;helped me distinguish between getApplicationContext() and
+        MyActivity.this, thus fixed a bug.
+        &lt;/p&gt;
     </string>
 
     <string name="info_permission_denied">Permission Denied</string>
