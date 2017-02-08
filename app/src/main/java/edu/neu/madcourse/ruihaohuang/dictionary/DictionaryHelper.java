@@ -60,10 +60,6 @@ class DictionaryHelper {
         return false;
     }
 
-    private void initializeDatabase() {
-        new InitializeDatabaseTask(context, activity).execute();
-    }
-
     void initializeDb() {
         try {
             // reference: http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application
@@ -80,7 +76,7 @@ class DictionaryHelper {
             }
         } catch (SQLiteException e) {
             e.printStackTrace();
-            initializeDatabase();
+            new InitializeDatabaseTask(context, activity).execute();
         }
     }
 
@@ -133,7 +129,6 @@ class DictionaryHelper {
             wordExists("immew");
         }
         Toast.makeText(context, String.valueOf(System.currentTimeMillis() - start), Toast.LENGTH_LONG).show();
-
     }
 
     // if the exist database has the last word, it must be complete, otherwise incomplete
