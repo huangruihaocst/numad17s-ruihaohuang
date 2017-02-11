@@ -40,6 +40,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         int count = 0;
         int total = context.getResources().getInteger(R.integer.total_word_count);
         int left = total;
+        int once = context.getResources().getInteger(R.integer.insert_once);
 
         // references: about how to read lines from a file
         // [1] http://stackoverflow.com/questions/4081763/access-resource-files-in-android
@@ -57,7 +58,6 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
             String word;
             // reference: http://stackoverflow.com/questions/29040089/getting-android-sqlite-syntax-error-running-in-api-14
             if (android.os.Build.VERSION.SDK_INT >= 16) {
-                int once = context.getResources().getInteger(R.integer.insert_once_api_over_16);
                 while (left > 0) {
                     String insertIntoShort = "INSERT OR IGNORE INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
                             + " VALUES ";
@@ -84,7 +84,6 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                     left -= once;
                 }
             } else {
-                int once = context.getResources().getInteger(R.integer.insert_once_api_below_15);
                 while (left > 0) {
                     // reference: http://stackoverflow.com/questions/1609637/is-it-possible-to-insert-multiple-rows-at-a-time-in-an-sqlite-database
                     String insertIntoShort = "INSERT OR IGNORE INTO " + DictionaryReaderContract.ShortWordsEntry.TABLE_NAME
