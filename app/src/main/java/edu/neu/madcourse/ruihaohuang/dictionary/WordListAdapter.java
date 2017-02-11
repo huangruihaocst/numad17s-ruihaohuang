@@ -42,14 +42,10 @@ public class WordListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // reference: http://stackoverflow.com/questions/15232895/same-convertview-instance-is-passed-for-visible-views-in-cursoradapter
-        if (convertView == null) {
-            TextView wordText = new TextView(context);
-            wordText.setText(wordList.get(position));
-            wordText.setTextSize(context.getResources().getDimension(R.dimen.dictionary_word_list_text_size));
-            wordText.setTextColor(Color.BLACK);
-            convertView = wordText;
-        }
-        return convertView;
+        TextView wordText = new TextView(context);
+        wordText.setText(wordList.get(position));
+        wordText.setTextSize(context.getResources().getDimension(R.dimen.dictionary_word_list_text_size));
+        wordText.setTextColor(Color.BLACK);
+        return wordText;
     }
 }
