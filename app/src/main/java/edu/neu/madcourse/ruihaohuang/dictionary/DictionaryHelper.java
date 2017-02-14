@@ -16,19 +16,19 @@ import edu.neu.madcourse.ruihaohuang.R;
 /**
  * Created by huangruihao on 2017/2/1.
  */
-class DictionaryHelper {
+public class DictionaryHelper {
     private final String tag = "DictionaryHelper";
     private static final int ASCII_OF_A = 97;  // lowercase
     private final String lastRecord = "28433685139";  // encoded last word in the word list
     private SQLiteDatabase db = null;
-    static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     private static DictionaryHelper ourInstance;
 
     private static Context context;
     private Activity activity;
 
-    static DictionaryHelper getInstance(Context context, Activity activity) {
+    public static DictionaryHelper getInstance(Context context, Activity activity) {
         if (ourInstance == null) {
             ourInstance = new DictionaryHelper(context, activity);
         }
@@ -40,7 +40,7 @@ class DictionaryHelper {
         this.activity = activity;
     }
 
-    boolean wordExists(String word) {
+    public boolean wordExists(String word) {
         String query = "SELECT * FROM ";
         if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
             query += DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " WHERE "
@@ -60,7 +60,7 @@ class DictionaryHelper {
         return false;
     }
 
-    void initializeDb() {
+    public void initializeDb() {
         try {
             // reference: http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application
             String databasePath;
@@ -85,11 +85,12 @@ class DictionaryHelper {
     }
 
     /**
+     * Initialize Dictionary Helper.
      * Open database if exists, otherwise create and open it.
      * Avoid duplicate insertion.
      * Reference: http://stackoverflow.com/questions/17034511/android-database-sqlite-sqlitecantopendatabaseexception-unknown-error-code-14
      */
-    void initializeHelper() {
+    public void initializeHelper() {
         int permissionCheck = ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -123,7 +124,7 @@ class DictionaryHelper {
     }
 
     // test speed of the database
-    void testDatabase() {
+    void testDb() {
         long start = System.currentTimeMillis();
         for(int i = 0;i < 1000; ++i) {
             wordExists("immew");

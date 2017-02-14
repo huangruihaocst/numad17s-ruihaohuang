@@ -115,5 +115,4 @@ public class DictionaryActivity extends AppCompatActivity {
             default:
         }
     }
-
 }

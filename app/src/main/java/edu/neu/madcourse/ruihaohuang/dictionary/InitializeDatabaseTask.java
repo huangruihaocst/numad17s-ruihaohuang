@@ -22,17 +22,18 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
     private final String tag = "InitializeDatabaseTask";
     private ProgressDialog dialog;
     private Context context;
-    private Activity activity;
+    private DictionaryHelper helper;
 
     InitializeDatabaseTask(Context context, Activity activity) {
         this.context = context;
-        this.activity = activity;
 
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getString(R.string.dialog_wait_create_database));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+        helper = DictionaryHelper.getInstance(context, activity);
     }
 
     @Override
@@ -156,7 +157,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         } else {
             databasePath = "/data/data/" + context.getPackageName() + "/databases/";
         }
-        ((DictionaryActivity) activity).helper.setDb(SQLiteDatabase.openDatabase(databasePath
+        helper.setDb(SQLiteDatabase.openDatabase(databasePath
                 + DictionaryDbHelper.DATABASE_NAME, null,
                 SQLiteDatabase.OPEN_READONLY));
     }

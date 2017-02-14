@@ -38,7 +38,7 @@
     <string name="toast_initialization_done">Initialization done</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;\n
-        Do not close the application until it finished&#8230;</string>
+        Do not close the application until it has finished&#8230;</string>
 
     <string name="text_acknowledgements">\
         &lt;h3&gt;Strategy of my dictionary&lt;/h3&gt;
