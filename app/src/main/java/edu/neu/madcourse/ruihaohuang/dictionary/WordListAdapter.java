@@ -15,7 +15,7 @@ import edu.neu.madcourse.ruihaohuang.R;
  * Created by huangruihao on 2017/2/3.
  */
 
-public class WordListAdapter extends BaseAdapter {
+class WordListAdapter extends BaseAdapter {
     private final String tag = "WordListAdapter";
     private Context context;
     private ArrayList<String> wordList;
@@ -42,10 +42,15 @@ public class WordListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        TextView wordText = new TextView(context);
-        wordText.setText(wordList.get(position));
-        wordText.setTextSize(context.getResources().getDimension(R.dimen.dictionary_word_list_text_size));
-        wordText.setTextColor(Color.BLACK);
-        return wordText;
+        if (convertView == null) {
+            TextView wordText = new TextView(context);
+            wordText.setText(wordList.get(position));
+            wordText.setTextSize(context.getResources().getDimension(R.dimen.dictionary_word_list_text_size));
+            wordText.setTextColor(Color.BLACK);
+            convertView = wordText;
+        } else {
+            ((TextView) convertView).setText(wordList.get(position));
+        }
+        return convertView;
     }
 }
