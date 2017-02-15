@@ -43,7 +43,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/button_word_game"
+        android:layout_below="@id/button_dictionary"
+        android:id="@+id/button_word_game" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/button_quit"
-        android:layout_below="@+id/button_dictionary"
+        android:layout_below="@+id/button_word_game"
         android:id="@+id/button_quit" />
+
 </RelativeLayout>

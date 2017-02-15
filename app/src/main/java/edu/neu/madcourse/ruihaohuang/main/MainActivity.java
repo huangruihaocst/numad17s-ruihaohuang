@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.about.AboutActivity;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity;
+import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleMainActivity;
 import edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, DictionaryActivity.class));
+            }
+        });
+
+        findViewById(R.id.button_word_game).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ScroggleMainActivity.class));
             }
         });
 
