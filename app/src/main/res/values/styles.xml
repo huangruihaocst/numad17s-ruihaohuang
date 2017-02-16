@@ -31,6 +31,7 @@
     <style name="ScroggleTileButton" parent="TicTacToeTileButton">
         <item name="android:textSize">@dimen/letter_size</item>
         <item name="android:textColor">@color/letter_color</item>
+        <item name="android:src">@drawable/scroggle_tile</item>
     </style>
 
 </resources>

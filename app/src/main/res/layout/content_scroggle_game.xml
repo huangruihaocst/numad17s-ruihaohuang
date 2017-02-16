@@ -17,6 +17,19 @@
         layout="@layout/scroggle_large_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/scroggle_board"/>
+
+    <Button
+        android:id="@+id/button_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_low"
+        android:drawableTop="@drawable/scroggle_pause"
+        android:text="@string/button_pause"
+        android:textSize="@dimen/control_button_text_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/control_button_margin_bottom" />
 
 </RelativeLayout>

@@ -1,8 +1,10 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
@@ -24,6 +26,12 @@ public class ScroggleMainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        findViewById(R.id.button_new_game).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScroggleMainActivity.this, ScroggleGameActivity.class));
+            }
+        });
     }
 
 }
