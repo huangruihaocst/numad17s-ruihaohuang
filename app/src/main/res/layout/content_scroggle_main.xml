@@ -13,4 +13,31 @@
     tools:context="edu.neu.madcourse.ruihaohuang.scroggle.ScroggleMainActivity"
     tools:showIn="@layout/activity_scroggle_main">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_new_game"
+        android:id="@+id/button_new_game"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_continue"
+        android:id="@+id/button_continue"
+        android:layout_below="@+id/button_new_game"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_acknowledgements"
+        android:id="@+id/button_acknowledgements"
+        android:layout_below="@+id/button_continue"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_quit"
+        android:id="@+id/button_quit"
+        android:layout_below="@+id/button_acknowledgements"/>
+
 </RelativeLayout>

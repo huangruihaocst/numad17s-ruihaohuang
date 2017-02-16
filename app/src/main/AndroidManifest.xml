@@ -25,27 +25,31 @@
         <activity
             android:name=".about.AboutActivity"
             android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".tictactoe.TicTacToeMainActivity"
             android:label="@string/title_activity_tic_tac_toe"
-            android:theme="@style/TicTacToeTheme"></activity>
+            android:theme="@style/TicTacToeTheme" />
         <activity
             android:name=".tictactoe.GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/TicTacToeTheme"></activity>
+            android:theme="@style/TicTacToeTheme" />
         <activity
             android:name=".dictionary.DictionaryActivity"
             android:label="@string/title_activity_dictionary"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acknowledgements.AcknowledgementsActivity"
             android:label="@string/title_activity_acknowledgements"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".scroggle.ScroggleMainActivity"
             android:label="@string/title_activity_scroggle_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".scroggle.ScroggleGameActivity"
+            android:label="@string/title_activity_scroggle_game"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -18,6 +18,8 @@
     <string name="button_return">Return to Menu</string>
     <string name="button_acknowledgements">Acknowledgements</string>
     <string name="button_word_game">Word Game</string>
+    <string name="button_new_game">New Game</string>
+    <string name="button_continue">Continue</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -148,4 +150,5 @@
         In the case of a tie in a small board, that will count as a win for
         both sides in the larger game.
     </string>
+    <string name="title_activity_scroggle_game">ScroggleGameActivity</string>
 </resources>

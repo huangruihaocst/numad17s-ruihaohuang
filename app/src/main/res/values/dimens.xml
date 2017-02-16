@@ -11,7 +11,7 @@
     <dimen name="dictionary_button_clear_size">45dp</dimen>
     <dimen name="acknowledgements_text_size">20sp</dimen>
 
-    <!-- tic tac toe-->
+    <!-- tic tac toe/scroggle-->
     <dimen name="tile_size">30dp</dimen>
     <dimen name="tile_margin">0dp</dimen>
     <dimen name="tile_padding">3dp</dimen>
@@ -23,6 +23,7 @@
     <dimen name="thinking_progress_size">50dp</dimen>
     <dimen name="stroke_width">1dp</dimen>
     <dimen name="corner_radius">4dp</dimen>
+    <dimen name="letter_size">20sp</dimen>
 
     <dimen name="menu_padding">10dp</dimen>
     <dimen name="menu_space">10dp</dimen>

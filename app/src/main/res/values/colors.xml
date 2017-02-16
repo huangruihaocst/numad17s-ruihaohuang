@@ -14,4 +14,7 @@
     <color name="purple_color">#7f007f</color>
     <color name="red_color">#ff7f7f</color>
     <color name="thinking_background_color">#cfdfdfdf</color>
+
+    <!--scroggle-->
+    <color name="letter_color">#FFFF4444</color>
 </resources>

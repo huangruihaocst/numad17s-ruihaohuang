@@ -7,6 +7,7 @@
  ! We make no guarantees that this code is fit for any purpose. 
  ! Visit http://www.pragmaticprogrammer.com/titles/eband4 for more book information.
 -->
+<!--Used both in Tic Tac Toe and Scroggle-->
 <level-list xmlns:android="http://schemas.android.com/apk/res/android">
    <item
       android:drawable="@drawable/tic_tac_toe_tile_blue"
