@@ -11,6 +11,8 @@ import edu.neu.madcourse.ruihaohuang.R;
 
 public class ScroggleGameActivity extends AppCompatActivity {
 
+    private Tile board = new Tile(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
