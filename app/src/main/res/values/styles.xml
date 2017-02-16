@@ -17,7 +17,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- tic tac toe-->
+    <!--tic tac toe-->
     <style name="TicTacToeTileButton">
         <item name="android:layout_width">@dimen/tile_size</item>
         <item name="android:layout_height">@dimen/tile_size</item>
@@ -25,13 +25,14 @@
         <item name="android:background">#00000000</item>
         <item name="android:padding">@dimen/tile_padding</item>
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:src">@drawable/tic_tac_toe_tile</item>
+        <item name="android:src">@drawable/tictactoe_tile</item>
     </style>
 
+    <!--scroggle-->
     <style name="ScroggleTileButton" parent="TicTacToeTileButton">
         <item name="android:textSize">@dimen/letter_size</item>
         <item name="android:textColor">@color/letter_color</item>
-        <item name="android:src">@drawable/scroggle_tile</item>
+        <item name="android:background">@drawable/scroggle_tile_background</item>
     </style>
 
 </resources>

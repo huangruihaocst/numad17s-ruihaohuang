@@ -17,7 +17,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:scaleType="centerCrop"
-      android:src="@drawable/tic_tac_toe_sandy_beach"/>
+      android:src="@drawable/tictactoe_sandy_beach"/>
 
    <LinearLayout
       android:layout_width="match_parent"

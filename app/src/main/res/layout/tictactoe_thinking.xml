@@ -18,7 +18,7 @@
    tools:showIn="@layout/activity_tictactoe_game">
 
    <ProgressBar
-      android:background="@drawable/tic_tac_toe_thinking_background"
+      android:background="@drawable/tictactoe_thinking_background"
       android:elevation="@dimen/elevation_high"
       android:layout_marginTop="@dimen/activity_vertical_margin"
       android:layout_marginLeft="@dimen/activity_vertical_margin"

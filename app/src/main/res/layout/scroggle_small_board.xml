@@ -3,10 +3,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/tile_background"
+    android:background="@drawable/scroggle_tile_background"
     android:elevation="@dimen/elevation_low"
     android:padding="@dimen/tile_padding"
-    tools:context=".scroggle.ScroggleMainActivity">
+    tools:context=".scroggle.ScroggleGameActivity">
 
     <Button
         android:id="@+id/scroggle_small_0"

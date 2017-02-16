@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".scroggle.ScroggleMainActivity">
+    tools:context=".scroggle.ScroggleGameActivity">
 
     <include android:id="@+id/scroggle_large_0"
         layout="@layout/scroggle_small_board"

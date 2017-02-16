@@ -11,7 +11,7 @@
    xmlns:tools="http://schemas.android.com/tools"
    android:layout_width="wrap_content"
    android:layout_height="wrap_content"
-   android:background="@drawable/tic_tac_toe_menu_background"
+   android:background="@drawable/tictactoe_menu_background"
    android:elevation="@dimen/elevation_high"
    android:orientation="vertical"
    android:padding="@dimen/menu_padding"
