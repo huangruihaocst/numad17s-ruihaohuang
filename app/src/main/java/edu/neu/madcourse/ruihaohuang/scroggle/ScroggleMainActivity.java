@@ -32,6 +32,13 @@ public class ScroggleMainActivity extends AppCompatActivity {
                 startActivity(new Intent(ScroggleMainActivity.this, ScroggleGameActivity.class));
             }
         });
+
+        findViewById(R.id.button_quit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
 }
