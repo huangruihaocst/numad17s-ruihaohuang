@@ -9,6 +9,7 @@ import android.widget.Button;
 
 class Tile {
     static final int BOARD_SIZE = 3;  // use constant value to avoid magic number
+    static final int AVAILABLE = -1;
 
     private Tile subTiles[];
     private String content;  // a letter if it is the 1 * 1 tile, a word if it is a BOARD_SIZE * BOARD_SIZE tile
@@ -29,6 +30,10 @@ class Tile {
 
     void setSubTiles(Tile[] subTiles) {
         this.subTiles = subTiles;
+    }
+
+    Tile[] getSubTiles() {
+        return subTiles;
     }
 
     void setContent(String content) {
