@@ -6,7 +6,10 @@
     <integer name="insert_once">500</integer>
     <!--do recognize word less than 3 characters long-->
     <integer name="min_word_length">3</integer>
-    <integer name="penalization_score">-5</integer>
+    <integer name="penalization_score_phase_one">-5</integer>
+    <integer name="penalization_score_phase_two">-8</integer>
+    <!--score doubles in phase two -->
+    <integer name="magnification">2</integer>
     <!--90 sec = 1 min 30 sec-->
     <integer name="time_phase_one">90</integer>
     <!--90 sec = 1 min 30 sec-->

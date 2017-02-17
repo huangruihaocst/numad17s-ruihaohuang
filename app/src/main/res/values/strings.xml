@@ -43,6 +43,9 @@
     <string name="toast_request_permission_read_phone_state">Please allow the permission in Settings to access IMEI</string>
     <string name="toast_request_permission_write_external_storage">Please allow the permission in Settings to set up database</string>
     <string name="toast_initialization_done">Initialization done</string>
+    <string name="toast_visit_tile_back_to_back">You cannot visit the same grid back to back</string>
+    <string name="toast_same_word_detected">You cannot select the same word to score</string>
+    <string name="word_does_not_exist">Word does not exist</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;\n
         Do not close the application until it has finished&#8230;</string>
@@ -133,10 +136,7 @@
     </string>
     <string name="text_timer">Time Left: %1$d</string>
     <string name="text_score">Score: %1$d</string>
-<<<<<<< HEAD
     <string name="text_phase">PHASE %1$s</string>
-=======
->>>>>>> 25df98aab399f1ccf2120fffbe399d55a4701caf
 
     <string name="info_permission_denied">Permission Denied</string>
 

@@ -2,6 +2,7 @@ package edu.neu.madcourse.ruihaohuang.scroggle;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +66,9 @@ class ScroggleHelper {
     private Phase phase;
     private int selectedLargeTile;
     private ArrayList<Integer> selectedSmallTiles;
+    // used only in phase two
+    // it has BOARD_SIZE * BOARD_SIZE different values
+    private ArrayList<Integer> selectedTiles;
     private String word;
     private int score;
     private Context context;
@@ -72,9 +76,13 @@ class ScroggleHelper {
     private DictionaryHelper dictionaryHelper;
     private Tile board;
     private ArrayList<Integer> unavailableLargeTiles;
+    // used only in phase two
+    // already detected valid words
+    private ArrayList<String> wordList;
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
         phase = Phase.ONE;  // first enter phase 1
+//        phase = Phase.TWO;  // first enter phase 1
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
         word = "";
@@ -87,59 +95,94 @@ class ScroggleHelper {
         unavailableLargeTiles = new ArrayList<>();
     }
 
-    public String getWord() {
-        return word;
-    }
-
     int getScore() {
         return score;
     }
 
     void selectSmallTile(int large, int small) {
-        if (unavailableLargeTiles.contains(large)) {
-            return;
-        }
-        if (large == selectedLargeTile) {
-            if (selectedSmallTiles.contains(small)) {  // discard all the selected tiles start from this tile
-                int start = selectedSmallTiles.indexOf(small);
-                for (int i = start; i < selectedSmallTiles.size(); ++i) {
-                    board.getSubTiles()[large].getSubTiles()[selectedSmallTiles.get(i)].setUnselected();
+        switch (phase){
+            case ONE:
+                if (unavailableLargeTiles.contains(large)) {
+                    return;
                 }
-                ArrayList<Integer> removeList = new ArrayList<>();
-                for (int i = start; i < selectedSmallTiles.size(); ++i) {
-                    removeList.add(selectedSmallTiles.get(i));
-                }
-                selectedSmallTiles.removeAll(removeList);
-                if (selectedSmallTiles.isEmpty()) {
-                    selectedLargeTile = NO_SELECTED;
-                }
-                word = word.substring(0, start);
-            } else {
-                if (isNextTo(selectedSmallTiles.get(selectedSmallTiles.size() - 1), small)) {
+                if (large == selectedLargeTile) {
+                    if (selectedSmallTiles.contains(small)) {  // discard all the selected tiles start from this tile
+                        int start = selectedSmallTiles.indexOf(small);
+                        for (int i = start; i < selectedSmallTiles.size(); ++i) {
+                            board.getSubTiles()[large].getSubTiles()[selectedSmallTiles.get(i)].setUnselected();
+                        }
+                        ArrayList<Integer> removeList = new ArrayList<>();
+                        for (int i = start; i < selectedSmallTiles.size(); ++i) {
+                            removeList.add(selectedSmallTiles.get(i));
+                        }
+                        selectedSmallTiles.removeAll(removeList);
+                        if (selectedSmallTiles.isEmpty()) {
+                            selectedLargeTile = NO_SELECTED;
+                        }
+                        word = word.substring(0, start);
+                    } else {
+                        if (isNextTo(selectedSmallTiles.get(selectedSmallTiles.size() - 1), small)) {
+                            selectedSmallTiles.add(small);
+                            board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                            word += board.getSubTiles()[large].getSubTiles()[small].getContent();
+                        }
+                    }
+                } else {
+                    selectedSmallTiles.clear();
                     selectedSmallTiles.add(small);
                     board.getSubTiles()[large].getSubTiles()[small].setSelected();
-                    word += board.getSubTiles()[large].getSubTiles()[small].getContent();
+                    if (selectedLargeTile != NO_SELECTED && !unavailableLargeTiles.contains(selectedLargeTile)) {
+                        board.getSubTiles()[selectedLargeTile].setUnselected();
+                    }
+                    selectedLargeTile = large;
+                    word = board.getSubTiles()[large].getSubTiles()[small].getContent();
                 }
-            }
-        } else {
-            selectedSmallTiles.clear();
-            selectedSmallTiles.add(small);
-            board.getSubTiles()[large].getSubTiles()[small].setSelected();
-            if (selectedLargeTile != NO_SELECTED && !unavailableLargeTiles.contains(selectedLargeTile)) {
-                board.getSubTiles()[selectedLargeTile].setUnselected();
-            }
-            selectedLargeTile = large;
-            word = board.getSubTiles()[large].getSubTiles()[small].getContent();
+                break;
+            case TWO:
+                // selected small tiles must be from valid words in phase one
+                if (board.getSubTiles()[large].getSubTiles()[small].getContent().isEmpty()) {
+                    return;
+                }
+                if (selectedTiles.isEmpty()) {  // nothing selected
+                    selectedTiles.add(large * BOARD_SIZE * BOARD_SIZE + small);
+                    board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                    word = board.getSubTiles()[large].getSubTiles()[small].getContent();
+                } else {
+                    int current = large * BOARD_SIZE * BOARD_SIZE + small;
+                    int previous = selectedTiles.get(selectedTiles.size() - 1);
+                    int previousLarge = previous / (BOARD_SIZE * BOARD_SIZE);
+                    int previousSmall = previous % (BOARD_SIZE * BOARD_SIZE);
+                    if (previousLarge == large) {
+                        selectedTiles.set(selectedTiles.size() - 1, current);
+                        board.getSubTiles()[previousLarge].getSubTiles()[previousSmall].setRemaining();
+                        board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                        word = word.substring(0, word.length() - 1)
+                                + board.getSubTiles()[large].getSubTiles()[small].getContent();
+                    } else if (isNextTo(previousLarge, large)) {
+                        selectedTiles.add(current);
+                        board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                        word += board.getSubTiles()[large].getSubTiles()[small].getContent();
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 
-    public Phase getPhase() {
+    Phase getPhase() {
         return phase;
     }
-    public void nextPhase() {
+
+    void nextPhase() {
         switch (phase) {
             case ONE:
                 phase = Phase.TWO;
+                // initialize here to avoid typos in codes
+                selectedTiles = new ArrayList<>();
+                wordList = new ArrayList<>();
+                word = "";
+                // TODO: make letters not selected disappear
                 break;
             case TWO:
             default:
@@ -159,26 +202,64 @@ class ScroggleHelper {
 
     // check if the current word is a valid word and update score
     void checkWord() {
-        if (selectedLargeTile == NO_SELECTED) {
-            return;
-        }
-        if (dictionaryHelper.wordExists(word)) {
-            for (int i = 0; i < word.length(); ++i) {
-                score += scoreMap.get(word.charAt(i));
-            }
-            for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
-                if (selectedSmallTiles.contains(i)) {
-                    board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
-                } else {
-                    board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setDisappear();
+        switch (phase) {
+            case ONE:
+                if (selectedLargeTile == NO_SELECTED) {
+                    return;
                 }
-            }
-            unavailableLargeTiles.add(selectedLargeTile);
-        } else {
-            score += context.getResources().getInteger(R.integer.penalization_score);
-            board.getSubTiles()[selectedLargeTile].setUnselected();
-            selectedLargeTile = NO_SELECTED;
-            selectedSmallTiles.clear();
+                if (dictionaryHelper.wordExists(word)) {
+                    for (int i = 0; i < word.length(); ++i) {
+                        score += scoreMap.get(word.charAt(i));
+                    }
+                    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+                        if (selectedSmallTiles.contains(i)) {
+                            board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
+                        } else {
+                            board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setDisappear();
+                        }
+                    }
+                    unavailableLargeTiles.add(selectedLargeTile);
+                } else {
+                    score += context.getResources().getInteger(R.integer.penalization_score_phase_one);
+                    board.getSubTiles()[selectedLargeTile].setUnselected();
+                    selectedLargeTile = NO_SELECTED;
+                    selectedSmallTiles.clear();
+                    Toast.makeText(context, context.getString(R.string.word_does_not_exist),
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            case TWO:
+                if (dictionaryHelper.wordExists(word)) {
+                    if (!wordList.contains(word)) {
+                        wordList.add(word);
+                        for (int i = 0; i < selectedTiles.size(); ++i) {
+                            int large = selectedTiles.get(i) / (BOARD_SIZE * BOARD_SIZE);
+                            int small = selectedTiles.get(i) % (BOARD_SIZE * BOARD_SIZE);
+                            board.getSubTiles()[large].getSubTiles()[small].setRemaining();
+                        }
+                        for (int i = 0; i < word.length(); ++i) {
+                            score += scoreMap.get(word.charAt(i))
+                                    * context.getResources().getInteger(R.integer.magnification);
+                        }
+                    } else {  // cannot detect the same word
+                        Toast.makeText(context, context.getString(R.string.toast_same_word_detected),
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    for (int i = 0; i < selectedTiles.size(); ++i) {
+                        int large = selectedTiles.get(i) / (BOARD_SIZE * BOARD_SIZE);
+                        int small = selectedTiles.get(i) % (BOARD_SIZE * BOARD_SIZE);
+                        board.getSubTiles()[large].getSubTiles()[small].setRemaining();
+                    }
+                    score += context.getResources().getInteger(R.integer.penalization_score_phase_two);
+                    Toast.makeText(context, context.getString(R.string.word_does_not_exist),
+                            Toast.LENGTH_LONG).show();
+                }
+                selectedTiles.clear();
+                word = "";
+                break;
+            default:
+                break;
         }
     }
 }

@@ -34,6 +34,10 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private ScroggleHelper scroggleHelper;
 
+    private TextView phaseText;
+    private TextView scoreText;
+    private TextView timeText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +50,15 @@ public class ScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 scroggleHelper.checkWord();
-                ((TextView) findViewById(R.id.text_score)).setText(String.format(getString(R.string.text_score),
-                        scroggleHelper.getScore()));
+                scoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getScore()));
+            }
+        });
+
+        findViewById(R.id.button_control).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scroggleHelper.nextPhase();  // TODO: change it to real control
+                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
             }
         });
 
@@ -55,13 +66,15 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
         scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);
 
-        TextView phaseText = (TextView) findViewById(R.id.text_phase);
+        phaseText = (TextView) findViewById(R.id.text_phase);
+        scoreText = (TextView) findViewById(R.id.text_score);
+        timeText = (TextView) findViewById(R.id.text_timer);
         // reference: http://stackoverflow.com/questions/6200533/set-textview-style-bold-or-italic
         phaseText.setTypeface(null, Typeface.BOLD);
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-        ((TextView) findViewById(R.id.text_score)).setText(String.format(getString(R.string.text_score),
+        scoreText.setText(String.format(getString(R.string.text_score),
                 scroggleHelper.getScore()));
-        ((TextView) findViewById(R.id.text_timer)).setText(String.format(getString(R.string.text_timer),
+        timeText.setText(String.format(getString(R.string.text_timer),
                 90));
     }
 
