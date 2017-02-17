@@ -172,7 +172,11 @@ class ScroggleHelper {
                 // initialize here to avoid typos in codes
                 selectedTiles = new ArrayList<>();
                 wordList = new ArrayList<>();
-                // TODO: make letters not selected disappear
+                for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+                    if (!unavailableLargeTiles.contains(i)) {
+                        board.getSubTiles()[i].setDisappear();
+                    }
+                }
                 break;
             case TWO:
             default:
@@ -193,6 +197,9 @@ class ScroggleHelper {
     // check if the current word is a valid word and update score
     void checkWord() {
         String word = getWord();
+        if (word.isEmpty()) {
+            return;
+        }
         switch (phase) {
             case ONE:
                 if (selectedLargeTile == NO_SELECTED) {
