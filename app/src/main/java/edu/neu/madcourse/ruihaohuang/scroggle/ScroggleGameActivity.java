@@ -1,11 +1,13 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -44,13 +46,22 @@ public class ScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 scroggleHelper.checkWord();
-                Toast.makeText(getApplicationContext(), String.valueOf(scroggleHelper.getScore()), Toast.LENGTH_LONG).show();
+                ((TextView) findViewById(R.id.text_score)).setText(String.format(getString(R.string.text_score),
+                        scroggleHelper.getScore()));
             }
         });
 
         initializeBoard();
 
         scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);
+
+        TextView phaseText = (TextView) findViewById(R.id.text_phase);
+        phaseText.setTypeface(null, Typeface.BOLD);
+        phaseText.setText("PHASE ONE");
+        ((TextView) findViewById(R.id.text_score)).setText(String.format(getString(R.string.text_score),
+                scroggleHelper.getScore()));
+        ((TextView) findViewById(R.id.text_timer)).setText(String.format(getString(R.string.text_timer),
+                90));
     }
 
     void initializeBoard() {
