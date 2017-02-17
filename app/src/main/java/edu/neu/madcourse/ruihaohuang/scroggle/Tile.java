@@ -19,6 +19,7 @@ class Tile {
     // board: (BOARD_SIZE * BOARD_SIZE) * (BOARD_SIZE * BOARD_SIZE)
     private final static int SMALL_TILE_UNSELECTED = 0;
     private final static int SMALL_TILE_SELECTED = 1;
+    private final static int SMALL_TILE_REMAINING = 2;
 
     private final static int LETTER_LENGTH = 1;
     private final static int WORD_LENGTH = BOARD_SIZE * BOARD_SIZE;
@@ -37,7 +38,8 @@ class Tile {
 
     void setContent(String content) {
         this.content = content;
-        if (content.length() == LETTER_LENGTH) {
+        if (content.length() == LETTER_LENGTH  // set content for a small tile
+                || content.isEmpty()) {  // make the tile disappear
             ((Button) view).setText(content);
         } else if (content.length() == WORD_LENGTH) {  // set content for all the sub tiles
             for (int i = 0; i < WORD_LENGTH; ++i) {
@@ -55,29 +57,49 @@ class Tile {
     }
 
     void setSelected() {
-        if (subTiles == null) {  // small tiles
+        if (subTiles == null) {  // small tile
             if (view != null) {
                 view.getBackground().setLevel(SMALL_TILE_SELECTED);
             }
         } else {  // large tiles, do not call it on board
-            if (view != null) {
-                for (Tile subTile: subTiles) {
-                    subTile.setSelected();
-                }
+            for (Tile subTile: subTiles) {
+                subTile.setSelected();
             }
         }
     }
 
     void setUnselected() {
-        if (subTiles == null) {  // small tiles
+        if (subTiles == null) {  // small tile
             if (view != null) {
                 view.getBackground().setLevel(SMALL_TILE_UNSELECTED);
             }
         } else {  // large tiles, do not call it on board
+            for (Tile subTile: subTiles) {
+                subTile.setUnselected();
+            }
+        }
+    }
+
+    void setDisappear() {
+        if (subTiles == null) {  // small tile
             if (view != null) {
-                for (Tile subTile: subTiles) {
-                    subTile.setUnselected();
-                }
+                setContent("");
+            }
+        } else {  // large tiles, do not call it on board
+            for (Tile subTile: subTiles) {
+                subTile.setDisappear();
+            }
+        }
+    }
+
+    void setRemaining() {
+        if (subTiles == null) {  // small tile
+            if (view != null) {
+                view.getBackground().setLevel(SMALL_TILE_REMAINING);
+            }
+        } else {  // large tiles, do not call it on board
+            for (Tile subTile: subTiles) {
+                subTile.setRemaining();
             }
         }
     }

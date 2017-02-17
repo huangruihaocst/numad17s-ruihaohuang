@@ -70,8 +70,10 @@ class ScroggleHelper {
     private Context context;
     private Activity activity;
     private DictionaryHelper dictionaryHelper;
+    private Tile board;
+    private ArrayList<Integer> unavailableLargeTiles;
 
-    ScroggleHelper(Context context, Activity activity) {
+    ScroggleHelper(Context context, Activity activity, Tile board) {
         phase = Phase.ONE;  // first enter phase 1
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
@@ -81,6 +83,8 @@ class ScroggleHelper {
         this.activity = activity;
         dictionaryHelper = DictionaryHelper.getInstance(context, activity);
         dictionaryHelper.initializeHelper();
+        this.board = board;
+        unavailableLargeTiles = new ArrayList<>();
     }
 
     public String getWord() {
@@ -91,7 +95,10 @@ class ScroggleHelper {
         return score;
     }
 
-    void selectSmallTile(int large, int small, Tile board) {
+    void selectSmallTile(int large, int small) {
+        if (unavailableLargeTiles.contains(large)) {
+            return;
+        }
         if (large == selectedLargeTile) {
             if (selectedSmallTiles.contains(small)) {  // discard all the selected tiles start from this tile
                 int start = selectedSmallTiles.indexOf(small);
@@ -118,7 +125,7 @@ class ScroggleHelper {
             selectedSmallTiles.clear();
             selectedSmallTiles.add(small);
             board.getSubTiles()[large].getSubTiles()[small].setSelected();
-            if (selectedLargeTile != NO_SELECTED) {
+            if (selectedLargeTile != NO_SELECTED && !unavailableLargeTiles.contains(selectedLargeTile)) {
                 board.getSubTiles()[selectedLargeTile].setUnselected();
             }
             selectedLargeTile = large;
@@ -156,8 +163,19 @@ class ScroggleHelper {
             for (int i = 0; i < word.length(); ++i) {
                 score += scoreMap.get(word.charAt(i));
             }
+            for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+                if (selectedSmallTiles.contains(i)) {
+                    board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
+                } else {
+                    board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setDisappear();
+                }
+            }
+            unavailableLargeTiles.add(selectedLargeTile);
         } else {
             score += context.getResources().getInteger(R.integer.penalization_score);
+            board.getSubTiles()[selectedLargeTile].setUnselected();
+            selectedLargeTile = NO_SELECTED;
+            selectedSmallTiles.clear();
         }
     }
 }

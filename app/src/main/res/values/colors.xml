@@ -17,6 +17,6 @@
 
     <!--scroggle-->
     <color name="letter_color">#FFFF4444</color>
-    <color name="unselected_color">#7fbf7f</color>
-    <color name="board_color">#7f7f7f</color>
+    <color name="selected_color">#7fbf7f</color>
+    <color name="remain_color">#FFFF00</color>
 </resources>

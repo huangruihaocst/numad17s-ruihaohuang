@@ -6,4 +6,7 @@
     <item
         android:drawable="@drawable/scroggle_tile_green"
         android:maxLevel="1"/>
+    <item
+        android:drawable="@drawable/scroggle_tile_yellow"
+        android:maxLevel="2"/>
 </level-list>

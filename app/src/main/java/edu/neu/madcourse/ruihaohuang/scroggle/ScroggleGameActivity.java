@@ -39,8 +39,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +49,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
         });
 
         initializeBoard();
+
+        scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);
     }
 
     void initializeBoard() {
@@ -79,7 +79,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        scroggleHelper.selectSmallTile(l, s, board);
+                        scroggleHelper.selectSmallTile(l, s);
                     }
                 });
             }
