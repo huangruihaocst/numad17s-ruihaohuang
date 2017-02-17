@@ -233,6 +233,11 @@ class ScroggleHelper {
                                     * context.getResources().getInteger(R.integer.magnification);
                         }
                     } else {  // cannot detect the same word
+                        for (int selectedTile: selectedTiles) {
+                            int large = selectedTile / (BOARD_SIZE * BOARD_SIZE);
+                            int small = selectedTile % (BOARD_SIZE * BOARD_SIZE);
+                            board.getSubTiles()[large].getSubTiles()[small].setRemaining();
+                        }
                         selectedTiles.clear();
                         Toast.makeText(context, context.getString(R.string.toast_same_word_detected),
                                 Toast.LENGTH_LONG).show();
