@@ -58,7 +58,7 @@ class ScroggleHelper {
         return scoreMap;
     }
 
-    private enum Phase {
+    enum Phase {
         ONE, TWO
     }
 
@@ -91,7 +91,7 @@ class ScroggleHelper {
         return word;
     }
 
-    public int getScore() {
+    int getScore() {
         return score;
     }
 
@@ -159,6 +159,9 @@ class ScroggleHelper {
 
     // check if the current word is a valid word and update score
     void checkWord() {
+        if (selectedLargeTile == NO_SELECTED) {
+            return;
+        }
         if (dictionaryHelper.wordExists(word)) {
             for (int i = 0; i < word.length(); ++i) {
                 score += scoreMap.get(word.charAt(i));

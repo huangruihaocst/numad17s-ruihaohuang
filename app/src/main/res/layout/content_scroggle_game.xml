@@ -13,12 +13,36 @@
     tools:context="edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity"
     tools:showIn="@layout/activity_scroggle_game">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_phase"
+        android:textSize="@dimen/phase_text_size"
+        android:textAlignment="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_timer"
+        android:textSize="@dimen/timer_text_size"
+        android:textAlignment="center"
+        android:layout_below="@+id/text_phase"/>
+
     <include
         layout="@layout/scroggle_large_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:id="@+id/scroggle_board"/>
+        android:id="@+id/scroggle_board"
+        android:layout_below="@+id/text_timer"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_score"
+        android:textSize="@dimen/score_text_size"
+        android:layout_below="@+id/scroggle_board"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/button_control"
@@ -29,7 +53,6 @@
         android:text="@string/button_pause"
         android:textSize="@dimen/control_button_text_size"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/control_button_margin_bottom" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
