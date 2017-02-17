@@ -7,15 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
-
 import edu.neu.madcourse.ruihaohuang.R;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
 
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
-    private static final int AVAILABLE = Tile.AVAILABLE;
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -32,8 +29,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
             R.id.scroggle_large_5, R.id.scroggle_large_6, R.id.scroggle_large_7, 
             R.id.scroggle_large_8};
 
-    int selectedLargeTile = -1;
-    ArrayList<Integer> selectedSmallTiles = new ArrayList<>();
+    private PlayerStatusHelper statusHelper = new PlayerStatusHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +69,13 @@ public class ScroggleGameActivity extends AppCompatActivity {
             largeTiles[large].setView(outer);
             for (int small = 0; small < BOARD_SIZE * BOARD_SIZE; ++small) {
                 Button inner = (Button) outer.findViewById(smallTileIds[small]);
-                inner.setText("A");
                 smallTiles[large][small].setView(inner);
                 final int l = large;
                 final int s = small;
-                final Tile smallTile = smallTiles[large][small];
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        smallTile.setSmallTileSelected();
-                        // TODO: take all these data down for later check
+                        statusHelper.selectSmallTile(l, s, board);
                     }
                 });
             }

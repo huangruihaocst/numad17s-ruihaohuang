@@ -9,7 +9,6 @@ import android.widget.Button;
 
 class Tile {
     static final int BOARD_SIZE = 3;  // use constant value to avoid magic number
-    static final int AVAILABLE = -1;
 
     private Tile subTiles[];
     private String content;  // a letter if it is the 1 * 1 tile, a word if it is a BOARD_SIZE * BOARD_SIZE tile
@@ -55,15 +54,31 @@ class Tile {
         this.view = view;
     }
 
-    void setSmallTileSelected() {
-        if (view != null) {
-            view.getBackground().setLevel(SMALL_TILE_SELECTED);
+    void setSelected() {
+        if (subTiles == null) {  // small tiles
+            if (view != null) {
+                view.getBackground().setLevel(SMALL_TILE_SELECTED);
+            }
+        } else {  // large tiles, do not call it on board
+            if (view != null) {
+                for (Tile subTile: subTiles) {
+                    subTile.setSelected();
+                }
+            }
         }
     }
 
-    void setSmallTileUnselected() {
-        if (view != null) {
-            view.getBackground().setLevel(SMALL_TILE_UNSELECTED);
+    void setUnselected() {
+        if (subTiles == null) {  // small tiles
+            if (view != null) {
+                view.getBackground().setLevel(SMALL_TILE_UNSELECTED);
+            }
+        } else {  // large tiles, do not call it on board
+            if (view != null) {
+                for (Tile subTile: subTiles) {
+                    subTile.setUnselected();
+                }
+            }
         }
     }
 

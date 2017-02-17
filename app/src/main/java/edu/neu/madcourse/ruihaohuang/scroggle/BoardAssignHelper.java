@@ -16,7 +16,7 @@ import edu.neu.madcourse.ruihaohuang.R;
 
 class BoardAssignHelper {
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
-    private static final int AVAILABLE = Tile.AVAILABLE;
+    private static final int AVAILABLE = -1;
 
     private Context context;
 
@@ -48,6 +48,9 @@ class BoardAssignHelper {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                break;
+            default:
+                break;
         }
         // reference: http://stackoverflow.com/questions/8115722/generating-unique-random-numbers-in-java
         ArrayList<Integer> indexList = new ArrayList<>();
