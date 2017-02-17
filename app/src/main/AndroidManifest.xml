@@ -50,7 +50,9 @@
         <activity
             android:name=".scroggle.ScroggleGameActivity"
             android:label="@string/title_activity_scroggle_game"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
