@@ -19,6 +19,7 @@ import edu.neu.madcourse.ruihaohuang.R;
  */
 
 class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
+    private static final int MAX_WORD_LENGTH = DictionaryHelper.MAX_WORD_LENGTH;
     private final String tag = "InitializeDatabaseTask";
     private ProgressDialog dialog;
     private Context context;
@@ -68,7 +69,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                     for (int i = 0; i < once; ++i) {
                         if ((word = reader.readLine()) != null) {
                             publishProgress((int) (100 * (count++) / total));
-                            if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+                            if (word.length() <= MAX_WORD_LENGTH) {
                                 insertIntoShort += "(" + DictionaryHelper.encodeWord(word) + ")" + DictionaryDbHelper.COMMA_SEP;
                             } else {
                                 insertIntoLong += "('" + word + "')" + DictionaryDbHelper.COMMA_SEP;
@@ -95,7 +96,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                     for (int i = 0; i < once; ++i) {
                         if ((word = reader.readLine()) != null) {
                             publishProgress((int) (100 * (count++) / total));
-                            if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+                            if (word.length() <= MAX_WORD_LENGTH) {
                                 if (!insertIntoShort.contains("AS")) {  // new sentence
                                     insertIntoShort += DictionaryHelper.encodeWord(word) + " AS "
                                             + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " ";

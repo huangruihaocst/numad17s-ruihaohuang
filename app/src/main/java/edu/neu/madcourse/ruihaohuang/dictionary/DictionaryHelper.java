@@ -19,6 +19,12 @@ import edu.neu.madcourse.ruihaohuang.R;
 public class DictionaryHelper {
     private final String tag = "DictionaryHelper";
     private static final int ASCII_OF_A = 97;  // lowercase
+    // this word length is different from the meaning of word length in MAX_WORD_LENGTH
+    // same meaning with 64 bits CPU
+    // it means a letter is contained of 5 bits
+    private static final int WORD_LENGTH = 5;
+    // this word length means a word that needs to be encoded can be at most 12 letters long
+    static final int MAX_WORD_LENGTH = 12;
     private final String lastRecord = "28433685139";  // encoded last word in the word list
     private SQLiteDatabase db = null;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
@@ -42,7 +48,7 @@ public class DictionaryHelper {
 
     public boolean wordExists(String word) {
         String query = "SELECT * FROM ";
-        if (word.length() <= context.getResources().getInteger(R.integer.max_word_length)) {
+        if (word.length() <= MAX_WORD_LENGTH) {
             query += DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " WHERE "
                     + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " = "
                     + encodeWord(word);
@@ -113,8 +119,7 @@ public class DictionaryHelper {
         int length = word.length();
         long code = 0;
         for (int i = length - 1; i >= 0; --i) {
-            code |= encodeLetter(word.charAt(i)) << (context.getResources()
-                    .getInteger(R.integer.word_length) * (length - i - 1));
+            code |= encodeLetter(word.charAt(i)) << WORD_LENGTH * (length - i - 1);
         }
         return code;
     }

@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
-import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
@@ -32,9 +30,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
             R.id.scroggle_large_5, R.id.scroggle_large_6, R.id.scroggle_large_7, 
             R.id.scroggle_large_8};
 
-    private PlayerStatusHelper statusHelper = new PlayerStatusHelper();
-    private DictionaryHelper dictionaryHelper = DictionaryHelper.getInstance(this,
-            ScroggleGameActivity.this);
+    private ScroggleHelper scroggleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +39,14 @@ public class ScroggleGameActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dictionaryHelper.initializeHelper();
+        scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dictionaryHelper.wordExists(statusHelper.getWord())) {
-                    // TODO: count score
-                }
+                scroggleHelper.checkWord();
+                Toast.makeText(getApplicationContext(), String.valueOf(scroggleHelper.getScore()), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -84,7 +79,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        statusHelper.selectSmallTile(l, s, board);
+                        scroggleHelper.selectSmallTile(l, s, board);
                     }
                 });
             }
