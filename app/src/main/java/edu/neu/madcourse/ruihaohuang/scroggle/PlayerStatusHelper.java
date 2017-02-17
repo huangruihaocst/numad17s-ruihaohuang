@@ -18,6 +18,14 @@ class PlayerStatusHelper {
     private Phase phase;
     private int selectedLargeTile;
     private ArrayList<Integer> selectedSmallTiles;
+    private String word;
+
+    PlayerStatusHelper() {
+        phase = Phase.ONE;  // first enter phase 1
+        selectedLargeTile = NO_SELECTED;
+        selectedSmallTiles = new ArrayList<>();
+        word = "";
+    }
 
     public int getSelectedLargeTile() {
         return selectedLargeTile;
@@ -25,6 +33,10 @@ class PlayerStatusHelper {
 
     public ArrayList<Integer> getSelectedSmallTiles() {
         return selectedSmallTiles;
+    }
+
+    public String getWord() {
+        return word;
     }
 
     void selectSmallTile(int large, int small, Tile board) {
@@ -39,10 +51,15 @@ class PlayerStatusHelper {
                     removeList.add(selectedSmallTiles.get(i));
                 }
                 selectedSmallTiles.removeAll(removeList);
+                if (selectedSmallTiles.isEmpty()) {
+                    selectedLargeTile = NO_SELECTED;
+                }
+                word = word.substring(0, start);
             } else {
                 if (isNextTo(selectedSmallTiles.get(selectedSmallTiles.size() - 1), small)) {
                     selectedSmallTiles.add(small);
                     board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                    word += board.getSubTiles()[large].getSubTiles()[small].getContent();
                 }
             }
         } else {
@@ -53,13 +70,8 @@ class PlayerStatusHelper {
                 board.getSubTiles()[selectedLargeTile].setUnselected();
             }
             selectedLargeTile = large;
+            word = board.getSubTiles()[large].getSubTiles()[small].getContent();
         }
-    }
-
-    PlayerStatusHelper() {
-        phase = Phase.ONE;  // first enter phase 1
-        selectedLargeTile = NO_SELECTED;
-        selectedSmallTiles = new ArrayList<>();
     }
 
     public Phase getPhase() {

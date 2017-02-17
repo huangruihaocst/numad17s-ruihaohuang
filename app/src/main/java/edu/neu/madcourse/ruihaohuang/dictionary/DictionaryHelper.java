@@ -60,7 +60,7 @@ public class DictionaryHelper {
         return false;
     }
 
-    public void initializeDb() {
+    void initializeDb() {
         try {
             // reference: http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application
             String databasePath;

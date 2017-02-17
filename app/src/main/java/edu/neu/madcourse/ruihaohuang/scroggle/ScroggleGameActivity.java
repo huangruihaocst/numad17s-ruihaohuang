@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
@@ -30,6 +33,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
             R.id.scroggle_large_8};
 
     private PlayerStatusHelper statusHelper = new PlayerStatusHelper();
+    private DictionaryHelper dictionaryHelper = DictionaryHelper.getInstance(this,
+            ScroggleGameActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,15 @@ public class ScroggleGameActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        dictionaryHelper.initializeHelper();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: confirm the letters selected and check if they form a word
+                if (dictionaryHelper.wordExists(statusHelper.getWord())) {
+                    // TODO: count score
+                }
             }
         });
 
