@@ -5,6 +5,8 @@
 - Android Support Library revision 24 or newer
 
 ##Versions
+- Version 1.2:
+ - Add a Scroggle game. For further information of Scroggle, see its [gameplay here] (http://www.ccs.neu.edu/home/intille/teaching/MAD17S/Scroggle2017.pdf).
 - Version 1.1:
  - A dictionary titled "Test Dictionary". As letters are entered, it can instantly check if the letters entered so far are a word. When a word is detected based on the dictionary, it beeps and the word is added to a list of words shown on the screen.
  - A "Clear" button. If the "Clear" button is pressed, the words and the letters are removed from the screen. 
