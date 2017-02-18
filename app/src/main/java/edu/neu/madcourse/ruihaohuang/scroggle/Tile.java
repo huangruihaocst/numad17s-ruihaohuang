@@ -80,14 +80,14 @@ class Tile {
         }
     }
 
-    void setDisappear() {
+    void setDisappeared() {
         if (subTiles == null) {  // small tile
             if (view != null) {
                 setContent("");
             }
         } else {  // large tiles, do not call it on board
             for (Tile subTile: subTiles) {
-                subTile.setDisappear();
+                subTile.setDisappeared();
             }
         }
     }
