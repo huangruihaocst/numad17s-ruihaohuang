@@ -69,7 +69,7 @@ class ScroggleHelper {
         this.board = board;
         unavailableLargeTiles = new ArrayList<>();
         scoreMap = createScoreMap();
-        hintsLeft = context.getResources().getInteger(R.integer.hints_amout);
+        hintsLeft = context.getResources().getInteger(R.integer.hints_amount);
 
         if (Build.VERSION.SDK_INT >= 21) {
             SoundPool.Builder builder = new SoundPool.Builder();
