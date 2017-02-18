@@ -2,6 +2,10 @@ package edu.neu.madcourse.ruihaohuang.scroggle;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,6 +48,9 @@ class ScroggleHelper {
     // already detected valid words
     private ArrayList<String> wordList;
     private long timeLeft;
+    private int soundSelect, soundValidWord, soundInvalidWord;
+    private SoundPool soundPool;
+    private float volume = 1f;
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
         this.context = context;
@@ -62,6 +69,20 @@ class ScroggleHelper {
         this.board = board;
         unavailableLargeTiles = new ArrayList<>();
         scoreMap = createScoreMap();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            SoundPool.Builder builder = new SoundPool.Builder();
+            builder.setAudioAttributes(new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build());
+            soundPool = builder.build();
+        } else {
+            soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        }
+        soundSelect = soundPool.load(activity, R.raw.tictactoe_sergenious_movex, 1);
+        soundValidWord = soundPool.load(activity, R.raw.tictactoe_erkanozan_miss, 1);
+        soundInvalidWord = soundPool.load(activity, R.raw.tictactoe_joanne_rewind, 1);
     }
 
     // reference: http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way
@@ -104,6 +125,7 @@ class ScroggleHelper {
                 if (unavailableLargeTiles.contains(large)) {
                     return;
                 }
+                soundPool.play(soundSelect, volume, volume, 1, 0, 1f);
                 if (large == selectedLargeTile) {
                     if (selectedSmallTiles.contains(small)) {  // discard all the selected tiles start from this tile
                         int start = selectedSmallTiles.indexOf(small);
@@ -139,6 +161,7 @@ class ScroggleHelper {
                 if (board.getSubTiles()[large].getSubTiles()[small].getContent().isEmpty()) {
                     return;
                 }
+                soundPool.play(soundSelect, volume, volume, 1, 0, 1f);
                 if (selectedTiles.isEmpty()) {  // nothing selected
                     selectedTiles.add(large * BOARD_SIZE * BOARD_SIZE + small);
                     board.getSubTiles()[large].getSubTiles()[small].setSelected();
@@ -212,6 +235,7 @@ class ScroggleHelper {
                     return;
                 }
                 if (dictionaryHelper.wordExists(word)) {
+                    soundPool.play(soundValidWord, volume, volume, 1, 0, 1f);
                     for (int i = 0; i < word.length(); ++i) {
                         score += scoreMap.get(word.charAt(i));
                     }
@@ -226,6 +250,7 @@ class ScroggleHelper {
                     selectedLargeTile = NO_SELECTED;
                     selectedSmallTiles.clear();
                 } else {
+                    soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                     score += context.getResources().getInteger(R.integer.penalization_score_phase_one);
                     clearAllSelected();
                     Toast.makeText(context, context.getString(R.string.word_does_not_exist),
@@ -235,16 +260,19 @@ class ScroggleHelper {
             case TWO:
                 if (dictionaryHelper.wordExists(word)) {
                     if (!wordList.contains(word)) {
+                        soundPool.play(soundValidWord, volume, volume, 1, 0, 1f);
                         wordList.add(word);
                         for (int i = 0; i < word.length(); ++i) {
                             score += scoreMap.get(word.charAt(i))
                                     * context.getResources().getInteger(R.integer.magnification);
                         }
                     } else {  // cannot detect the same word
+                        soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                         Toast.makeText(context, context.getString(R.string.toast_same_word_detected),
                                 Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                     score += context.getResources().getInteger(R.integer.penalization_score_phase_two);
                     Toast.makeText(context, context.getString(R.string.word_does_not_exist),
                             Toast.LENGTH_LONG).show();
