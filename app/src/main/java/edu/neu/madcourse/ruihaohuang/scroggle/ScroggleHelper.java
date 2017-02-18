@@ -236,9 +236,13 @@ class ScroggleHelper {
                 }
                 if (dictionaryHelper.wordExists(word)) {
                     soundPool.play(soundValidWord, volume, volume, 1, 0, 1f);
+                    int add = 0;
                     for (int i = 0; i < word.length(); ++i) {
-                        score += scoreMap.get(word.charAt(i));
+                        add += scoreMap.get(word.charAt(i));
                     }
+                    Toast.makeText(context, String.format(context.getString(R.string.toast_word_found),
+                            word, add), Toast.LENGTH_LONG).show();
+                    score += add;
                     for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
                         if (selectedSmallTiles.contains(i)) {
                             board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
@@ -253,7 +257,7 @@ class ScroggleHelper {
                     soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                     score += context.getResources().getInteger(R.integer.penalization_score_phase_one);
                     clearAllSelected();
-                    Toast.makeText(context, context.getString(R.string.word_does_not_exist),
+                    Toast.makeText(context, context.getString(R.string.toast_word_does_not_exist),
                             Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -274,7 +278,7 @@ class ScroggleHelper {
                 } else {
                     soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                     score += context.getResources().getInteger(R.integer.penalization_score_phase_two);
-                    Toast.makeText(context, context.getString(R.string.word_does_not_exist),
+                    Toast.makeText(context, context.getString(R.string.toast_word_does_not_exist),
                             Toast.LENGTH_LONG).show();
                 }
                 clearAllSelected();
