@@ -9,6 +9,7 @@
     <string name="title_activity_acknowledgements">Acknowledgements</string>
     <string name="title_activity_scroggle_main">Word Game</string>
     <string name="title_activity_scroggle_game">Word Game</string>
+    <string name="title_activity_scroggle_acknowledgements">Acknowledgements</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
@@ -55,7 +56,7 @@
     <string name="dialog_wait_create_database">Initializing database&#8230;\n
         Do not close the application until it has finished&#8230;</string>
 
-    <string name="text_acknowledgements">\
+    <string name="acknowledgements_dictionary">\
         &lt;h3&gt;Strategy of my dictionary&lt;/h3&gt;
         &lt;p&gt;
         &#160;&#160;I mainly used the SQLite database for storage and query.\
@@ -139,6 +140,66 @@
         MyActivity.this, thus fixed a bug.
         &lt;/p&gt;
     </string>
+    <string name="acknowledgements_scroggle">
+        &lt;h3&gt;Assets&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Icons:&#160;&lt;/strong&gt;
+        &lt;a href="https://material.io/icons/#ic_done"&gt;
+        https://material.io/icons/#ic_done&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_play_arrow"&gt;
+        https://material.io/icons/#ic_play_arrow&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_pause"&gt;
+        https://material.io/icons/#ic_pause&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_clear"&gt;
+        https://material.io/icons/#ic_clear&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_lightbulb_outline"&gt;
+        https://material.io/icons/#ic_lightbulb_outline&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_volume_off"&gt;
+        https://material.io/icons/#ic_volume_off&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://material.io/icons/#ic_volume_up"&gt;
+        https://material.io/icons/#ic_volume_up&lt;/a&gt;.
+        &lt;br/&gt;
+        &lt;strong&gt;BGM:&#160;&lt;/strong&gt;
+        &lt;a href="http://www.bensound.com/royalty-free-music/track/little-idea"&gt;
+        http://www.bensound.com/royalty-free-music/track/little-idea&lt;/a&gt;.
+        &lt;/p&gt;
+        &lt;h3&gt;References&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;a href="http://stackoverflow.com/questions/8115722/generating-unique-random-numbers-in-java"&gt;
+        http://stackoverflow.com/questions/8115722/generating-unique-random-numbers-in-java&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way"&gt;
+        http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/6200533/set-textview-style-bold-or-italic"&gt;
+        http://stackoverflow.com/questions/6200533/set-textview-style-bold-or-italic&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/4919703/how-to-set-property-androiddrawabletop-of-a-button-at-runtime"&gt;
+        http://stackoverflow.com/questions/4919703/how-to-set-property-androiddrawabletop-of-a-button-at-runtime&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/28210921/set-audio-attributes-in-soundpool-builder-class-for-api-21"&gt;
+        http://stackoverflow.com/questions/28210921/set-audio-attributes-in-soundpool-builder-class-for-api-21&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/32210559/call-requires-api-level-16-current-min-is-14"&gt;
+        http://stackoverflow.com/questions/32210559/call-requires-api-level-16-current-min-is-14&lt;/a&gt;,
+        &lt;br/&gt;
+        and &lt;a href="https://developer.android.com/index.html"&gt;
+        Android Documentation
+        &lt;/a&gt;.
+        &lt;/p&gt;
+        &lt;h3&gt;People who helped me&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Zhongxi Wang (wang.zhongx@husky.neu.edu):&#160;&lt;/strong&gt;Told me how to use the UI codes from UTTT
+        in my own codes.
+        &lt;/p&gt;
+    </string>
+
     <string name="text_timer">Time Left: %1$d</string>
     <string name="text_score">Score: %1$d</string>
     <string name="text_phase">PHASE %1$s</string>

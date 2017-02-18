@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.ruihaohuang.R;
-import edu.neu.madcourse.ruihaohuang.acknowledgements.AcknowledgementsActivity;
 
 public class DictionaryActivity extends AppCompatActivity {
     private final String tag = "DictionaryActivity";
@@ -89,7 +88,7 @@ public class DictionaryActivity extends AppCompatActivity {
         findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DictionaryActivity.this, AcknowledgementsActivity.class));
+                startActivity(new Intent(DictionaryActivity.this, DictionaryAcknowledgementsActivity.class));
             }
         });
 

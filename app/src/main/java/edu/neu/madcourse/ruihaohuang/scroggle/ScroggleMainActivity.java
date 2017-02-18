@@ -39,6 +39,13 @@ public class ScroggleMainActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScroggleMainActivity.this, ScroggleAcknowledgementsActivity.class));
+            }
+        });
     }
 
 }

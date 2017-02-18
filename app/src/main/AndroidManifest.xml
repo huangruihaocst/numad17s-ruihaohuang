@@ -40,7 +40,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".acknowledgements.AcknowledgementsActivity"
+            android:name=".dictionary.DictionaryAcknowledgementsActivity"
             android:label="@string/title_activity_acknowledgements"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -50,9 +50,12 @@
         <activity
             android:name=".scroggle.ScroggleGameActivity"
             android:label="@string/title_activity_scroggle_game"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".scroggle.ScroggleAcknowledgementsActivity"
+            android:label="@string/title_activity_scroggle_acknowledgements"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
