@@ -154,7 +154,7 @@ class ScroggleHelper {
                 wordList = new ArrayList<>();
                 for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
                     if (!unavailableLargeTiles.contains(i)) {
-                        board.getSubTiles()[i].setDisappear();
+                        board.getSubTiles()[i].setDisappeared();
                     }
                 }
                 break;
@@ -193,7 +193,7 @@ class ScroggleHelper {
                         if (selectedSmallTiles.contains(i)) {
                             board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
                         } else {
-                            board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setDisappear();
+                            board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setDisappeared();
                         }
                     }
                     unavailableLargeTiles.add(selectedLargeTile);

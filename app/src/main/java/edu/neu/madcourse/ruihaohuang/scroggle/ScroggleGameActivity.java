@@ -1,11 +1,13 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -105,6 +107,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                scroggleHelper.clearAllSelected();
                 scroggleHelper.nextPhase();
                 timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
                         android.R.color.tertiary_text_dark));
@@ -129,6 +132,16 @@ public class ScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timeText.setText(String.format(getString(R.string.text_timer), TIME_IS_UP));
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+                builder.setTitle(getString(R.string.text_game_over))
+                        .setMessage(String.format(getString(R.string.text_show_score), scroggleHelper.getScore()))
+                        .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                onBackPressed();
+                            }
+                        });
+                builder.create().show();
             }
         };
 

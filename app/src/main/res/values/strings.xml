@@ -24,6 +24,7 @@
     <string name="button_resume">Resume</string>
     <string name="button_clear">Clear</string>
     <string name="button_hint">Hint</string>
+    <string name="button_back">Back</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -138,6 +139,8 @@
     <string name="text_timer">Time Left: %1$d</string>
     <string name="text_score">Score: %1$d</string>
     <string name="text_phase">PHASE %1$s</string>
+    <string name="text_game_over">Game Over</string>
+    <string name="text_show_score">Your score is %1$d</string>
 
     <string name="info_permission_denied">Permission Denied</string>
 
