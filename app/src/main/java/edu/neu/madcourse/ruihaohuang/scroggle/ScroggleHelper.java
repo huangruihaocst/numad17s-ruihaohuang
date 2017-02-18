@@ -17,47 +17,10 @@ import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 class ScroggleHelper {
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
     private static final int NO_SELECTED = -1;
-    private static final HashMap<Character, Integer> scoreMap = createScoreMap();
+    private static final int ASCII_OF_A = 97;  // lowercase
 
-    // reference: http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way
-    private static HashMap<Character, Integer> createScoreMap() {
-        HashMap<Character, Integer> scoreMap = new HashMap<>();
-        // 1 point: E, A, I, O, N, R, T, L, S, U; 
-        // 2 points: D, G; 
-        // 3 points: B, C, M, P; 
-        // 4 points: F, H, V, W, Y; 
-        // 5 points: K; 
-        // 8 points: J, X; 
-        // 10 points: Q, Z.
-        scoreMap.put('e', 1);
-        scoreMap.put('a', 1);
-        scoreMap.put('i', 1);
-        scoreMap.put('o', 1);
-        scoreMap.put('n', 1);
-        scoreMap.put('r', 1);
-        scoreMap.put('t', 1);
-        scoreMap.put('l', 1);
-        scoreMap.put('s', 1);
-        scoreMap.put('u', 1);
-        scoreMap.put('d', 2);
-        scoreMap.put('g', 2);
-        scoreMap.put('b', 3);
-        scoreMap.put('c', 3);
-        scoreMap.put('m', 3);
-        scoreMap.put('p', 3);
-        scoreMap.put('f', 4);
-        scoreMap.put('h', 4);
-        scoreMap.put('v', 4);
-        scoreMap.put('w', 4);
-        scoreMap.put('y', 4);
-        scoreMap.put('k', 5);
-        scoreMap.put('j', 8);
-        scoreMap.put('x', 8);
-        scoreMap.put('q', 10);
-        scoreMap.put('z', 10);
-        
-        return scoreMap;
-    }
+    // actually it should be final, but its construction needs context
+    private HashMap<Character, Integer> scoreMap;
 
     enum Phase {
         ONE, TWO
@@ -90,6 +53,17 @@ class ScroggleHelper {
         dictionaryHelper.initializeHelper();
         this.board = board;
         unavailableLargeTiles = new ArrayList<>();
+        scoreMap = createScoreMap();
+    }
+
+    // reference: http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way
+    private HashMap<Character, Integer> createScoreMap() {
+        HashMap<Character, Integer> scoreMap = new HashMap<>();
+        int[] scores = context.getResources().getIntArray(R.array.score_map);
+        for (int i = 0; i < scores.length; ++i) {
+            scoreMap.put((char) (ASCII_OF_A + i), scores[i]);
+        }
+        return scoreMap;
     }
 
     int getScore() {

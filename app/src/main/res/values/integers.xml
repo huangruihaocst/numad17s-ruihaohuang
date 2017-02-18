@@ -14,4 +14,40 @@
     <integer name="time_phase_one">90</integer>
     <!--90 sec = 1 min 30 sec-->
     <integer name="time_phase_two">90</integer>
+
+    <!--1 point: E, A, I, O, N, R, T, L, S, U;-->
+    <!--2 points: D, G;-->
+    <!--3 points: B, C, M, P;-->
+    <!--4 points: F, H, V, W, Y;-->
+    <!--5 points: K;-->
+    <!--8 points: J, X;-->
+    <!--10 points: Q, Z.-->
+    <integer-array name="score_map">
+        <item>1</item>
+        <item>3</item>
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+        <item>4</item>
+        <item>2</item>
+        <item>4</item>
+        <item>1</item>
+        <item>8</item>
+        <item>5</item>
+        <item>1</item>
+        <item>3</item>
+        <item>1</item>
+        <item>1</item>
+        <item>3</item>
+        <item>10</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>4</item>
+        <item>4</item>
+        <item>8</item>
+        <item>4</item>
+        <item>10</item>
+    </integer-array>
 </resources>

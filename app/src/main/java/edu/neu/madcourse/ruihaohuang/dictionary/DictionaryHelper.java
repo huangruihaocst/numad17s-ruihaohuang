@@ -17,7 +17,7 @@ import edu.neu.madcourse.ruihaohuang.R;
  * Created by huangruihao on 2017/2/1.
  */
 public class DictionaryHelper {
-    private final String tag = "DictionaryHelper";
+    private static final String tag = "DictionaryHelper";
     private static final int ASCII_OF_A = 97;  // lowercase
     // this word length is different from the meaning of word length in MAX_WORD_LENGTH
     // same meaning with 64 bits CPU
