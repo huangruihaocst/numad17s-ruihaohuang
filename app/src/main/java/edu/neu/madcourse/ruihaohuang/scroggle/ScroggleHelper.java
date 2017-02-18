@@ -27,6 +27,7 @@ class ScroggleHelper {
     }
 
     private Phase phase;
+    private boolean playing;
     private int selectedLargeTile;
     private ArrayList<Integer> selectedSmallTiles;
     // used only in phase two
@@ -47,6 +48,7 @@ class ScroggleHelper {
         this.activity = activity;
 
         phase = Phase.ONE;  // first enter phase 1
+        playing = true;
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
         score = 0;
@@ -70,6 +72,18 @@ class ScroggleHelper {
 
     int getScore() {
         return score;
+    }
+
+    void pause() {
+        playing = false;
+    }
+
+    void resume() {
+        playing = true;
+    }
+
+    boolean isPlaying() {
+        return playing;
     }
 
     void selectSmallTile(int large, int small) {

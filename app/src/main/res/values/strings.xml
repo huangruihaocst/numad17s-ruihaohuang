@@ -24,7 +24,7 @@
     <string name="button_resume">Resume</string>
     <string name="button_clear">Clear</string>
     <string name="button_hint">Hint</string>
-    <string name="button_back">Back</string>
+    <string name="button_back">Back to Menu</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">

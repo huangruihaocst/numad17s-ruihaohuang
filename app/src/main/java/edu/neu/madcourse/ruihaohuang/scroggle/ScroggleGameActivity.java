@@ -1,7 +1,6 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,8 +22,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
 
-    private static final int TIME_LEFT_UPDATE_WHAT = 1;
-
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
     private Tile[] largeTiles = new Tile[BOARD_SIZE * BOARD_SIZE];
@@ -45,9 +42,12 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private TextView phaseText;
     private TextView scoreText;
     private TextView timeText;
+    protected Button controlButton;
 
     private CountDownTimer phaseOneTimer;
     private CountDownTimer phaseTwoTimer;
+
+    long timeLeft;  // used for CountDownTimer in all phases
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +65,33 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_control).setOnClickListener(new View.OnClickListener() {
+        controlButton = (Button) findViewById(R.id.button_control);
+        controlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (scroggleHelper.isPlaying()) {
+                    pause();
+                } else {
+                    resume();
+                 }
             }
         });
 
         findViewById(R.id.button_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scroggleHelper.clearAllSelected();
+                if (scroggleHelper.isPlaying()) {
+                    scroggleHelper.clearAllSelected();
+                }
+            }
+        });
+
+        findViewById(R.id.button_hint).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (scroggleHelper.isPlaying()) {
+                    // TODO: show hint
+                }
             }
         });
 
@@ -92,27 +108,18 @@ public class ScroggleGameActivity extends AppCompatActivity {
         scoreText.setText(String.format(getString(R.string.text_score),
                 scroggleHelper.getScore()));
 
+        timeLeft = getResources().getInteger(R.integer.time_left_warning_phase_one) * MILLISECONDS_PER_SECOND;
+
         phaseOneTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_one) * MILLISECONDS_PER_SECOND,
                 MILLISECONDS_PER_SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished / MILLISECONDS_PER_SECOND
-                        <= getResources().getInteger(R.integer.time_left_warning_phase_one)) {
-                    timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
-                            R.color.warning_color));
-                }
-                timeText.setText(String.format(getString(R.string.text_timer),
-                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+                updateTimeLeftEverySecond(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                scroggleHelper.clearAllSelected();
-                scroggleHelper.nextPhase();
-                timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
-                        android.R.color.tertiary_text_dark));
-                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-                phaseTwoTimer.start();
+                phaseOneFinished();
             }
         };
 
@@ -120,28 +127,12 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 MILLISECONDS_PER_SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
-                if (millisUntilFinished / MILLISECONDS_PER_SECOND
-                        <= getResources().getInteger(R.integer.time_left_warning_phase_two)) {
-                    timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
-                            R.color.warning_color));
-                }
-                timeText.setText(String.format(getString(R.string.text_timer),
-                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+                updateTimeLeftEverySecond(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                timeText.setText(String.format(getString(R.string.text_timer), TIME_IS_UP));
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
-                builder.setTitle(getString(R.string.text_game_over))
-                        .setMessage(String.format(getString(R.string.text_show_score), scroggleHelper.getScore()))
-                        .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                onBackPressed();
-                            }
-                        });
-                builder.create().show();
+                phaseTwoFinished();
             }
         };
 
@@ -184,5 +175,108 @@ public class ScroggleGameActivity extends AppCompatActivity {
         // that each BOARD_SIZE * BOARD_SIZE tile can form a word
         BoardAssignHelper boardAssignHelper = new BoardAssignHelper(getApplicationContext());
         boardAssignHelper.assignBoard(board);
+    }
+
+    private void updateTimeLeftEverySecond(long millisUntilFinished) {
+        int warningTime = 0;
+        switch (scroggleHelper.getPhase()) {
+            case ONE:
+                warningTime = getResources().getInteger(R.integer.time_left_warning_phase_one);
+                break;
+            case TWO:
+                warningTime = getResources().getInteger(R.integer.time_left_warning_phase_two);
+                break;
+            default:
+                break;
+        }
+        if ((int) (millisUntilFinished / MILLISECONDS_PER_SECOND) <= warningTime) {
+            timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
+                    R.color.warning_color));
+        }
+        timeText.setText(String.format(getString(R.string.text_timer),
+                millisUntilFinished / MILLISECONDS_PER_SECOND));
+        timeLeft = millisUntilFinished;
+    }
+
+    private void phaseOneFinished() {
+        scroggleHelper.clearAllSelected();
+        scroggleHelper.nextPhase();
+        timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
+                android.R.color.tertiary_text_dark));
+        phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+        phaseTwoTimer.start();
+    }
+
+    private void phaseTwoFinished() {
+        timeText.setText(String.format(getString(R.string.text_timer), TIME_IS_UP));
+        AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+        builder.setTitle(getString(R.string.text_game_over))
+                .setMessage(String.format(getString(R.string.text_show_score), scroggleHelper.getScore()))
+                .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void pause() {
+        findViewById(R.id.scroggle_board).setVisibility(View.INVISIBLE);
+        controlButton.setText(getString(R.string.button_resume));
+        // reference: http://stackoverflow.com/questions/4919703/how-to-set-property-androiddrawabletop-of-a-button-at-runtime
+        controlButton.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.scroggle_resume), null, null);
+        scroggleHelper.pause();
+        switch (scroggleHelper.getPhase()) {
+            case ONE:
+                phaseOneTimer.cancel();
+                break;
+            case TWO:
+                phaseTwoTimer.cancel();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void resume() {
+        findViewById(R.id.scroggle_board).setVisibility(View.VISIBLE);
+        controlButton.setText(getString(R.string.button_pause));
+        controlButton.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.scroggle_pause), null, null);
+        scroggleHelper.resume();
+        switch (scroggleHelper.getPhase()) {
+            case ONE:
+                phaseOneTimer = new CountDownTimer(timeLeft, MILLISECONDS_PER_SECOND) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        updateTimeLeftEverySecond(millisUntilFinished);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        phaseOneFinished();
+                    }
+                };
+                phaseOneTimer.start();
+                break;
+            case TWO:
+                phaseTwoTimer = new CountDownTimer(timeLeft, MILLISECONDS_PER_SECOND) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        updateTimeLeftEverySecond(millisUntilFinished);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        phaseTwoFinished();
+                    }
+                };
+                phaseTwoTimer.start();
+                break;
+            default:
+                break;
+        }
     }
 }
