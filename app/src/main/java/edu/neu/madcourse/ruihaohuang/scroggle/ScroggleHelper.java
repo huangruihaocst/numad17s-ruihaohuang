@@ -9,6 +9,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -51,14 +52,13 @@ class ScroggleHelper {
     private int soundSelect, soundValidWord, soundInvalidWord;
     private SoundPool soundPool;
     private float volume = 1f;
+    private int hintsLeft;
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
         this.context = context;
         this.activity = activity;
 
         phase = Phase.ONE;  // first enter phase 1
-        timeLeft = context.getResources().getInteger(R.integer.time_left_warning_phase_one)
-                * MILLISECONDS_PER_SECOND;
         playing = true;
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
@@ -69,6 +69,7 @@ class ScroggleHelper {
         this.board = board;
         unavailableLargeTiles = new ArrayList<>();
         scoreMap = createScoreMap();
+        hintsLeft = context.getResources().getInteger(R.integer.hints_amout);
 
         if (Build.VERSION.SDK_INT >= 21) {
             SoundPool.Builder builder = new SoundPool.Builder();
@@ -242,7 +243,7 @@ class ScroggleHelper {
                         add += scoreMap.get(word.charAt(i));
                     }
                     Toast.makeText(context, String.format(context.getString(R.string.toast_word_found),
-                            word, add), Toast.LENGTH_LONG).show();
+                            word, add), Toast.LENGTH_SHORT).show();
                     score += add;
                     for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
                         if (selectedSmallTiles.contains(i)) {
@@ -267,10 +268,14 @@ class ScroggleHelper {
                     if (!wordList.contains(word)) {
                         soundPool.play(soundValidWord, volume, volume, 1, 0, 1f);
                         wordList.add(word);
+                        int add = 0;
                         for (int i = 0; i < word.length(); ++i) {
-                            score += scoreMap.get(word.charAt(i))
+                            add += scoreMap.get(word.charAt(i))
                                     * context.getResources().getInteger(R.integer.magnification);
                         }
+                        score += add;
+                        Toast.makeText(context, String.format(context.getString(R.string.toast_word_found),
+                                word, add), Toast.LENGTH_SHORT).show();
                     } else {  // cannot detect the same word
                         soundPool.play(soundInvalidWord, volume, volume, 1, 0, 1f);
                         Toast.makeText(context, context.getString(R.string.toast_same_word_detected),
@@ -326,6 +331,26 @@ class ScroggleHelper {
                 break;
             default:
                 break;
+        }
+    }
+
+    boolean hintsAvailable() {
+        return phase == Phase.ONE && hintsLeft > 0;
+    }
+
+    void showHints() {
+        if (hintsAvailable()) {
+            ArrayList<Integer> allLargeTiles = new ArrayList<>();
+            for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+                allLargeTiles.add(i);
+            }
+            allLargeTiles.removeAll(unavailableLargeTiles);
+            if (!allLargeTiles.isEmpty()) {
+                Collections.shuffle(allLargeTiles);
+                Toast.makeText(context, String.format(context.getString(R.string.toast_hints),
+                        board.getSubTiles()[allLargeTiles.get(0)].getContent()), Toast.LENGTH_LONG).show();
+                --hintsLeft;
+            }
         }
     }
 }

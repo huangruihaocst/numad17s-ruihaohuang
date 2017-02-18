@@ -20,7 +20,6 @@ import edu.neu.madcourse.ruihaohuang.R;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
-    private static final String saveBoardKey = "saveBoardKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
 
@@ -46,7 +45,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private TextView phaseText;
     private TextView scoreText;
     private TextView timeText;
-    protected Button controlButton;
+    private Button controlButton;
+    private Button hintsButton;
 
     private CountDownTimer phaseOneTimer;
     private CountDownTimer phaseTwoTimer;
@@ -91,12 +91,14 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_hint).setOnClickListener(new View.OnClickListener() {
+        hintsButton = (Button) findViewById(R.id.button_hints);
+        hintsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (scroggleHelper.isPlaying()) {
-                    // TODO: show hint
+                if (scroggleHelper.hintsAvailable()) {
+                    scroggleHelper.showHints();
                 }
+                updateHintsState();
             }
         });
 
@@ -143,6 +145,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
         scroggleHelper.setTimeLeft(getResources().getInteger(R.integer.time_left_warning_phase_one)
                 * MILLISECONDS_PER_SECOND);
+
+        updateHintsState();
 
         phaseOneTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_one) * MILLISECONDS_PER_SECOND,
                 MILLISECONDS_PER_SECOND) {
@@ -255,6 +259,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 android.R.color.tertiary_text_dark));
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
         phaseTwoTimer.start();
+        updateHintsState();
     }
 
     private void phaseTwoFinished() {
@@ -340,5 +345,11 @@ public class ScroggleGameActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.scroggle_bgm);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+    }
+
+    private void updateHintsState() {
+        if (!scroggleHelper.hintsAvailable()) {
+            hintsButton.setEnabled(false);
+        }
     }
 }
