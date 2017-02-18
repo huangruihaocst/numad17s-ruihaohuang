@@ -3,6 +3,7 @@ package edu.neu.madcourse.ruihaohuang.scroggle;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +49,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private CountDownTimer phaseOneTimer;
     private CountDownTimer phaseTwoTimer;
+
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,12 +146,17 @@ public class ScroggleGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+        mediaPlayer.release();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mediaPlayer = MediaPlayer.create(this, R.raw.scroggle_bgm);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     void initializeBoard() {
