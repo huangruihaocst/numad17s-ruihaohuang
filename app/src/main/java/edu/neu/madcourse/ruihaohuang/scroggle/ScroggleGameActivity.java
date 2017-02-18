@@ -62,6 +62,13 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.button_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scroggleHelper.clearAllSelected();
+            }
+        });
+
         initializeBoard();
 
         scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);

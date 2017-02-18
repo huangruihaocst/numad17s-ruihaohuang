@@ -81,7 +81,6 @@ class ScroggleHelper {
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
         phase = Phase.ONE;  // first enter phase 1
-//        phase = Phase.TWO;  // first enter phase 1
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
         score = 0;
@@ -147,9 +146,14 @@ class ScroggleHelper {
                     int previousLarge = previous / (BOARD_SIZE * BOARD_SIZE);
                     int previousSmall = previous % (BOARD_SIZE * BOARD_SIZE);
                     if (previousLarge == large) {
-                        selectedTiles.set(selectedTiles.size() - 1, current);
-                        board.getSubTiles()[previousLarge].getSubTiles()[previousSmall].setRemaining();
-                        board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                        if (previousSmall == small) {  // select the same tile
+                            selectedTiles.remove(selectedTiles.size() - 1);
+                            board.getSubTiles()[large].getSubTiles()[small].setRemaining();
+                        } else {
+                            selectedTiles.set(selectedTiles.size() - 1, current);
+                            board.getSubTiles()[previousLarge].getSubTiles()[previousSmall].setRemaining();
+                            board.getSubTiles()[large].getSubTiles()[small].setSelected();
+                        }
                     } else if (isNextTo(previousLarge, large)) {
                         selectedTiles.add(current);
                         board.getSubTiles()[large].getSubTiles()[small].setSelected();
@@ -217,11 +221,11 @@ class ScroggleHelper {
                         }
                     }
                     unavailableLargeTiles.add(selectedLargeTile);
-                } else {
-                    score += context.getResources().getInteger(R.integer.penalization_score_phase_one);
-                    board.getSubTiles()[selectedLargeTile].setUnselected();
                     selectedLargeTile = NO_SELECTED;
                     selectedSmallTiles.clear();
+                } else {
+                    score += context.getResources().getInteger(R.integer.penalization_score_phase_one);
+                    clearAllSelected();
                     Toast.makeText(context, context.getString(R.string.word_does_not_exist),
                             Toast.LENGTH_LONG).show();
                 }
@@ -230,36 +234,20 @@ class ScroggleHelper {
                 if (dictionaryHelper.wordExists(word)) {
                     if (!wordList.contains(word)) {
                         wordList.add(word);
-                        for (int i = 0; i < selectedTiles.size(); ++i) {
-                            int large = selectedTiles.get(i) / (BOARD_SIZE * BOARD_SIZE);
-                            int small = selectedTiles.get(i) % (BOARD_SIZE * BOARD_SIZE);
-                            board.getSubTiles()[large].getSubTiles()[small].setRemaining();
-                        }
                         for (int i = 0; i < word.length(); ++i) {
                             score += scoreMap.get(word.charAt(i))
                                     * context.getResources().getInteger(R.integer.magnification);
                         }
                     } else {  // cannot detect the same word
-                        for (int selectedTile: selectedTiles) {
-                            int large = selectedTile / (BOARD_SIZE * BOARD_SIZE);
-                            int small = selectedTile % (BOARD_SIZE * BOARD_SIZE);
-                            board.getSubTiles()[large].getSubTiles()[small].setRemaining();
-                        }
-                        selectedTiles.clear();
                         Toast.makeText(context, context.getString(R.string.toast_same_word_detected),
                                 Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    for (int i = 0; i < selectedTiles.size(); ++i) {
-                        int large = selectedTiles.get(i) / (BOARD_SIZE * BOARD_SIZE);
-                        int small = selectedTiles.get(i) % (BOARD_SIZE * BOARD_SIZE);
-                        board.getSubTiles()[large].getSubTiles()[small].setRemaining();
-                    }
                     score += context.getResources().getInteger(R.integer.penalization_score_phase_two);
                     Toast.makeText(context, context.getString(R.string.word_does_not_exist),
                             Toast.LENGTH_LONG).show();
                 }
-                selectedTiles.clear();
+                clearAllSelected();
                 break;
             default:
                 break;
@@ -282,5 +270,27 @@ class ScroggleHelper {
                 }
         }
         return word;
+    }
+
+    void clearAllSelected() {
+        switch (phase) {
+            case ONE:
+                for (int selectedSmallTile: selectedSmallTiles) {
+                    board.getSubTiles()[selectedLargeTile].getSubTiles()[selectedSmallTile].setUnselected();
+                }
+                selectedLargeTile = NO_SELECTED;
+                selectedSmallTiles.clear();
+                break;
+            case TWO:
+                for (int selectedTile: selectedTiles) {
+                    int large = selectedTile / (BOARD_SIZE * BOARD_SIZE);
+                    int small = selectedTile % (BOARD_SIZE * BOARD_SIZE);
+                    board.getSubTiles()[large].getSubTiles()[small].setRemaining();
+                }
+                selectedTiles.clear();
+                break;
+            default:
+                break;
+        }
     }
 }
