@@ -1,21 +1,27 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
+    private static final int MILLISECONDS_PER_SECOND = 1000;
+    private static final int TIME_IS_UP = 0;
 
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
+
+    private static final int TIME_LEFT_UPDATE_WHAT = 1;
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -38,6 +44,9 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private TextView scoreText;
     private TextView timeText;
 
+    private CountDownTimer phaseOneTimer;
+    private CountDownTimer phaseTwoTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +66,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
         findViewById(R.id.button_control).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scroggleHelper.nextPhase();  // TODO: change it to real control
-                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+
             }
         });
 
@@ -81,8 +89,50 @@ public class ScroggleGameActivity extends AppCompatActivity {
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
         scoreText.setText(String.format(getString(R.string.text_score),
                 scroggleHelper.getScore()));
-        timeText.setText(String.format(getString(R.string.text_timer),
-                90));
+
+        phaseOneTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_one) * MILLISECONDS_PER_SECOND,
+                MILLISECONDS_PER_SECOND) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (millisUntilFinished / MILLISECONDS_PER_SECOND
+                        <= getResources().getInteger(R.integer.time_left_warning_phase_one)) {
+                    timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
+                            R.color.warning_color));
+                }
+                timeText.setText(String.format(getString(R.string.text_timer),
+                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+            }
+
+            @Override
+            public void onFinish() {
+                scroggleHelper.nextPhase();
+                timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
+                        android.R.color.tertiary_text_dark));
+                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+                phaseTwoTimer.start();
+            }
+        };
+
+        phaseTwoTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_two) * MILLISECONDS_PER_SECOND,
+                MILLISECONDS_PER_SECOND) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (millisUntilFinished / MILLISECONDS_PER_SECOND
+                        <= getResources().getInteger(R.integer.time_left_warning_phase_two)) {
+                    timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
+                            R.color.warning_color));
+                }
+                timeText.setText(String.format(getString(R.string.text_timer),
+                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+            }
+
+            @Override
+            public void onFinish() {
+                timeText.setText(String.format(getString(R.string.text_timer), TIME_IS_UP));
+            }
+        };
+
+        phaseOneTimer.start();
     }
 
     void initializeBoard() {

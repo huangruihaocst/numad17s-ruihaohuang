@@ -43,12 +43,14 @@ class ScroggleHelper {
     private ArrayList<String> wordList;
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
+        this.context = context;
+        this.activity = activity;
+
         phase = Phase.ONE;  // first enter phase 1
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
         score = 0;
-        this.context = context;
-        this.activity = activity;
+
         dictionaryHelper = DictionaryHelper.getInstance(context, activity);
         dictionaryHelper.initializeHelper();
         this.board = board;
