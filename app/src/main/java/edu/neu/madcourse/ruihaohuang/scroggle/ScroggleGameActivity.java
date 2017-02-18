@@ -1,9 +1,9 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import edu.neu.madcourse.ruihaohuang.R;
@@ -51,6 +52,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private CountDownTimer phaseTwoTimer;
 
     private MediaPlayer mediaPlayer;
+    private boolean playMusic = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,34 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 if (scroggleHelper.isPlaying()) {
                     // TODO: show hint
                 }
+            }
+        });
+
+        final ImageButton volumeButton = (ImageButton) findViewById(R.id.button_volume);
+        volumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playMusic) {
+                    // reference: http://stackoverflow.com/questions/32210559/call-requires-api-level-16-current-min-is-14
+                    if (Build.VERSION.SDK_INT >= 16) {
+                        volumeButton.setBackground(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_off));
+                    } else {
+                        volumeButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_off));
+                    }
+                    pauseMusic();
+                } else {
+                    if (Build.VERSION.SDK_INT >= 16) {
+                        volumeButton.setBackground(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_up));
+                    } else {
+                        volumeButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_up));
+                    }
+                    resumeMusic();
+                }
+                playMusic = !playMusic;
             }
         });
 
@@ -146,17 +176,17 @@ public class ScroggleGameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
-        mediaPlayer.reset();
-        mediaPlayer.release();
+        if (playMusic) {
+            pauseMusic();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mediaPlayer = MediaPlayer.create(this, R.raw.scroggle_bgm);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        if (playMusic) {
+            resumeMusic();
+        }
     }
 
     void initializeBoard() {
@@ -298,5 +328,17 @@ public class ScroggleGameActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    private void pauseMusic() {
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+        mediaPlayer.release();
+    }
+
+    private void resumeMusic() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.scroggle_bgm);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 }

@@ -33,6 +33,7 @@
         <item name="description_degree_program">Degree Program: %1$s</item>
     </string-array>
     <string name="description_IMEI">IMEI: %1$s</string>
+    <string name="description_volume">Volume</string>
 
     <string-array name="my_information">
         <item name="my_name">Ruihao Huang</item>

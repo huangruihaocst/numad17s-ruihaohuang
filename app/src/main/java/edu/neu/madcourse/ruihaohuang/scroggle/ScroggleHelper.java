@@ -72,6 +72,7 @@ class ScroggleHelper {
 
         if (Build.VERSION.SDK_INT >= 21) {
             SoundPool.Builder builder = new SoundPool.Builder();
+            // reference: http://stackoverflow.com/questions/28210921/set-audio-attributes-in-soundpool-builder-class-for-api-21
             builder.setAudioAttributes(new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
