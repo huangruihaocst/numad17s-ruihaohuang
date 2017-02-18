@@ -24,6 +24,7 @@
     <string name="button_clear">Clear</string>
     <string name="button_hint">Hints</string>
     <string name="button_back">Back to Menu</string>
+    <string name="button_start">Start!</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -143,6 +144,23 @@
     <string name="text_phase">PHASE %1$s</string>
     <string name="text_game_over">Game Over</string>
     <string name="text_show_score">Your score is %1$d</string>
+    <string name="text_tutorial">Tutorial-Phase %1$s</string>
+    <string name="text_tutorial_phase_one">
+        Select letters from the same tile continuously to form words. \
+        The current letter must be next to the last one (up/down/diagonal). \
+        Each letter can be used only once. \
+        You will be punished if the word you selected is not a word actually. \
+        If you are having a hard time finding words, do not wait to use hints! \
+        You have %1$d seconds for this phase.
+    </string>
+    <string name="text_tutorial_phase_two">
+        Select letters from different tiles continuously to form words.\
+        You can revisit grids, but not back to back. \
+        The current letter must be next to the last one (up/down/diagonal). \
+        Score for each letter is higher but punishment is harsher in this phase. \
+        You cannot use hints in this phase. \
+        You have %1$d seconds for this phase.
+    </string>
 
     <string name="info_permission_denied">Permission Denied</string>
 

@@ -1,6 +1,10 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -17,9 +21,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
+    private static final String TUTORIAL_KEY = "TutorialKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
 
@@ -53,6 +59,9 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private boolean playMusic = true;
+
+    private boolean needTutorial;
+    private boolean needInitializeDb = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +151,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
         scoreText.setText(String.format(getString(R.string.text_score),
                 scroggleHelper.getScore()));
+        timeText.setText(String.format(getString(R.string.text_timer),
+                getResources().getInteger(R.integer.time_phase_one)));
 
         scroggleHelper.setTimeLeft(getResources().getInteger(R.integer.time_left_warning_phase_one)
                 * MILLISECONDS_PER_SECOND);
@@ -174,7 +185,29 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         };
 
-        phaseOneTimer.start();
+        SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        needTutorial = tutorialPreferences.getBoolean(TUTORIAL_KEY, true);
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            if (needTutorial) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+                builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+                        .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
+                                getResources().getInteger(R.integer.time_phase_one)))
+                        .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                phaseOneTimer.start();
+                            }
+                        });
+                builder.create().show();
+            } else {
+                phaseOneTimer.start();
+            }
+        } else {
+            needInitializeDb = true;
+        }
     }
 
     @Override
@@ -186,10 +219,36 @@ public class ScroggleGameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        setDoesNotNeedTutorial();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (playMusic) {
             resumeMusic();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setDoesNotNeedTutorial();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    scroggleHelper.initializeDb();
+                }
+                return;
+            default:
+                break;
         }
     }
 
@@ -258,8 +317,23 @@ public class ScroggleGameActivity extends AppCompatActivity {
         timeText.setTextColor(ContextCompat.getColor(getApplicationContext(),
                 android.R.color.tertiary_text_dark));
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-        phaseTwoTimer.start();
         updateHintsState();
+        timeText.setText(String.format(getString(R.string.text_timer), 0));
+        if (needTutorial) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+            builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+                    .setMessage(String.format(getString(R.string.text_tutorial_phase_two),
+                            getResources().getInteger(R.integer.time_phase_two)))
+                    .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            phaseTwoTimer.start();
+                        }
+                    });
+            builder.create().show();
+        } else {
+            phaseTwoTimer.start();
+        }
     }
 
     private void phaseTwoFinished() {
@@ -274,6 +348,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                     }
                 });
         builder.create().show();
+        setDoesNotNeedTutorial();
     }
 
     private void pause() {
@@ -350,6 +425,35 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private void updateHintsState() {
         if (!scroggleHelper.hintsAvailable()) {
             hintsButton.setEnabled(false);
+        }
+    }
+
+    private void setDoesNotNeedTutorial() {
+        if (needTutorial) {
+            SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = tutorialPreferences.edit();
+            editor.putBoolean(TUTORIAL_KEY, false);
+            editor.apply();
+        }
+    }
+
+    public void startGame() {
+        if (needInitializeDb) {
+            if (needTutorial) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+                builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+                        .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
+                                getResources().getInteger(R.integer.time_phase_one)))
+                        .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                phaseOneTimer.start();
+                            }
+                        });
+                builder.create().show();
+            } else {
+                phaseOneTimer.start();
+            }
         }
     }
 }

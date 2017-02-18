@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity;
 
 /**
  * Created by huangruihao on 2017/2/2.
@@ -24,9 +25,11 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
     private ProgressDialog dialog;
     private Context context;
     private DictionaryHelper helper;
+    private Activity activity;
 
     InitializeDatabaseTask(Context context, Activity activity) {
         this.context = context;
+        this.activity = activity;
 
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getString(R.string.dialog_wait_create_database));
@@ -161,5 +164,6 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         helper.setDb(SQLiteDatabase.openDatabase(databasePath
                 + DictionaryDbHelper.DATABASE_NAME, null,
                 SQLiteDatabase.OPEN_READONLY));
+        ((ScroggleGameActivity) activity).startGame();
     }
 }

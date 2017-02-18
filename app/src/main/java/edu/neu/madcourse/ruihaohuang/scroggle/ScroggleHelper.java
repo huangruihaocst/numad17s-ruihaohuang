@@ -87,6 +87,10 @@ class ScroggleHelper {
         soundInvalidWord = soundPool.load(activity, R.raw.tictactoe_joanne_rewind, 1);
     }
 
+    void initializeDb() {
+        dictionaryHelper.initializeDb();
+    }
+
     // reference: http://stackoverflow.com/questions/6802483/how-to-directly-initialize-a-hashmap-in-a-literal-way
     private HashMap<Character, Integer> createScoreMap() {
         HashMap<Character, Integer> scoreMap = new HashMap<>();
@@ -97,11 +101,11 @@ class ScroggleHelper {
         return scoreMap;
     }
 
-    public long getTimeLeft() {
+    long getTimeLeft() {
         return timeLeft;
     }
 
-    public void setTimeLeft(long timeLeft) {
+    void setTimeLeft(long timeLeft) {
         this.timeLeft = timeLeft;
     }
 
