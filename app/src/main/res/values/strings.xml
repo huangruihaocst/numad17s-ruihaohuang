@@ -19,7 +19,6 @@
     <string name="button_acknowledgements">Acknowledgements</string>
     <string name="button_word_game">Word Game</string>
     <string name="button_new_game">New Game</string>
-    <string name="button_continue">Continue</string>
     <string name="button_pause">Pause</string>
     <string name="button_resume">Resume</string>
     <string name="button_clear">Clear</string>

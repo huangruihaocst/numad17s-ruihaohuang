@@ -18,6 +18,7 @@ class ScroggleHelper {
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
     private static final int NO_SELECTED = -1;
     private static final int ASCII_OF_A = 97;  // lowercase
+    private static final int MILLISECONDS_PER_SECOND = 1000;
 
     // actually it should be final, but its construction needs context
     private HashMap<Character, Integer> scoreMap;
@@ -42,12 +43,15 @@ class ScroggleHelper {
     // used only in phase two
     // already detected valid words
     private ArrayList<String> wordList;
+    private long timeLeft;
 
     ScroggleHelper(Context context, Activity activity, Tile board) {
         this.context = context;
         this.activity = activity;
 
         phase = Phase.ONE;  // first enter phase 1
+        timeLeft = context.getResources().getInteger(R.integer.time_left_warning_phase_one)
+                * MILLISECONDS_PER_SECOND;
         playing = true;
         selectedLargeTile = NO_SELECTED;
         selectedSmallTiles = new ArrayList<>();
@@ -68,6 +72,14 @@ class ScroggleHelper {
             scoreMap.put((char) (ASCII_OF_A + i), scores[i]);
         }
         return scoreMap;
+    }
+
+    public long getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTimeLeft(long timeLeft) {
+        this.timeLeft = timeLeft;
     }
 
     int getScore() {

@@ -22,16 +22,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_continue"
-        android:id="@+id/button_continue"
-        android:layout_below="@+id/button_new_game"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/button_acknowledgements"
         android:id="@+id/button_acknowledgements"
-        android:layout_below="@+id/button_continue"/>
+        android:layout_below="@+id/button_new_game"/>
 
     <Button
         android:layout_width="match_parent"

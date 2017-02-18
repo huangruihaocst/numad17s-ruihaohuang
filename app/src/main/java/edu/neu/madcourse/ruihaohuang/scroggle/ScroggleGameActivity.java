@@ -1,6 +1,7 @@
 package edu.neu.madcourse.ruihaohuang.scroggle;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,6 +18,7 @@ import edu.neu.madcourse.ruihaohuang.R;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     private static final String tag = "ScroggleGameActivity";
+    private static final String saveBoardKey = "saveBoardKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
 
@@ -46,8 +48,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private CountDownTimer phaseOneTimer;
     private CountDownTimer phaseTwoTimer;
-
-    long timeLeft;  // used for CountDownTimer in all phases
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
         scoreText.setText(String.format(getString(R.string.text_score),
                 scroggleHelper.getScore()));
 
-        timeLeft = getResources().getInteger(R.integer.time_left_warning_phase_one) * MILLISECONDS_PER_SECOND;
+        scroggleHelper.setTimeLeft(getResources().getInteger(R.integer.time_left_warning_phase_one)
+                * MILLISECONDS_PER_SECOND);
 
         phaseOneTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_one) * MILLISECONDS_PER_SECOND,
                 MILLISECONDS_PER_SECOND) {
@@ -137,6 +138,17 @@ public class ScroggleGameActivity extends AppCompatActivity {
         };
 
         phaseOneTimer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     void initializeBoard() {
@@ -195,7 +207,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
         }
         timeText.setText(String.format(getString(R.string.text_timer),
                 millisUntilFinished / MILLISECONDS_PER_SECOND));
-        timeLeft = millisUntilFinished;
+        scroggleHelper.setTimeLeft(millisUntilFinished);
     }
 
     private void phaseOneFinished() {
@@ -248,7 +260,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
         scroggleHelper.resume();
         switch (scroggleHelper.getPhase()) {
             case ONE:
-                phaseOneTimer = new CountDownTimer(timeLeft, MILLISECONDS_PER_SECOND) {
+                phaseOneTimer = new CountDownTimer(scroggleHelper.getTimeLeft(), MILLISECONDS_PER_SECOND) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         updateTimeLeftEverySecond(millisUntilFinished);
@@ -262,7 +274,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                 phaseOneTimer.start();
                 break;
             case TWO:
-                phaseTwoTimer = new CountDownTimer(timeLeft, MILLISECONDS_PER_SECOND) {
+                phaseTwoTimer = new CountDownTimer(scroggleHelper.getTimeLeft(), MILLISECONDS_PER_SECOND) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         updateTimeLeftEverySecond(millisUntilFinished);
