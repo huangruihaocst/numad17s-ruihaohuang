@@ -28,6 +28,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private static final String TUTORIAL_KEY = "TutorialKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
+    private static final int PHASE_TWO_FINISHED_WHAT = 1;
 
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
 
@@ -321,8 +322,8 @@ public class ScroggleGameActivity extends AppCompatActivity {
         phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
         updateHintsState();
         timeText.setText(String.format(getString(R.string.text_timer), 0));
-        if (needTutorial) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+        if (needTutorial && !isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
                     .setMessage(String.format(getString(R.string.text_tutorial_phase_two),
                             getResources().getInteger(R.integer.time_phase_two)))
@@ -340,16 +341,18 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     private void phaseTwoFinished() {
         timeText.setText(String.format(getString(R.string.text_timer), TIME_IS_UP));
-        AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
-        builder.setTitle(getString(R.string.text_game_over))
-                .setMessage(String.format(getString(R.string.text_show_score), scroggleHelper.getScore()))
-                .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        onBackPressed();
-                    }
-                });
-        builder.create().show();
+        if (!isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.text_game_over))
+                    .setMessage(String.format(getString(R.string.text_show_score), scroggleHelper.getScore()))
+                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
+                        }
+                    });
+            builder.create().show();
+        }
         setDoesNotNeedTutorial();
     }
 
@@ -439,7 +442,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
     }
 
     public void startGame() {
-        if (needTutorial) {
+        if (needTutorial && !isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
             builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
                     .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
