@@ -7,11 +7,14 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity;
+import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleHelper;
 
 /**
  * Created by huangruihao on 2017/2/1.
@@ -28,22 +31,30 @@ public class DictionaryHelper {
     private final String lastRecord = "28433685139";  // encoded last word in the word list
     private SQLiteDatabase db = null;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    private String callerTag;
 
     private static DictionaryHelper ourInstance;
 
     private static Context context;
     private Activity activity;
 
-    public static DictionaryHelper getInstance(Context context, Activity activity) {
+    public static DictionaryHelper getInstance(Context context, Activity activity, String callerTag) {
         if (ourInstance == null) {
-            ourInstance = new DictionaryHelper(context, activity);
+            ourInstance = new DictionaryHelper(context, activity, callerTag);
+        }
+        if (context != DictionaryHelper.context) {
+            DictionaryHelper.context = context;
+        }
+        if (activity != ourInstance.activity) {
+            ourInstance.activity = activity;
         }
         return ourInstance;
     }
 
-    private DictionaryHelper(Context context, Activity activity) {
+    private DictionaryHelper(Context context, Activity activity, String callerTag) {
         this.context = context;
         this.activity = activity;
+        this.callerTag = callerTag;
     }
 
     public boolean wordExists(String word) {
@@ -80,9 +91,13 @@ public class DictionaryHelper {
             if (!checkDatabaseIntegrity()) {
                 throw new SQLiteException();
             }
+            if ((callerTag.equals(ScroggleGameActivity.tag) || callerTag.equals(ScroggleHelper.tag))
+                    && Build.VERSION.SDK_INT < 23) {
+                ((ScroggleGameActivity) activity).startGame();
+            }
         } catch (SQLiteException e) {
             e.printStackTrace();
-            new InitializeDatabaseTask(context, activity).execute();
+            new InitializeDatabaseTask(context, activity, callerTag).execute();
         }
     }
 

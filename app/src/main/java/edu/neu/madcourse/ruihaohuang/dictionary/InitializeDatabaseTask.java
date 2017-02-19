@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity;
+import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleHelper;
 
 /**
  * Created by huangruihao on 2017/2/2.
@@ -26,10 +27,12 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
     private Context context;
     private DictionaryHelper helper;
     private Activity activity;
+    private String callerTag;
 
-    InitializeDatabaseTask(Context context, Activity activity) {
+    InitializeDatabaseTask(Context context, Activity activity, String callerTag) {
         this.context = context;
         this.activity = activity;
+        this.callerTag = callerTag;
 
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getString(R.string.dialog_wait_create_database));
@@ -37,7 +40,7 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
-        helper = DictionaryHelper.getInstance(context, activity);
+        helper = DictionaryHelper.getInstance(context, activity, callerTag);
     }
 
     @Override
@@ -164,6 +167,8 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
         helper.setDb(SQLiteDatabase.openDatabase(databasePath
                 + DictionaryDbHelper.DATABASE_NAME, null,
                 SQLiteDatabase.OPEN_READONLY));
-        ((ScroggleGameActivity) activity).startGame();
+        if (callerTag.equals(ScroggleGameActivity.tag) || callerTag.equals(ScroggleHelper.tag)) {
+            ((ScroggleGameActivity) activity).startGame();
+        }
     }
 }

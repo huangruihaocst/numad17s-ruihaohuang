@@ -19,11 +19,11 @@ import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
  * Created by huangruihao on 2017/2/16.
  */
 
-class ScroggleHelper {
+public class ScroggleHelper {
+    public static final String tag = "ScroggleHelper";
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
     private static final int NO_SELECTED = -1;
     private static final int ASCII_OF_A = 97;  // lowercase
-    private static final int MILLISECONDS_PER_SECOND = 1000;
 
     // actually it should be final, but its construction needs context
     private HashMap<Character, Integer> scoreMap;
@@ -64,7 +64,7 @@ class ScroggleHelper {
         selectedSmallTiles = new ArrayList<>();
         score = 0;
 
-        dictionaryHelper = DictionaryHelper.getInstance(context, activity);
+        dictionaryHelper = DictionaryHelper.getInstance(context, activity, tag);
         dictionaryHelper.initializeHelper();
         this.board = board;
         unavailableLargeTiles = new ArrayList<>();

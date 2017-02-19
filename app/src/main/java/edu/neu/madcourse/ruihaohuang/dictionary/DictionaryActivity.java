@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +36,7 @@ public class DictionaryActivity extends AppCompatActivity {
         adapter = new WordListAdapter(getApplicationContext(), wordList);
         ((ListView) findViewById(R.id.word_list)).setAdapter(adapter);
 
-        helper = DictionaryHelper.getInstance(DictionaryActivity.this, this);
+        helper = DictionaryHelper.getInstance(DictionaryActivity.this, this, tag);
         helper.initializeHelper();
 
         final EditText wordInput = (EditText) findViewById(R.id.edit_text_word);
@@ -104,14 +105,16 @@ public class DictionaryActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    helper.initializeDb();
-                }
-                return;
-            default:
+        if (Build.VERSION.SDK_INT >= 23) {
+            switch (requestCode) {
+                case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                    if (grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        helper.initializeDb();
+                    }
+                    return;
+                default:
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 
 public class ScroggleGameActivity extends AppCompatActivity {
-    private static final String tag = "ScroggleGameActivity";
+    public static final String tag = "ScroggleGameActivity";
     private static final String TUTORIAL_KEY = "TutorialKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
@@ -61,7 +61,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private boolean playMusic = true;
 
     private boolean needTutorial;
-    private boolean needInitializeDb = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +68,9 @@ public class ScroggleGameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scroggle_game);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        needTutorial = tutorialPreferences.getBoolean(TUTORIAL_KEY, true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -139,26 +141,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         });
 
-        initializeBoard();
-
-        scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);
-
-        phaseText = (TextView) findViewById(R.id.text_phase);
-        scoreText = (TextView) findViewById(R.id.text_score);
-        timeText = (TextView) findViewById(R.id.text_timer);
-        // reference: http://stackoverflow.com/questions/6200533/set-textview-style-bold-or-italic
-        phaseText.setTypeface(null, Typeface.BOLD);
-        phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-        scoreText.setText(String.format(getString(R.string.text_score),
-                scroggleHelper.getScore()));
-        timeText.setText(String.format(getString(R.string.text_timer),
-                getResources().getInteger(R.integer.time_phase_one)));
-
-        scroggleHelper.setTimeLeft(getResources().getInteger(R.integer.time_left_warning_phase_one)
-                * MILLISECONDS_PER_SECOND);
-
-        updateHintsState();
-
         phaseOneTimer = new CountDownTimer(getResources().getInteger(R.integer.time_phase_one) * MILLISECONDS_PER_SECOND,
                 MILLISECONDS_PER_SECOND) {
             @Override
@@ -185,28 +167,46 @@ public class ScroggleGameActivity extends AppCompatActivity {
             }
         };
 
-        SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        needTutorial = tutorialPreferences.getBoolean(TUTORIAL_KEY, true);
-        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            if (needTutorial) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
-                builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
-                        .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
-                                getResources().getInteger(R.integer.time_phase_one)))
-                        .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                phaseOneTimer.start();
-                            }
-                        });
-                builder.create().show();
-            } else {
-                phaseOneTimer.start();
+        initializeBoard();
+
+        scroggleHelper = new ScroggleHelper(ScroggleGameActivity.this, this, board);
+
+        phaseText = (TextView) findViewById(R.id.text_phase);
+        scoreText = (TextView) findViewById(R.id.text_score);
+        timeText = (TextView) findViewById(R.id.text_timer);
+        // reference: http://stackoverflow.com/questions/6200533/set-textview-style-bold-or-italic
+        phaseText.setTypeface(null, Typeface.BOLD);
+        phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+        scoreText.setText(String.format(getString(R.string.text_score),
+                scroggleHelper.getScore()));
+        timeText.setText(String.format(getString(R.string.text_timer),
+                getResources().getInteger(R.integer.time_phase_one)));
+
+        scroggleHelper.setTimeLeft(getResources().getInteger(R.integer.time_left_warning_phase_one)
+                * MILLISECONDS_PER_SECOND);
+
+        updateHintsState();
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                if (needTutorial) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+                    builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+                            .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
+                                    getResources().getInteger(R.integer.time_phase_one)))
+                            .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    phaseOneTimer.start();
+                                }
+                            });
+                    builder.create().show();
+                } else {
+                    phaseOneTimer.start();
+                }
             }
-        } else {
-            needInitializeDb = true;
         }
     }
 
@@ -234,21 +234,23 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         setDoesNotNeedTutorial();
+        super.onBackPressed();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    scroggleHelper.initializeDb();
-                }
-                return;
-            default:
-                break;
+        if (Build.VERSION.SDK_INT >= 23) {
+            switch (requestCode) {
+                case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                    if (grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        scroggleHelper.initializeDb();
+                    }
+                    return;
+                default:
+                    break;
+            }
         }
     }
 
@@ -429,31 +431,28 @@ public class ScroggleGameActivity extends AppCompatActivity {
     }
 
     private void setDoesNotNeedTutorial() {
-        if (needTutorial) {
-            SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = tutorialPreferences.edit();
-            editor.putBoolean(TUTORIAL_KEY, false);
-            editor.apply();
-        }
+        needTutorial = false;
+        SharedPreferences tutorialPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = tutorialPreferences.edit();
+        editor.putBoolean(TUTORIAL_KEY, false);
+        editor.apply();
     }
 
     public void startGame() {
-        if (needInitializeDb) {
-            if (needTutorial) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
-                builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
-                        .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
-                                getResources().getInteger(R.integer.time_phase_one)))
-                        .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                phaseOneTimer.start();
-                            }
-                        });
-                builder.create().show();
-            } else {
-                phaseOneTimer.start();
-            }
+        if (needTutorial) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+            builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+                    .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
+                            getResources().getInteger(R.integer.time_phase_one)))
+                    .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            phaseOneTimer.start();
+                        }
+                    });
+            builder.create().show();
+        } else {
+            phaseOneTimer.start();
         }
     }
 }
