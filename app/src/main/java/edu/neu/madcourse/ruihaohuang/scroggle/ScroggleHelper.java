@@ -352,7 +352,7 @@ public class ScroggleHelper {
             if (!allLargeTiles.isEmpty()) {
                 Collections.shuffle(allLargeTiles);
                 Toast.makeText(context, String.format(context.getString(R.string.toast_hints),
-                        board.getSubTiles()[allLargeTiles.get(0)].getContent()), Toast.LENGTH_LONG).show();
+                        board.getSubTiles()[allLargeTiles.get(0)].getWord()), Toast.LENGTH_LONG).show();
                 --hintsLeft;
             }
         }

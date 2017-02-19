@@ -12,6 +12,7 @@ class Tile {
 
     private Tile subTiles[];
     private String content;  // a letter if it is the 1 * 1 tile, a word if it is a BOARD_SIZE * BOARD_SIZE tile
+    private String word;  // only for large tile
     private View view;
 
     // small tile: 1 * 1
@@ -46,6 +47,14 @@ class Tile {
                 subTiles[i].setContent(String.valueOf(content.charAt(i)));
             }
         }
+    }
+
+    void setWord(String word) {
+        this.word = word;
+    }
+
+    String getWord() {
+        return word;
     }
 
     String getContent() {

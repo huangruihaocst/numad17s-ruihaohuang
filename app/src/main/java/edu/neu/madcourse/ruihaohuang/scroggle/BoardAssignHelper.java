@@ -76,6 +76,7 @@ class BoardAssignHelper {
             content += word.charAt(largeTileStatus[i]);
         }
         largeTile.setContent(content);
+        largeTile.setWord(word);
     }
 
     /**
