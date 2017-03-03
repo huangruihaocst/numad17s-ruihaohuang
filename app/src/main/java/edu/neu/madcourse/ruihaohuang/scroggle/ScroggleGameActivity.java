@@ -28,7 +28,6 @@ public class ScroggleGameActivity extends AppCompatActivity {
     private static final String TUTORIAL_KEY = "TutorialKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
-    private static final int PHASE_TWO_FINISHED_WHAT = 1;
 
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
 
@@ -193,7 +192,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 if (needTutorial) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
                             .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
                                     getResources().getInteger(R.integer.time_phase_one)))
@@ -443,7 +442,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
 
     public void startGame() {
         if (needTutorial && !isFinishing()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ScroggleGameActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
                     .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
                             getResources().getInteger(R.integer.time_phase_one)))
