@@ -56,6 +56,10 @@
             android:name=".scroggle.ScroggleAcknowledgementsActivity"
             android:label="@string/title_activity_scroggle_acknowledgements"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".communication.CommunicationActivity"
+            android:label="@string/title_activity_communication"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

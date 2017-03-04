@@ -50,8 +50,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/button_communication"
+        android:text="@string/button_communication"
+        android:layout_below="@+id/button_word_game"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/button_quit"
-        android:layout_below="@+id/button_word_game"
+        android:layout_below="@+id/button_communication"
         android:id="@+id/button_quit" />
 
 </RelativeLayout>
