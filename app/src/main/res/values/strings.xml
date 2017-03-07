@@ -29,6 +29,7 @@
     <string name="button_start">Start!</string>
     <string name="button_communication">Communication</string>
     <string name="button_send">Send</string>
+    <string name="button_confirm">Confirm</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -55,6 +56,8 @@
     <string name="toast_word_does_not_exist">Word does not exist</string>
     <string name="toast_word_found">Word %1$s found. You get %2$d points.</string>
     <string name="toast_hints">One of the word is %1$s</string>
+    <string name="toast_username_already_registered">This username has already been registered</string>
+    <string name="toast_no_username">Please enter your username</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;\n
         Do not close the application until it has finished&#8230;</string>
@@ -226,8 +229,12 @@
         You have %1$d seconds for this phase.
     </string>
     <string name="text_chat_with">You are chatting with %1$s.</string>
+    <string name="text_enter_username">Enter your username</string>
+    <string name="text_pairing">Pairing&#8230;</string>
 
     <string name="info_permission_denied">Permission Denied</string>
+
+    <string name="hint_username">Username</string>
 
     <!-- tic tac toe-->
     <string name="long_app_name">Ultimate Tic Tac Toe</string>
