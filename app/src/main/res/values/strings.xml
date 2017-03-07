@@ -28,6 +28,7 @@
     <string name="button_back">Back to Menu</string>
     <string name="button_start">Start!</string>
     <string name="button_communication">Communication</string>
+    <string name="button_send">Send</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">
@@ -224,6 +225,7 @@
         You cannot use hints in this phase. \
         You have %1$d seconds for this phase.
     </string>
+    <string name="text_chat_with">You are chatting with %1$s.</string>
 
     <string name="info_permission_denied">Permission Denied</string>
 

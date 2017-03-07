@@ -39,7 +39,7 @@ public class DictionaryActivity extends AppCompatActivity {
         helper = DictionaryHelper.getInstance(DictionaryActivity.this, this, tag);
         helper.initializeHelper();
 
-        final EditText wordInput = (EditText) findViewById(R.id.edit_text_word);
+        final EditText wordInput = (EditText) findViewById(R.id.edit_word);
         wordInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

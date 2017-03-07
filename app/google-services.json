@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "538508024531",
+    "firebase_url": "https://numad17s-ruihaohuang.firebaseio.com",
+    "project_id": "numad17s-ruihaohuang",
+    "storage_bucket": "numad17s-ruihaohuang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538508024531:android:2e7395b57a8a31ea",
+        "android_client_info": {
+          "package_name": "edu.neu.madcourse.ruihaohuang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538508024531-6qc9uf02ro18be1lt27qm1sct2ehs4qi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ftC2aHFEpYoOT28UvwREnZMGUo1LrG8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,4 +13,29 @@
     tools:context="edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity"
     tools:showIn="@layout/activity_communication">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_chat_with"
+        android:textSize="@dimen/chat_with_size"/>
+
+    <TextView
+        android:layout_height="@dimen/chat_history_height"
+        android:layout_width="match_parent"
+        android:id="@+id/text_history"
+        android:layout_below="@id/text_chat_with"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:id="@+id/edit_send"
+        android:layout_below="@+id/text_history" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_send"
+        android:text="@string/button_send"
+        android:layout_below="@+id/edit_send" />
+
 </RelativeLayout>
