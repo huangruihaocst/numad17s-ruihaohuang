@@ -11,6 +11,7 @@
     <string name="title_activity_scroggle_game">Word Game</string>
     <string name="title_activity_scroggle_acknowledgements">Acknowledgements</string>
     <string name="title_activity_communication">Communication</string>
+    <string name="title_activity_communication_acknowledgements">Acknowledgements</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
@@ -204,6 +205,47 @@
         &lt;p&gt;
         &lt;strong&gt;Zhongxi Wang (wang.zhongx@husky.neu.edu):&#160;&lt;/strong&gt;Told me how to use the UI codes from UTTT
         in my own codes.
+        &lt;/p&gt;
+    </string>
+    <string name="acknowledgements_communication">
+        &lt;h3&gt;Description of this demo&lt;/h3&gt;
+        &lt;p&gt;
+        &#160;&#160;This demo is just to show that I have learned how to use Firebase and that I have tried \
+        everything related to the network that need to be used in the two-player word game and they worked fine, \
+        including easily finding and connecting up with another player of the game, connecting to that person and \
+        send data back and forth quickly between games and saving and getting information contributed \
+        to a central place on the server.\n
+        I showed these abilities by making a simple chatting application with automatic paring system. \
+        When a user logs into the application, he needs to enter his username. After that, the system \
+        will find another user that is also online and pair them. This process requires saving data and getting \
+        data from the Firebase real time database. After they are connected, they can send message with each \
+        other just like a normal chatting program. This process requires sending data back and forth. \
+        And if there is no internet access, the user is not allowed to access this function. \
+        These are all the functions that need to be used in the two-player word game.
+        &lt;/p&gt;
+        &lt;h3&gt;References&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;a href="http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
+"&gt;
+        http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
+&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked"&gt;
+        http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered"&gt;
+        http://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://developer.android.com/index.html"&gt;
+        Android Documentation&lt;/a&gt;,
+        &lt;br/&gt;
+        and &lt;a href="https://firebase.google.com/docs/"&gt;
+        Firebase Documentation
+        &lt;/a&gt;.
+        &lt;/p&gt;
+        &lt;h3&gt;People who helped me&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Zhongxi Wang (wang.zhongx@husky.neu.edu):&#160;&lt;/strong&gt;helped me figure out a way to test the demo code offered by TAs.
         &lt;/p&gt;
     </string>
 

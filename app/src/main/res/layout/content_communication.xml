@@ -38,4 +38,11 @@
         android:text="@string/button_send"
         android:layout_below="@+id/edit_send" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_acknowledgements"
+        android:text="@string/button_acknowledgements"
+        android:layout_below="@+id/button_send"/>
+
 </RelativeLayout>

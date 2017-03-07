@@ -51,30 +51,31 @@
             android:name=".scroggle.ScroggleGameActivity"
             android:label="@string/title_activity_scroggle_game"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".scroggle.ScroggleAcknowledgementsActivity"
             android:label="@string/title_activity_scroggle_acknowledgements"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".communication.CommunicationActivity"
             android:label="@string/title_activity_communication"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <service
-            android:name=".communication.CommunicationMessagingService">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service android:name=".communication.CommunicationMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".communication.CommunicationInstanceIdService">
+        <service android:name=".communication.CommunicationInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".communication.CommunicationAcknowledgementsActivity"
+            android:label="@string/title_activity_communication_acknowledgements"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

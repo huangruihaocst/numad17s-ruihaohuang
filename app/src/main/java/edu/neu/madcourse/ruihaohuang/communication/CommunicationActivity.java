@@ -133,6 +133,13 @@ public class CommunicationActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.text_history)).append(username + ": " + content + "\n");
             }
         });
+
+        findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CommunicationActivity.this, CommunicationAcknowledgementsActivity.class));
+            }
+        });
     }
 
     @Override
