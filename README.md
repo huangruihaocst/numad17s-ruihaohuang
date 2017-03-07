@@ -5,6 +5,8 @@
 - Android Support Library revision 24 or newer
 
 ##Versions
+- Version 1.3:
+ - Add demo codes for Firebase. It is in the form of a chatting application.
 - Version 1.2:
  - Add a Scroggle game. For further information of Scroggle, see its [gameplay here] (http://www.ccs.neu.edu/home/intille/teaching/MAD17S/Scroggle2017.pdf).
 - Version 1.1:
