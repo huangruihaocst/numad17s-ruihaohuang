@@ -274,6 +274,7 @@
     <string name="text_chat_with">You are chatting with %1$s.</string>
     <string name="text_enter_username">Enter your username</string>
     <string name="text_pairing">Pairing&#8230;</string>
+    <string name="text_no_network_access">Network is not accessible. Please check your network.</string>
 
     <string name="info_permission_denied">Permission Denied</string>
 

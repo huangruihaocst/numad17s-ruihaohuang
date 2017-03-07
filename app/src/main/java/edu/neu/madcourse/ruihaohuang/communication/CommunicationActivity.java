@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -58,88 +60,107 @@ public class CommunicationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                ((TextView) findViewById(R.id.text_history))
-                        .append(pairUsername + ": "
-                                + intent.getStringExtra(CommunicationMessagingService.COPA_MESSAGE) + "\n");
-            }
-        };
+        if (!isConnected) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.text_no_network_access))
+                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
+                        }
+                    })
+            .setCancelable(false);
+            builder.create().show();
+        } else {
+            databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-        final View rootView = inflater.inflate(R.layout.dialog_enter_username, null);
-
-        builder.setView(rootView)
-                .setTitle(getString(R.string.text_enter_username))
-                .setPositiveButton(getString(R.string.button_confirm), null)
-                .setCancelable(false);
-        AlertDialog dialog = builder.create();
-        // reference: http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    EditText usernameEditText = (EditText) rootView.findViewById(R.id.edit_enter_username);
-                    @Override
-                    public void onClick(View v) {
-                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String u = usernameEditText.getText().toString();
-                                if (!u.isEmpty() && !dataSnapshot.child("users").hasChild(u)) {
-                                    username = u;
-                                    token = FirebaseInstanceId.getInstance().getToken();
-                                    databaseReference.child("users").child(username).setValue(token);
-                                    (new PairTask(username, token,
-                                            CommunicationActivity.this, CommunicationActivity.this, databaseReference)).execute();
-                                    dialog.dismiss();
-                                } else if (u.isEmpty()) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
-                                } else if (dataSnapshot.child("users").hasChild(u)) {
-                                    Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        dialog.show();
-
-        final EditText sendEditText = (EditText) findViewById(R.id.edit_send);
-
-        findViewById(R.id.button_send).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content = sendEditText.getText().toString();
-                if (!content.isEmpty()) {
-                    sendMessage(content);
-                } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.toast_content_empty), Toast.LENGTH_LONG).show();
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    ((TextView) findViewById(R.id.text_history))
+                            .append(pairUsername + ": "
+                                    + intent.getStringExtra(CommunicationMessagingService.COPA_MESSAGE) + "\n");
                 }
-                // reference: http://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered
-                sendEditText.getText().clear();
-                ((TextView) findViewById(R.id.text_history)).append(username + ": " + content + "\n");
-            }
-        });
+            };
 
-        findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CommunicationActivity.this, CommunicationAcknowledgementsActivity.class));
-            }
-        });
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            LayoutInflater inflater = getLayoutInflater();
+            final View rootView = inflater.inflate(R.layout.dialog_enter_username, null);
+
+            builder.setView(rootView)
+                    .setTitle(getString(R.string.text_enter_username))
+                    .setPositiveButton(getString(R.string.button_confirm), null)
+                    .setCancelable(false);
+            AlertDialog dialog = builder.create();
+            // reference: http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+                    Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(new View.OnClickListener() {
+                        EditText usernameEditText = (EditText) rootView.findViewById(R.id.edit_enter_username);
+                        @Override
+                        public void onClick(View v) {
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String u = usernameEditText.getText().toString();
+                                    if (!u.isEmpty() && !dataSnapshot.child("users").hasChild(u)) {
+                                        username = u;
+                                        token = FirebaseInstanceId.getInstance().getToken();
+                                        databaseReference.child("users").child(username).setValue(token);
+                                        (new PairTask(username, token,
+                                                CommunicationActivity.this, CommunicationActivity.this, databaseReference)).execute();
+                                        dialog.dismiss();
+                                    } else if (u.isEmpty()) {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
+                                    } else if (dataSnapshot.child("users").hasChild(u)) {
+                                        Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+            dialog.show();
+
+            final EditText sendEditText = (EditText) findViewById(R.id.edit_send);
+
+            findViewById(R.id.button_send).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String content = sendEditText.getText().toString();
+                    if (!content.isEmpty()) {
+                        sendMessage(content);
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_content_empty), Toast.LENGTH_LONG).show();
+                    }
+                    // reference: http://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered
+                    sendEditText.getText().clear();
+                    ((TextView) findViewById(R.id.text_history)).append(username + ": " + content + "\n");
+                }
+            });
+
+            findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(CommunicationActivity.this, CommunicationAcknowledgementsActivity.class));
+                }
+            });
+        }
     }
 
     @Override
@@ -153,8 +174,10 @@ public class CommunicationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // reference: http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
-        databaseReference.child("users").child(username).removeValue();
+        if (databaseReference != null) {
+            // reference: http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
+            databaseReference.child("users").child(username).removeValue();
+        }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
