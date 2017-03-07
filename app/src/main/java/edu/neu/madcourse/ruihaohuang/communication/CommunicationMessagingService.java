@@ -1,9 +1,7 @@
 package edu.neu.madcourse.ruihaohuang.communication;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.widget.Toast;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -15,24 +13,24 @@ import com.google.firebase.messaging.RemoteMessage;
 public class CommunicationMessagingService extends FirebaseMessagingService {
 
     private final static String tag = "CommunicationMessagingService";
-    Handler handler;
-    String data;
+    static final public String COPA_RESULT = "com.controlj.copame.backend.COPAService.REQUEST_PROCESSED";
+    static final public String COPA_MESSAGE = "com.controlj.copame.backend.COPAService.COPA_MSG";
+
+    LocalBroadcastManager broadcastManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        handler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-//                Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
-            }
-        };
+        broadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Message message = new Message();
-        data = remoteMessage.toString();
-        handler.sendMessage(message);
+        String message = remoteMessage.getNotification().getBody();
+        Intent intent = new Intent(COPA_RESULT);
+        if(message != null) {
+            intent.putExtra(COPA_MESSAGE, message);
+        }
+        broadcastManager.sendBroadcast(intent);
     }
 }

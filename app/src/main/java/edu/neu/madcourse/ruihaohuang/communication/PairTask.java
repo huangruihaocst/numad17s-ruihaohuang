@@ -43,15 +43,7 @@ class PairTask extends AsyncTask<Void, Void, Void> {
         dialog.setTitle(context.getString(R.string.text_pairing));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-    }
 
-    @Override
-    protected void onPreExecute() {
-        dialog.show();
-    }
-
-    @Override
-    protected Void doInBackground(Void[] params) {
         databaseReference.child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -78,6 +70,15 @@ class PairTask extends AsyncTask<Void, Void, Void> {
 
             }
         });
+    }
+
+    @Override
+    protected void onPreExecute() {
+        dialog.show();
+    }
+
+    @Override
+    protected Void doInBackground(Void[] params) {
         while (!paired) {
             if (paired) {
                 break;
