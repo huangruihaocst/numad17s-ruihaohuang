@@ -62,7 +62,7 @@ public class CommunicationActivity extends AppCompatActivity {
 
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
@@ -83,9 +83,23 @@ public class CommunicationActivity extends AppCompatActivity {
             receiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    ((TextView) findViewById(R.id.text_history))
-                            .append(pairUsername + ": "
-                                    + intent.getStringExtra(CommunicationMessagingService.COPA_MESSAGE) + "\n");
+                    String content = intent.getStringExtra(CommunicationMessagingService.COPA_MESSAGE);
+                    if (content == null) {  // it is a leaving message
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CommunicationActivity.this);
+                        builder.setTitle(String.format(getString(R.string.text_has_left), pairUsername))
+                                .setMessage(getString(R.string.text_reconnect))
+                                .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        onBackPressed();
+                                    }
+                                });
+                        builder.create().show();
+                    } else {
+                        ((TextView) findViewById(R.id.text_history))
+                                .append(pairUsername + ": "
+                                        + content + "\n");
+                    }
                 }
             };
 
@@ -179,6 +193,7 @@ public class CommunicationActivity extends AppCompatActivity {
             databaseReference.child("users").child(username).removeValue();
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        sendLeaveMessage();
     }
 
     void setPaired(String pairUsername, String pairToken) {
@@ -189,14 +204,22 @@ public class CommunicationActivity extends AppCompatActivity {
     }
 
     private void sendMessage(final String content) {
+        send(null, content);
+    }
+
+    private void sendLeaveMessage() {
+        send(pairUsername + " has left", null);
+    }
+
+    private void send(final String title, final String body) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 JSONObject jPayload = new JSONObject();
                 JSONObject jNotification = new JSONObject();
                 try {
-                    jNotification.put("title", null);
-                    jNotification.put("body", content);
+                    jNotification.put("title", title);
+                    jNotification.put("body", body);
                     jNotification.put("sound", "default");
                     jNotification.put("badge", "1");
                     jNotification.put("click_action", "OPEN_ACTIVITY_1");

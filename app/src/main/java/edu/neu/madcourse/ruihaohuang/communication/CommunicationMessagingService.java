@@ -28,9 +28,7 @@ public class CommunicationMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         String message = remoteMessage.getNotification().getBody();
         Intent intent = new Intent(COPA_RESULT);
-        if(message != null) {
-            intent.putExtra(COPA_MESSAGE, message);
-        }
+        intent.putExtra(COPA_MESSAGE, message);
         broadcastManager.sendBroadcast(intent);
     }
 }
