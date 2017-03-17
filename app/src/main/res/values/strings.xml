@@ -12,6 +12,7 @@
     <string name="title_activity_scroggle_acknowledgements">Acknowledgements</string>
     <string name="title_activity_communication">Communication</string>
     <string name="title_activity_communication_acknowledgements">Acknowledgements</string>
+    <string name="title_activity_two_player_scroggle">Two Player Word Game</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>
@@ -31,6 +32,7 @@
     <string name="button_communication">Communication</string>
     <string name="button_send">Send</string>
     <string name="button_confirm">Confirm</string>
+    <string name="button_two_player_scroggle">Two Player Word Game</string>
 
     <string name="description_head_shot">A nice head shot picture of you</string>
     <string-array name="descriptions">

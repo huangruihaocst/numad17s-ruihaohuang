@@ -57,8 +57,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/button_two_player_scroggle"
+        android:text="@string/button_two_player_scroggle"
+        android:layout_below="@+id/button_communication"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/button_quit"
-        android:layout_below="@+id/button_communication"
+        android:layout_below="@+id/button_two_player_scroggle"
         android:id="@+id/button_quit" />
 
 </RelativeLayout>

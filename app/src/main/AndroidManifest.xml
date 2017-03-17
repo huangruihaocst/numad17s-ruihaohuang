@@ -51,15 +51,15 @@
             android:name=".scroggle.ScroggleGameActivity"
             android:label="@string/title_activity_scroggle_game"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".scroggle.ScroggleAcknowledgementsActivity"
             android:label="@string/title_activity_scroggle_acknowledgements"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".communication.CommunicationActivity"
             android:label="@string/title_activity_communication"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".communication.CommunicationMessagingService">
             <intent-filter>
@@ -75,6 +75,10 @@
         <activity
             android:name=".communication.CommunicationAcknowledgementsActivity"
             android:label="@string/title_activity_communication_acknowledgements"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".twoplayerscroggle.TwoPlayerScroggleMainActivity"
+            android:label="@string/title_activity_two_player_scroggle"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

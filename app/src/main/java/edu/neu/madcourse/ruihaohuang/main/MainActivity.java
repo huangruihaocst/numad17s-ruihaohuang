@@ -14,6 +14,7 @@ import edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleMainActivity;
 import edu.neu.madcourse.ruihaohuang.tictactoe.TicTacToeMainActivity;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleMainActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, CommunicationActivity.class));
+            }
+        });
+
+        findViewById(R.id.button_two_player_scroggle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TwoPlayerScroggleMainActivity.class));
             }
         });
 
