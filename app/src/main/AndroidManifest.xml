@@ -59,7 +59,8 @@
         <activity
             android:name=".communication.CommunicationActivity"
             android:label="@string/title_activity_communication"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
 
         <service android:name=".communication.CommunicationMessagingService">
             <intent-filter>
@@ -83,11 +84,13 @@
         <activity
             android:name=".twoplayerscroggle.TwoPlayerScroggleGameActivity"
             android:label="@string/title_activity_two_player_scroggle_game"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".twoplayerscroggle.TwoPlayerScroggleAcknowledgementsActivity"
             android:label="@string/title_activity_two_player_scroggle_acknowledgements"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
