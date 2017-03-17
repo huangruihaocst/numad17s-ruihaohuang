@@ -1,5 +1,6 @@
 package edu.neu.madcourse.ruihaohuang.twoplayerscroggle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,29 @@ public class TwoPlayerScroggleMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_two_player_scroggle_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        findViewById(R.id.button_new_game).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TwoPlayerScroggleMainActivity.this,
+                        TwoPlayerScroggleGameActivity.class));
+            }
+        });
+
+        findViewById(R.id.button_quit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TwoPlayerScroggleMainActivity.this,
+                        TwoPlayerScroggleAcknowledgementsActivity.class));
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

@@ -13,6 +13,8 @@
     <string name="title_activity_communication">Communication</string>
     <string name="title_activity_communication_acknowledgements">Acknowledgements</string>
     <string name="title_activity_two_player_scroggle">Two Player Word Game</string>
+    <string name="title_activity_two_player_scroggle_game">Two Player Word Game</string>
+    <string name="title_activity_two_player_scroggle_acknowledgements">Acknowledgements</string>
 
     <string name="button_about">About</string>
     <string name="button_generate_error">Generate Error</string>

@@ -79,6 +79,14 @@
         <activity
             android:name=".twoplayerscroggle.TwoPlayerScroggleMainActivity"
             android:label="@string/title_activity_two_player_scroggle"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".twoplayerscroggle.TwoPlayerScroggleGameActivity"
+            android:label="@string/title_activity_two_player_scroggle_game"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".twoplayerscroggle.TwoPlayerScroggleAcknowledgementsActivity"
+            android:label="@string/title_activity_two_player_scroggle_acknowledgements"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
