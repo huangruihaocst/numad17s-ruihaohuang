@@ -8,13 +8,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 
 public class CommunicationActivity extends AppCompatActivity {
 
@@ -196,7 +194,7 @@ public class CommunicationActivity extends AppCompatActivity {
         sendLeaveMessage();
     }
 
-    void setPaired(String pairUsername, String pairToken) {
+    public void setPaired(String pairUsername, String pairToken) {
         this.pairUsername = pairUsername;
         this.pairToken = pairToken;
         ((TextView) findViewById(R.id.text_chat_with))

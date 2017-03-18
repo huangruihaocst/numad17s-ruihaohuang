@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.neu.madcourse.ruihaohuang.dictionary.DictionaryActivity"
+    tools:context=".dictionary.DictionaryActivity"
     tools:showIn="@layout/activity_dictionary">
 
     <!--reference: http://stackoverflow.com/questions/6355096/how-to-create-edittext-with-crossx-button-at-end-of-it-->

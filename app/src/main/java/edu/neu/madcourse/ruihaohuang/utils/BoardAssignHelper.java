@@ -1,4 +1,4 @@
-package edu.neu.madcourse.ruihaohuang.scroggle;
+package edu.neu.madcourse.ruihaohuang.utils;
 
 import android.content.Context;
 
@@ -9,22 +9,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 /**
  * Created by huangruihao on 2017/2/16.
  */
 
-class BoardAssignHelper {
+public class BoardAssignHelper {
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
     private static final int AVAILABLE = -1;
 
     private Context context;
 
-    BoardAssignHelper(Context context) {
+    public BoardAssignHelper(Context context) {
         this.context = context;
     }
 
-    void assignBoard(Tile board) {
+    public void assignBoard(Tile board) {
         String[] words = generateWords();
         for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
             assignSmallTile(board.getSubTiles()[i], words[i]);

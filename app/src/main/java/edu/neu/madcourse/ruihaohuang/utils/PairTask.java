@@ -1,4 +1,4 @@
-package edu.neu.madcourse.ruihaohuang.communication;
+package edu.neu.madcourse.ruihaohuang.utils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,12 +12,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity;
 
 /**
  * Created by huangruihao on 2017/3/6.
  */
 
-class PairTask extends AsyncTask<Void, Void, Void> {
+public class PairTask extends AsyncTask<Void, Void, Void> {
     private final static String tag = "PairTask";
 
     private String username;
@@ -32,7 +33,7 @@ class PairTask extends AsyncTask<Void, Void, Void> {
     private String pairToken;
     private String pairUsername;
 
-    PairTask(String username, String token, Activity activity, Context context, DatabaseReference databaseReference) {
+    public PairTask(String username, String token, Activity activity, Context context, DatabaseReference databaseReference) {
         this.username = username;
         this.token = token;
         this.activity = activity;

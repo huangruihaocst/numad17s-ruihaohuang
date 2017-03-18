@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
+import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
+import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     public static final String tag = "ScroggleGameActivity";

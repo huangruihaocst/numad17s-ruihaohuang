@@ -1,4 +1,4 @@
-package edu.neu.madcourse.ruihaohuang.scroggle;
+package edu.neu.madcourse.ruihaohuang.utils;
 
 import android.view.View;
 import android.widget.Button;
@@ -7,8 +7,8 @@ import android.widget.Button;
  * Created by huangruihao on 2017/2/15.
  */
 
-class Tile {
-    static final int BOARD_SIZE = 3;  // use constant value to avoid magic number
+public class Tile {
+    public static final int BOARD_SIZE = 3;  // use constant value to avoid magic number
 
     private Tile subTiles[];
     private String content;  // a letter if it is the 1 * 1 tile, a word if it is a BOARD_SIZE * BOARD_SIZE tile
@@ -25,15 +25,15 @@ class Tile {
     private final static int LETTER_LENGTH = 1;
     private final static int WORD_LENGTH = BOARD_SIZE * BOARD_SIZE;
 
-    Tile() {
+    public Tile() {
         content = "";
     }
 
-    void setSubTiles(Tile[] subTiles) {
+    public void setSubTiles(Tile[] subTiles) {
         this.subTiles = subTiles;
     }
 
-    Tile[] getSubTiles() {
+    public Tile[] getSubTiles() {
         return subTiles;
     }
 
@@ -53,19 +53,19 @@ class Tile {
         this.word = word;
     }
 
-    String getWord() {
+    public String getWord() {
         return word;
     }
 
-    String getContent() {
+    public String getContent() {
         return content;
     }
 
-    void setView(View view) {
+    public void setView(View view) {
         this.view = view;
     }
 
-    void setSelected() {
+    public void setSelected() {
         if (subTiles == null) {  // small tile
             if (view != null) {
                 view.getBackground().setLevel(SMALL_TILE_SELECTED);
@@ -77,7 +77,7 @@ class Tile {
         }
     }
 
-    void setUnselected() {
+    public void setUnselected() {
         if (subTiles == null) {  // small tile
             if (view != null) {
                 view.getBackground().setLevel(SMALL_TILE_UNSELECTED);
@@ -89,7 +89,7 @@ class Tile {
         }
     }
 
-    void setDisappeared() {
+    public void setDisappeared() {
         if (subTiles == null) {  // small tile
             if (view != null) {
                 setContent("");
@@ -101,7 +101,7 @@ class Tile {
         }
     }
 
-    void setRemaining() {
+    public void setRemaining() {
         if (subTiles == null) {  // small tile
             if (view != null) {
                 view.getBackground().setLevel(SMALL_TILE_REMAINING);

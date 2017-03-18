@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
+import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 /**
  * Created by huangruihao on 2017/2/16.
