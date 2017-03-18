@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActivity;
 
 /**
  * Created by huangruihao on 2017/3/6.
@@ -33,12 +34,16 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
     private String pairToken;
     private String pairUsername;
 
-    public PairTask(String username, String token, Activity activity, Context context, DatabaseReference databaseReference) {
+    private String callerTag;
+
+    public PairTask(String username, String token, Activity activity, Context context,
+                    DatabaseReference databaseReference, String callerTag) {
         this.username = username;
         this.token = token;
         this.activity = activity;
         this.context = context;
         this.databaseReference = databaseReference;
+        this.callerTag = callerTag;
         dialog = new ProgressDialog(context);
         dialog.setTitle(context.getString(R.string.text_pairing));
         dialog.setCancelable(false);
@@ -89,17 +94,25 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        ((CommunicationActivity) activity).setPaired(pairUsername, pairToken);
-        dialog.dismiss();
+        switch (callerTag) {
+            case CommunicationActivity.tag:
+                ((CommunicationActivity) activity).setPaired(pairUsername, pairToken);
+                dialog.dismiss();
+                break;
+            case TwoPlayerScroggleGameActivity.tag:
+                ((TwoPlayerScroggleGameActivity) activity).initGame(pairUsername, pairToken);
+                dialog.dismiss();
+                break;
+        }
+
     }
 
     private void findPair(DataSnapshot dataSnapshot) {
         String pairToken = (String) dataSnapshot.getValue();
         if (!pairToken.equals(token)) {
-            paired = true;
             this.pairToken = pairToken;
             this.pairUsername = dataSnapshot.getKey();
-            databaseReference.child("users").child(username).removeValue();
+            paired = true;
         }
     }
 }

@@ -1,20 +1,37 @@
 package edu.neu.madcourse.ruihaohuang.twoplayerscroggle;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
+import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
+
+    public static final String tag = "TwoPlayerScroggleGameActivity";
 
     private static final int MILLISECONDS_PER_SECOND = 1000;
 
@@ -40,6 +57,15 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     TwoPlayerScroggleHelper helper;
 
+    private DatabaseReference databaseReference;
+
+    private String username;
+    private String token;
+    private String opponentToken;
+    private String opponentUsername;
+
+    private BroadcastReceiver receiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +80,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         phaseText.setTypeface(null, Typeface.BOLD);
         timerText.setText(String.format(getString(R.string.text_timer), 10));
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,12 +90,84 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             }
         });
 
-        initializeBoard();
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String content = intent.getStringExtra(TwoPlayerMessagingService.COPA_MESSAGE);
+                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_LONG).show();
+            }
+        };
 
-        helper = new TwoPlayerScroggleHelper();
+        pair();
     }
 
-    void initializeBoard() {
+    private void pair() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View rootView = inflater.inflate(R.layout.dialog_enter_username, null);
+
+        builder.setView(rootView)
+                .setTitle(getString(R.string.text_enter_username))
+                .setPositiveButton(getString(R.string.button_confirm), null);
+        AlertDialog dialog = builder.create();
+        // reference: http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    EditText usernameEditText = (EditText) rootView.findViewById(R.id.edit_enter_username);
+                    @Override
+                    public void onClick(View v) {
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                String u = usernameEditText.getText().toString();
+                                if (!u.isEmpty() && !dataSnapshot.child("users").hasChild(u)) {
+                                    username = u;
+                                    token = FirebaseInstanceId.getInstance().getToken();
+                                    databaseReference.child("users").child(username).setValue(token);
+                                    (new PairTask(username, token,
+                                            TwoPlayerScroggleGameActivity.this,
+                                            TwoPlayerScroggleGameActivity.this, databaseReference, tag))
+                                            .execute();
+                                    dialog.dismiss();
+                                } else if (u.isEmpty()) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
+                                } else if (dataSnapshot.child("users").hasChild(u)) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    public void initGame(String opponentUsername, String opponentToken) {
+        this.opponentUsername = opponentUsername;
+        this.opponentToken = opponentToken;
+        initializeBoard();
+        helper = new TwoPlayerScroggleHelper();
+        databaseReference.child("users").child(opponentUsername).removeValue();
+    }
+
+    private void initializeBoard() {
         // initialize all the Tiles by calling their constructors
         board = new Tile();
         for (int large = 0; large < BOARD_SIZE * BOARD_SIZE; ++large) {

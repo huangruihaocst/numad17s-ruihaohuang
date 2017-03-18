@@ -39,7 +39,7 @@ import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 
 public class CommunicationActivity extends AppCompatActivity {
 
-    private final static String tag = "CommunicationActivity";
+    public final static String tag = "CommunicationActivity";
     private final static String SERVER_KEY = "key=AAAAfWGUWtM:APA91bFNCTZfeLBBYem4PEhwq3FW-VQzTdoMcdbPzrn8kOQnHs0SRkYnyTle22pjE_cMAQNmk-5ssizDGAlamjvoKR-l51ZZS1YvIbwAklmmFR0lEsAjR02IyCiPrXAxX5WjIJnI_cxX";
 
     private String username;
@@ -50,8 +50,6 @@ public class CommunicationActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private BroadcastReceiver receiver;
-
-    private AlertDialog usernameDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +109,9 @@ public class CommunicationActivity extends AppCompatActivity {
             builder.setView(rootView)
                     .setTitle(getString(R.string.text_enter_username))
                     .setPositiveButton(getString(R.string.button_confirm), null);
-            usernameDialog = builder.create();
+            AlertDialog dialog = builder.create();
             // reference: http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-            usernameDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
                 public void onShow(final DialogInterface dialog) {
                     Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -130,7 +128,8 @@ public class CommunicationActivity extends AppCompatActivity {
                                         token = FirebaseInstanceId.getInstance().getToken();
                                         databaseReference.child("users").child(username).setValue(token);
                                         (new PairTask(username, token,
-                                                CommunicationActivity.this, CommunicationActivity.this, databaseReference)).execute();
+                                                CommunicationActivity.this, CommunicationActivity.this,
+                                                databaseReference, tag)).execute();
                                         dialog.dismiss();
                                     } else if (u.isEmpty()) {
                                         Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
@@ -148,14 +147,15 @@ public class CommunicationActivity extends AppCompatActivity {
                     });
                 }
             });
-            usernameDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            // reference: http://stackoverflow.com/questions/6204972/override-dialog-onbackpressed
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     finish();
                 }
             });
-            usernameDialog.setCanceledOnTouchOutside(false);
-            usernameDialog.show();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
 
             final EditText sendEditText = (EditText) findViewById(R.id.edit_send);
 
@@ -211,6 +211,8 @@ public class CommunicationActivity extends AppCompatActivity {
         this.pairToken = pairToken;
         ((TextView) findViewById(R.id.text_chat_with))
                 .setText(String.format(getString(R.string.text_chat_with), pairUsername));
+        Toast.makeText(getApplicationContext(), pairToken, Toast.LENGTH_LONG).show();
+        databaseReference.child("users").child(pairUsername).removeValue();
     }
 
     private void sendMessage(final String content) {
