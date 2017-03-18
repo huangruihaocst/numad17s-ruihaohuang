@@ -13,8 +13,8 @@
     tools:showIn="@layout/activity_two_player_scroggle_game">
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="338dp"
+        android:layout_height="27dp"
         android:id="@+id/text_phase"
         android:textSize="@dimen/phase_text_size"
         android:textAlignment="center"

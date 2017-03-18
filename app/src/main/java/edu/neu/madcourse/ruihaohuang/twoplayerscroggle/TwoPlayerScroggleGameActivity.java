@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.communication.CommunicationMessagingService;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
 import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 import edu.neu.madcourse.ruihaohuang.utils.Tile;
@@ -63,6 +66,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private String token;
     private String opponentToken;
     private String opponentUsername;
+    private boolean willGoFirst;
 
     private BroadcastReceiver receiver;
 
@@ -101,6 +105,28 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         pair();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
+                new IntentFilter(CommunicationMessagingService.COPA_RESULT)
+        );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (databaseReference != null && username != null) {
+            removeAllPossibleData(username);
+        }
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        }
+        if (opponentToken != null) {
+            sendLeaveMessage();
+        }
+    }
+
     private void pair() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -124,17 +150,30 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String u = usernameEditText.getText().toString();
-                                if (!u.isEmpty() && !dataSnapshot.child("users").hasChild(u)) {
+                                if (!u.isEmpty() && !u.contains(" ") && !dataSnapshot.child("users").hasChild(u)) {
                                     username = u;
                                     token = FirebaseInstanceId.getInstance().getToken();
-                                    databaseReference.child("users").child(username).setValue(token);
+                                    int goFirst = -1;
+                                    // wait for his opponent. Decide who will go first
+                                    if (dataSnapshot.child("users").getChildrenCount() == 0) {
+                                        goFirst = generateGoFirst();
+                                        willGoFirst = (goFirst == 1);
+                                        databaseReference.child("users")
+                                                .child(username + " " + String.valueOf(goFirst))
+                                                .setValue(token);
+                                    } else {
+                                        databaseReference.child("users")
+                                                .child(username).setValue(token);
+                                    }
                                     (new PairTask(username, token,
                                             TwoPlayerScroggleGameActivity.this,
-                                            TwoPlayerScroggleGameActivity.this, databaseReference, tag))
+                                            TwoPlayerScroggleGameActivity.this, databaseReference, tag, goFirst))
                                             .execute();
                                     dialog.dismiss();
                                 } else if (u.isEmpty()) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
+                                } else if (u.contains(" ")) {
+                                    Toast.makeText(getApplicationContext(), getString(R.string.toast_username_contains_space), Toast.LENGTH_LONG).show();
                                 } else if (dataSnapshot.child("users").hasChild(u)) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
                                 }
@@ -159,15 +198,17 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void initGame(String opponentUsername, String opponentToken) {
+    public void initGame(String opponentUsername, String opponentToken, int goFirst) {
         this.opponentUsername = opponentUsername;
         this.opponentToken = opponentToken;
-        initializeBoard();
+        initBoard();
         helper = new TwoPlayerScroggleHelper();
-        databaseReference.child("users").child(opponentUsername).removeValue();
+        removeAllPossibleData(opponentUsername);
+        willGoFirst = (goFirst == 1);
+        Toast.makeText(getApplicationContext(), String.valueOf(willGoFirst), Toast.LENGTH_LONG).show();
     }
 
-    private void initializeBoard() {
+    private void initBoard() {
         // initialize all the Tiles by calling their constructors
         board = new Tile();
         for (int large = 0; large < BOARD_SIZE * BOARD_SIZE; ++large) {
@@ -203,6 +244,22 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         // that each BOARD_SIZE * BOARD_SIZE tile can form a word
         BoardAssignHelper boardAssignHelper = new BoardAssignHelper(getApplicationContext());
         boardAssignHelper.assignBoard(board);
+    }
+
+    private void sendLeaveMessage() {
+        // TODO: send message to opponent if you player leaves
+    }
+
+    private int generateGoFirst() {
+        // reference: http://stackoverflow.com/questions/28401093/problems-generating-a-math-random-number-either-0-or-1
+        return Math.random() < 0.5 ? 0: 1;
+    }
+
+    private void removeAllPossibleData(String username) {
+        // reference: http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
+        databaseReference.child("users").child(username).removeValue();
+        databaseReference.child("users").child(username + " 0").removeValue();
+        databaseReference.child("users").child(username + " 1").removeValue();
     }
 
 }

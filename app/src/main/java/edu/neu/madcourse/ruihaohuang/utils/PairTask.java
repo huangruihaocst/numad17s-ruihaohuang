@@ -21,6 +21,9 @@ import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActi
 
 public class PairTask extends AsyncTask<Void, Void, Void> {
     private final static String tag = "PairTask";
+    private final static int CONTAINS_GO_FIRST_INFO_MIN_LENGTH = 2;
+    private final static char OPPONENT_GO_FIRST = '1';
+    private final static char PLAYER_GO_FIRST = '0';
 
     private String username;
     private String token;
@@ -36,6 +39,9 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
 
     private String callerTag;
 
+    private int goFirst;
+
+    // goFirst: 1 for yes, 0 for no, -1 for don't know
     public PairTask(String username, String token, Activity activity, Context context,
                     DatabaseReference databaseReference, String callerTag) {
         this.username = username;
@@ -77,6 +83,12 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
         });
     }
 
+    public PairTask(String username, String token, Activity activity, Context context,
+                    DatabaseReference databaseReference, String callerTag, int goFirst) {
+        this(username, token, activity, context, databaseReference, callerTag);
+        this.goFirst = goFirst;
+    }
+
     @Override
     protected void onPreExecute() {
         dialog.show();
@@ -100,7 +112,7 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
                 dialog.dismiss();
                 break;
             case TwoPlayerScroggleGameActivity.tag:
-                ((TwoPlayerScroggleGameActivity) activity).initGame(pairUsername, pairToken);
+                ((TwoPlayerScroggleGameActivity) activity).initGame(pairUsername, pairToken, goFirst);
                 dialog.dismiss();
                 break;
         }
@@ -109,10 +121,34 @@ public class PairTask extends AsyncTask<Void, Void, Void> {
 
     private void findPair(DataSnapshot dataSnapshot) {
         String pairToken = (String) dataSnapshot.getValue();
-        if (!pairToken.equals(token)) {
-            this.pairToken = pairToken;
-            this.pairUsername = dataSnapshot.getKey();
-            paired = true;
+        switch (callerTag) {
+            case CommunicationActivity.tag:
+                if (!pairToken.equals(token)) {
+                    this.pairToken = pairToken;
+                    this.pairUsername = dataSnapshot.getKey();
+                    paired = true;
+                }
+                break;
+            case TwoPlayerScroggleGameActivity.tag:
+                if (!pairToken.equals(token)) {
+                    this.pairToken = pairToken;
+                    // contains go first information
+                    String tempPairUsername = dataSnapshot.getKey();
+                    if (tempPairUsername.length() >= CONTAINS_GO_FIRST_INFO_MIN_LENGTH
+                            && tempPairUsername.charAt(tempPairUsername.length() - 2) == ' ') {
+                        if (tempPairUsername.charAt(tempPairUsername.length() - 1) == OPPONENT_GO_FIRST) {
+                            goFirst = 0;
+                        } else if (tempPairUsername.charAt(tempPairUsername.length() - 1) == PLAYER_GO_FIRST) {
+                            goFirst = 1;
+                        }
+                        this.pairUsername = tempPairUsername.substring(0, tempPairUsername.length() - 2);
+                    } else {
+                        this.pairUsername = dataSnapshot.getKey();
+                    }
+                    paired = true;
+                }
+                break;
         }
+
     }
 }

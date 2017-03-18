@@ -62,6 +62,7 @@
     <string name="toast_word_found">Word %1$s found. You get %2$d points.</string>
     <string name="toast_hints">One of the word is %1$s</string>
     <string name="toast_username_already_registered">This username has already been registered</string>
+    <string name="toast_username_contains_space">Username cannot contain space</string>
     <string name="toast_no_username">Please enter your username</string>
     <string name="toast_content_empty">Content cannot be empty</string>
 
