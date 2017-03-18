@@ -51,6 +51,8 @@ public class CommunicationActivity extends AppCompatActivity {
 
     private BroadcastReceiver receiver;
 
+    private AlertDialog usernameDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,11 +110,10 @@ public class CommunicationActivity extends AppCompatActivity {
 
             builder.setView(rootView)
                     .setTitle(getString(R.string.text_enter_username))
-                    .setPositiveButton(getString(R.string.button_confirm), null)
-                    .setCancelable(false);
-            AlertDialog dialog = builder.create();
+                    .setPositiveButton(getString(R.string.button_confirm), null);
+            usernameDialog = builder.create();
             // reference: http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            usernameDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
                 public void onShow(final DialogInterface dialog) {
                     Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
@@ -147,7 +148,14 @@ public class CommunicationActivity extends AppCompatActivity {
                     });
                 }
             });
-            dialog.show();
+            usernameDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    finish();
+                }
+            });
+            usernameDialog.setCanceledOnTouchOutside(false);
+            usernameDialog.show();
 
             final EditText sendEditText = (EditText) findViewById(R.id.edit_send);
 
@@ -186,12 +194,16 @@ public class CommunicationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (databaseReference != null) {
+        if (databaseReference != null && username != null) {
             // reference: http://stackoverflow.com/questions/26537720/how-to-delete-remove-nodes-on-firebase
             databaseReference.child("users").child(username).removeValue();
         }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-        sendLeaveMessage();
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        }
+        if (pairToken != null) {
+            sendLeaveMessage();
+        }
     }
 
     public void setPaired(String pairUsername, String pairToken) {
