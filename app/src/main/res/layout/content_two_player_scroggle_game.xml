@@ -4,8 +4,137 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActivity"
     tools:showIn="@layout/activity_two_player_scroggle_game">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_phase"
+        android:textSize="@dimen/phase_text_size"
+        android:textAlignment="center"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_timer"
+        android:textSize="@dimen/timer_text_size"
+        android:textAlignment="center"
+        android:layout_below="@+id/text_phase"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_phase"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+
+    <include
+        layout="@layout/scroggle_large_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/scroggle_board"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_timer" />
+
+    <Button
+        android:id="@+id/button_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_low"
+        android:drawableTop="@drawable/scroggle_pause"
+        android:text="@string/button_pause"
+        android:textSize="@dimen/control_button_text_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        app:layout_constraintTop_toBottomOf="@+id/scroggle_board"
+        app:layout_constraintLeft_toRightOf="@+id/button_clear"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_score"
+        android:textSize="@dimen/score_text_size"
+        android:textAlignment="center"
+        android:layout_below="@+id/scroggle_board"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:layout_editor_absoluteY="406dp"
+        tools:layout_editor_absoluteX="169dp" />
+
+    <Button
+        android:id="@+id/button_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_low"
+        android:drawableTop="@drawable/scroggle_clear"
+        android:text="@string/button_clear"
+        android:textSize="@dimen/control_button_text_size"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/button_control"
+        android:layout_toStartOf="@+id/button_control"
+        android:layout_marginTop="9dp"
+        app:layout_constraintTop_toBottomOf="@+id/scroggle_board"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/scroggle_board" />
+
+    <Button
+        android:id="@+id/button_hints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_low"
+        android:drawableTop="@drawable/scroggle_hint"
+        android:text="@string/button_hint"
+        android:textSize="@dimen/control_button_text_size"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_control"
+        android:layout_toEndOf="@+id/button_control"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@+id/button_control"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/scroggle_board"
+        app:layout_constraintTop_toBottomOf="@+id/scroggle_board"
+        app:layout_constraintHorizontal_bias="1.0" />
+
+    <ImageButton
+        android:id="@+id/button_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/scroggle_board"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/scroggle_board"
+        android:background="@drawable/scroggle_volume_up"
+        android:contentDescription="@string/description_volume"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
