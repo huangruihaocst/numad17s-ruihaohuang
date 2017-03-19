@@ -62,12 +62,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
 
-        <service android:name=".communication.CommunicationMessagingService">
+        <service android:name=".utils.MyMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".communication.CommunicationInstanceIdService">
+        <service android:name=".utils.MyInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -91,6 +91,7 @@
             android:label="@string/title_activity_two_player_scroggle_acknowledgements"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
     </application>
 
 </manifest>

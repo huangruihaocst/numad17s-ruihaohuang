@@ -32,6 +32,16 @@ public class BoardAssignHelper {
         }
     }
 
+    public void assignBoard(Tile board, String boardArrangement) {
+        for (int i = 0;i < BOARD_SIZE * BOARD_SIZE; ++i) {
+            Tile largeTile = board.getSubTiles()[i];
+            for (int j = 0;j < BOARD_SIZE * BOARD_SIZE; ++j) {
+                largeTile.getSubTiles()[j].setContent(
+                        String.valueOf(boardArrangement.charAt(i * BOARD_SIZE * BOARD_SIZE + j)));
+            }
+        }
+    }
+
     // generate words with fixed length
     private String[] generateWords() {
         ArrayList<String> wordList = new ArrayList<>();
@@ -147,4 +157,5 @@ public class BoardAssignHelper {
         }
         return true;
     }
+
 }

@@ -1,13 +1,13 @@
-package edu.neu.madcourse.ruihaohuang.communication;
+package edu.neu.madcourse.ruihaohuang.utils;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 /**
- * Created by huangruihao on 2017/3/4.
+ * Created by huangruihao on 2017/3/18.
  */
 
-public class CommunicationInstanceIdService extends FirebaseInstanceIdService {
+public class MyInstanceIdService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {

@@ -35,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.utils.MyMessagingService;
 import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 
 public class CommunicationActivity extends AppCompatActivity {
@@ -48,6 +49,9 @@ public class CommunicationActivity extends AppCompatActivity {
     private String pairUsername;
 
     private DatabaseReference databaseReference;
+
+    private final static String TITLE_CHAT = "communication.chat";
+    private final static String TITLE_LEAVE = "communication.leave";
 
     private BroadcastReceiver receiver;
 
@@ -81,22 +85,26 @@ public class CommunicationActivity extends AppCompatActivity {
             receiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    String content = intent.getStringExtra(CommunicationMessagingService.COPA_MESSAGE);
-                    if (content == null) {  // it is a leaving message
-                        AlertDialog.Builder builder = new AlertDialog.Builder(CommunicationActivity.this);
-                        builder.setTitle(String.format(getString(R.string.text_has_left), pairUsername))
-                                .setMessage(getString(R.string.text_reconnect))
-                                .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        onBackPressed();
-                                    }
-                                });
-                        builder.create().show();
-                    } else {
-                        ((TextView) findViewById(R.id.text_history))
-                                .append(pairUsername + ": "
-                                        + content + "\n");
+                    String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
+                    String title = content.split(MyMessagingService.splitter)[0];
+                    String body = content.split(MyMessagingService.splitter)[1];
+                    switch (title) {
+                        case TITLE_CHAT:
+                            ((TextView) findViewById(R.id.text_history))
+                                    .append(pairUsername + ": "
+                                            + body + "\n");
+                            break;
+                        case TITLE_LEAVE:
+                            AlertDialog.Builder builder = new AlertDialog.Builder(CommunicationActivity.this);
+                            builder.setTitle(String.format(getString(R.string.text_has_left), pairUsername))
+                                    .setMessage(getString(R.string.text_reconnect))
+                                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            onBackPressed();
+                                        }
+                                    });
+                            builder.create().show();
                     }
                 }
             };
@@ -165,12 +173,12 @@ public class CommunicationActivity extends AppCompatActivity {
                     String content = sendEditText.getText().toString();
                     if (!content.isEmpty()) {
                         sendMessage(content);
+                        sendEditText.getText().clear();
+                        ((TextView) findViewById(R.id.text_history)).append(username + ": " + content + "\n");
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.toast_content_empty), Toast.LENGTH_LONG).show();
                     }
                     // reference: http://stackoverflow.com/questions/5308200/clear-text-in-edittext-when-entered
-                    sendEditText.getText().clear();
-                    ((TextView) findViewById(R.id.text_history)).append(username + ": " + content + "\n");
                 }
             });
 
@@ -187,7 +195,7 @@ public class CommunicationActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
-                new IntentFilter(CommunicationMessagingService.COPA_RESULT)
+                new IntentFilter(MyMessagingService.COPA_RESULT)
         );
     }
 
@@ -211,16 +219,15 @@ public class CommunicationActivity extends AppCompatActivity {
         this.pairToken = pairToken;
         ((TextView) findViewById(R.id.text_chat_with))
                 .setText(String.format(getString(R.string.text_chat_with), pairUsername));
-        Toast.makeText(getApplicationContext(), pairToken, Toast.LENGTH_LONG).show();
         databaseReference.child("users").child(pairUsername).removeValue();
     }
 
     private void sendMessage(final String content) {
-        send(null, content);
+        send(TITLE_CHAT, content);
     }
 
     private void sendLeaveMessage() {
-        send(pairUsername + " has left", null);
+        send(TITLE_LEAVE, null);
     }
 
     private void send(final String title, final String body) {

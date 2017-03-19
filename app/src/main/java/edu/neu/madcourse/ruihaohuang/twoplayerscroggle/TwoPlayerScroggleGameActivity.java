@@ -1,5 +1,6 @@
 package edu.neu.madcourse.ruihaohuang.twoplayerscroggle;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,9 +27,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import edu.neu.madcourse.ruihaohuang.R;
-import edu.neu.madcourse.ruihaohuang.communication.CommunicationMessagingService;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
+import edu.neu.madcourse.ruihaohuang.utils.MyMessagingService;
 import edu.neu.madcourse.ruihaohuang.utils.PairTask;
 import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
@@ -36,9 +45,12 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     public static final String tag = "TwoPlayerScroggleGameActivity";
 
-    private static final int MILLISECONDS_PER_SECOND = 1000;
+    private final static String SERVER_KEY = "key=AAAAfWGUWtM:APA91bFNCTZfeLBBYem4PEhwq3FW-VQzTdoMcdbPzrn8kOQnHs0SRkYnyTle22pjE_cMAQNmk-5ssizDGAlamjvoKR-l51ZZS1YvIbwAklmmFR0lEsAjR02IyCiPrXAxX5WjIJnI_cxX";
 
+    private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
+
+    public static final String TITLE_BOARD = "twoplayerscroggle.board";
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -58,7 +70,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     TextView phaseText;
     TextView timerText;
 
-    TwoPlayerScroggleHelper helper;
+    TwoPlayerScroggleHelper scroggleHelper;
+    BoardAssignHelper boardAssignHelper;
 
     private DatabaseReference databaseReference;
 
@@ -69,6 +82,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private boolean willGoFirst;
 
     private BroadcastReceiver receiver;
+
+    ProgressDialog assigningBoardDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +101,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        boardAssignHelper = new BoardAssignHelper(getApplicationContext());
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,8 +114,16 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String content = intent.getStringExtra(TwoPlayerMessagingService.COPA_MESSAGE);
-                Toast.makeText(getApplicationContext(), content, Toast.LENGTH_LONG).show();
+                String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
+                String title = content.split(MyMessagingService.splitter)[0];
+                String body = content.split(MyMessagingService.splitter)[1];
+                switch (title) {
+                    case TITLE_BOARD:
+                        initBoard();
+                        boardAssignHelper.assignBoard(board, body);
+                        assigningBoardDialog.dismiss();
+                        break;
+                }
             }
         };
 
@@ -109,7 +134,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
-                new IntentFilter(CommunicationMessagingService.COPA_RESULT)
+                new IntentFilter(MyMessagingService.COPA_RESULT)
         );
     }
 
@@ -174,7 +199,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
                                 } else if (u.contains(" ")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_username_contains_space), Toast.LENGTH_LONG).show();
-                                } else if (dataSnapshot.child("users").hasChild(u)) {
+                                } else if (dataSnapshot.child("users").hasChild(u)
+                                        || dataSnapshot.child("users").hasChild(u + " 0")
+                                        || dataSnapshot.child("users").hasChild(u + " 1")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -201,11 +228,24 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     public void initGame(String opponentUsername, String opponentToken, int goFirst) {
         this.opponentUsername = opponentUsername;
         this.opponentToken = opponentToken;
-        initBoard();
-        helper = new TwoPlayerScroggleHelper();
+        scroggleHelper = new TwoPlayerScroggleHelper();
         removeAllPossibleData(opponentUsername);
         willGoFirst = (goFirst == 1);
-        Toast.makeText(getApplicationContext(), String.valueOf(willGoFirst), Toast.LENGTH_LONG).show();
+        if (willGoFirst) {
+            initBoard();  // the one who goes first decides the board
+            // set content for all the tiles following the rule
+            // that each BOARD_SIZE * BOARD_SIZE tile can form a word
+            boardAssignHelper.assignBoard(board);
+            String boardArrangement = getBoardArrangement();
+            Toast.makeText(getApplicationContext(), boardArrangement, Toast.LENGTH_LONG).show();
+            sendMessage(TITLE_BOARD, boardArrangement);
+        } else {
+            assigningBoardDialog = new ProgressDialog(TwoPlayerScroggleGameActivity.this);
+            assigningBoardDialog.setCancelable(false);
+            assigningBoardDialog.setCanceledOnTouchOutside(false);
+            assigningBoardDialog.setTitle(getString(R.string.text_assigning_board));
+            assigningBoardDialog.show();
+        }
     }
 
     private void initBoard() {
@@ -234,16 +274,11 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 inner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        helper.selectSmallTile(l, s);
+                        scroggleHelper.selectSmallTile(l, s);
                     }
                 });
             }
         }
-
-        // set content for all the tiles following the rule
-        // that each BOARD_SIZE * BOARD_SIZE tile can form a word
-        BoardAssignHelper boardAssignHelper = new BoardAssignHelper(getApplicationContext());
-        boardAssignHelper.assignBoard(board);
     }
 
     private void sendLeaveMessage() {
@@ -262,4 +297,51 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         databaseReference.child("users").child(username + " 1").removeValue();
     }
 
+    private String getBoardArrangement() {
+        String boardAssignment = "";
+        for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+            Tile largeTile = board.getSubTiles()[i];
+            for (int j = 0; j < BOARD_SIZE * BOARD_SIZE; ++j) {
+                boardAssignment += largeTile.getSubTiles()[j].getContent();
+            }
+        }
+        return boardAssignment;
+    }
+
+    // send any message to the opponent
+    private void sendMessage(final String title, final String body) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jPayload = new JSONObject();
+                JSONObject jNotification = new JSONObject();
+                try {
+                    jNotification.put("title", title);
+                    jNotification.put("body", body);
+                    jNotification.put("sound", "default");
+                    jNotification.put("badge", "1");
+                    jNotification.put("click_action", "OPEN_ACTIVITY_1");
+
+                    jPayload.put("to", opponentToken);
+                    jPayload.put("priority", "high");
+                    jPayload.put("notification", jNotification);
+
+                    URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", SERVER_KEY);
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    OutputStream outputStream = conn.getOutputStream();
+                    outputStream.write(jPayload.toString().getBytes());
+                    outputStream.close();
+
+                    conn.getInputStream();
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }
