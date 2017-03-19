@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -100,6 +101,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private boolean playMusic = true;
+
+    private Button controlButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,24 +212,40 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
             pair();
 
-            timer = new CountDownTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND,
-                    MILLISECONDS_PER_SECOND) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    timerText.setText(String.format(getString(R.string.text_timer),
-                            millisUntilFinished / MILLISECONDS_PER_SECOND));
-                    scroggleHelper.setTimeLeft(millisUntilFinished);
-                }
+            setTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND);
 
+            controlButton = (Button) findViewById(R.id.button_control);
+            controlButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onFinish() {
-                    scroggleHelper.turnEnds();
-                    sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
-                    timerText.setText(getString(R.string.text_opponent_turn));
-                    scroggleHelper.clearAllSelected();
+                public void onClick(View v) {
+                    if (scroggleHelper.isPlaying()) {
+                        pause();
+                    } else {
+                        resume();
+                    }
                 }
-            };
+            });
         }
+    }
+
+    private void pause() {
+        findViewById(R.id.scroggle_board).setVisibility(View.INVISIBLE);
+        controlButton.setText(getString(R.string.button_resume));
+        // reference: http://stackoverflow.com/questions/4919703/how-to-set-property-androiddrawabletop-of-a-button-at-runtime
+        controlButton.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.scroggle_resume), null, null);
+        scroggleHelper.pause();
+        timer.cancel();
+    }
+
+    private void resume() {
+        findViewById(R.id.scroggle_board).setVisibility(View.VISIBLE);
+        controlButton.setText(getString(R.string.button_pause));
+        controlButton.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.scroggle_pause), null, null);
+        scroggleHelper.resume();
+        setTimer(scroggleHelper.getTimeLeft());
+        timer.start();
     }
 
     @Override
@@ -526,5 +545,24 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    private void setTimer(long milliseconds) {
+        timer = new CountDownTimer(milliseconds, MILLISECONDS_PER_SECOND) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerText.setText(String.format(getString(R.string.text_timer),
+                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+                scroggleHelper.setTimeLeft(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                scroggleHelper.turnEnds();
+                sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
+                timerText.setText(getString(R.string.text_opponent_turn));
+                scroggleHelper.clearAllSelected();
+            }
+        };
     }
 }
