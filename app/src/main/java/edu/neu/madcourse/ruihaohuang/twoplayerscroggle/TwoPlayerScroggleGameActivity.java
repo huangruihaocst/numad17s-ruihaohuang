@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
@@ -36,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
 import edu.neu.madcourse.ruihaohuang.utils.MyMessagingService;
 import edu.neu.madcourse.ruihaohuang.utils.PairTask;
@@ -69,6 +72,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     TextView phaseText;
     TextView timerText;
+    TextView myScoreText;
+    TextView opponentScoreText;
 
     TwoPlayerScroggleHelper scroggleHelper;
     BoardAssignHelper boardAssignHelper;
@@ -94,10 +99,15 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
         phaseText = (TextView) findViewById(R.id.text_phase);
         timerText = (TextView) findViewById(R.id.text_timer);
+        myScoreText = (TextView) findViewById(R.id.text_my_score);
+        opponentScoreText = (TextView) findViewById(R.id.text_opponent_score);
 
         phaseText.setText(String.format(getString(R.string.text_phase), "ONE"));
         phaseText.setTypeface(null, Typeface.BOLD);
         timerText.setText(String.format(getString(R.string.text_timer), 10));
+        myScoreText.setText(String.format(getString(R.string.text_my_score), 0));
+        opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                getString(R.string.text_opponent), 0));
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -107,7 +117,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: handle submission
+                scroggleHelper.checkWord();
+                myScoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getMyScore()));
             }
         });
 
@@ -128,6 +139,22 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         };
 
         pair();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            switch (requestCode) {
+                case DictionaryHelper.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                    if (grantResults.length > 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        scroggleHelper.initializeDb();
+                    }
+                    return;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
@@ -228,7 +255,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     public void initGame(String opponentUsername, String opponentToken, int goFirst) {
         this.opponentUsername = opponentUsername;
         this.opponentToken = opponentToken;
-        scroggleHelper = new TwoPlayerScroggleHelper();
         removeAllPossibleData(opponentUsername);
         willGoFirst = (goFirst == 1);
         if (willGoFirst) {
@@ -237,7 +263,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             // that each BOARD_SIZE * BOARD_SIZE tile can form a word
             boardAssignHelper.assignBoard(board);
             String boardArrangement = getBoardArrangement();
-            Toast.makeText(getApplicationContext(), boardArrangement, Toast.LENGTH_LONG).show();
             sendMessage(TITLE_BOARD, boardArrangement);
         } else {
             assigningBoardDialog = new ProgressDialog(TwoPlayerScroggleGameActivity.this);
@@ -245,7 +270,15 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             assigningBoardDialog.setCanceledOnTouchOutside(false);
             assigningBoardDialog.setTitle(getString(R.string.text_assigning_board));
             assigningBoardDialog.show();
+            initBoard();
         }
+        opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                opponentUsername, 0));
+        Toast.makeText(getApplicationContext(), String.format(getString(R.string.toast_show_opponent),
+                opponentUsername, willGoFirst ? getString(R.string.toast_you): opponentUsername),
+                Toast.LENGTH_LONG).show();
+        scroggleHelper = new TwoPlayerScroggleHelper(getApplicationContext(), TwoPlayerScroggleGameActivity.this,
+                board);
     }
 
     private void initBoard() {

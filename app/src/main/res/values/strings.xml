@@ -65,6 +65,8 @@
     <string name="toast_username_contains_space">Username cannot contain space</string>
     <string name="toast_no_username">Please enter your username</string>
     <string name="toast_content_empty">Content cannot be empty</string>
+    <string name="toast_show_opponent">Your opponent is %1$s. %2$s will go first.</string>
+    <string name="toast_you">You</string>
 
     <string name="dialog_wait_create_database">Initializing database&#8230;\n
         Do not close the application until it has finished&#8230;</string>
@@ -256,10 +258,13 @@
 
     <string name="text_timer">Time Left: %1$d</string>
     <string name="text_score">Score: %1$d</string>
+    <string name="text_my_score">You: %1$d</string>
+    <string name="text_opponent_score">%1$s: %2$d</string>
     <string name="text_phase">PHASE %1$s</string>
     <string name="text_game_over">Game Over</string>
     <string name="text_show_score">Your score is %1$d</string>
     <string name="text_tutorial">Tutorial-Phase %1$s</string>
+    <string name="text_opponent">Opponent</string>
     <string name="text_tutorial_phase_one">
         Select letters from the same tile continuously to form words. \
         The current letter must be next to the last one (up/down/diagonal). \
