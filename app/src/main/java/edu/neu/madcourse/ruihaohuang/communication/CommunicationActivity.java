@@ -76,9 +76,10 @@ public class CommunicationActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             onBackPressed();
                         }
-                    })
-            .setCancelable(false);
-            builder.create().show();
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         } else {
             databaseReference = FirebaseDatabase.getInstance().getReference();
 

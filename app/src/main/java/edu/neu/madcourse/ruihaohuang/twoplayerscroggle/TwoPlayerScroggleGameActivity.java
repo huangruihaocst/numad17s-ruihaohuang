@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -104,105 +106,125 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        phaseText = (TextView) findViewById(R.id.text_phase);
-        timerText = (TextView) findViewById(R.id.text_timer);
-        myScoreText = (TextView) findViewById(R.id.text_my_score);
-        opponentScoreText = (TextView) findViewById(R.id.text_opponent_score);
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-        phaseText.setText(String.format(getString(R.string.text_phase),
-                TwoPlayerScroggleHelper.Phase.ONE.toString()));
-        phaseText.setTypeface(null, Typeface.BOLD);
-        myScoreText.setText(String.format(getString(R.string.text_my_score), 0));
-        opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
-                getString(R.string.text_opponent), 0));
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        boardAssignHelper = new BoardAssignHelper(getApplicationContext());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // must call before checkWord()
-                String move = scroggleHelper.getSerializedMove();
-                boolean shouldChangeTurn = scroggleHelper.checkWord();
-                myScoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getMyScore()));
-                if (shouldChangeTurn) {
-                    sendMessage(TITLE_TURN_CHANGE, scroggleHelper.getMyScore()
-                    + TwoPlayerScroggleHelper.TYPE_SPLITTER + move);
-                    scroggleHelper.turnEnds();
-                    timer.cancel();
-                    timerText.setText(getString(R.string.text_opponent_turn));
-                }
-            }
-        });
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
-                String title = content.split(MyMessagingService.SPLITTER)[0];
-                String body = content.split(MyMessagingService.SPLITTER)[1];
-                switch (title) {
-                    case TITLE_INIT_BOARD:
-                        initBoard();
-                        boardAssignHelper.assignBoard(board, body);
-                        assigningBoardDialog.dismiss();
-                        break;
-                    case TITLE_TURN_CHANGE:
-                        // behaviors related to turn change
-                        if (scroggleHelper.getMyTurnsLeft() > 0) {
-                            scroggleHelper.setMove(body);
-                            opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
-                                    opponentUsername, scroggleHelper.getOpponentScore()));
-                            scroggleHelper.setMyTurn(true);
-                            timer.start();
-                        } else {  // this must be the end to a phase
-                            if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
-                                scroggleHelper.nextPhase();
-                                scroggleHelper.setMyTurn(true);
-                                scroggleHelper.setMove(body);
-                                opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
-                                        opponentUsername, scroggleHelper.getOpponentScore()));
-                                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-                                timer.start();  // phase two starts
-                            } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
-                                scroggleHelper.setMove(body);
-                                opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
-                                        opponentUsername, scroggleHelper.getOpponentScore()));
-                                timerText.setText(getString(R.string.text_game_over));
-                                showWinner();
-                                sendMessage(TITLE_GAME_ENDS, null);  // let the opponent decide the winner himself
-                            }
+        if (!isConnected) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.text_no_network_access))
+                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
                         }
-                        break;
-                    case TITLE_GAME_ENDS:
-                        showWinner();
-                        break;
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        } else {
+            phaseText = (TextView) findViewById(R.id.text_phase);
+            timerText = (TextView) findViewById(R.id.text_timer);
+            myScoreText = (TextView) findViewById(R.id.text_my_score);
+            opponentScoreText = (TextView) findViewById(R.id.text_opponent_score);
+
+            phaseText.setText(String.format(getString(R.string.text_phase),
+                    TwoPlayerScroggleHelper.Phase.ONE.toString()));
+            phaseText.setTypeface(null, Typeface.BOLD);
+            myScoreText.setText(String.format(getString(R.string.text_my_score), 0));
+            opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                    getString(R.string.text_opponent), 0));
+
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+
+            boardAssignHelper = new BoardAssignHelper(getApplicationContext());
+
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.button_submit);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // must call before checkWord()
+                    String move = scroggleHelper.getSerializedMove();
+                    boolean shouldChangeTurn = scroggleHelper.checkWord();
+                    myScoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getMyScore()));
+                    if (shouldChangeTurn) {
+                        sendMessage(TITLE_TURN_CHANGE, scroggleHelper.getMyScore()
+                                + TwoPlayerScroggleHelper.TYPE_SPLITTER + move);
+                        scroggleHelper.turnEnds();
+                        timer.cancel();
+                        timerText.setText(getString(R.string.text_opponent_turn));
+                    }
                 }
-            }
-        };
+            });
 
-        pair();
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
+                    String title = content.split(MyMessagingService.SPLITTER)[0];
+                    String body = content.split(MyMessagingService.SPLITTER)[1];
+                    switch (title) {
+                        case TITLE_INIT_BOARD:
+                            initBoard();
+                            boardAssignHelper.assignBoard(board, body);
+                            assigningBoardDialog.dismiss();
+                            break;
+                        case TITLE_TURN_CHANGE:
+                            // behaviors related to turn change
+                            if (scroggleHelper.getMyTurnsLeft() > 0) {
+                                scroggleHelper.setMove(body);
+                                opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                        opponentUsername, scroggleHelper.getOpponentScore()));
+                                scroggleHelper.setMyTurn(true);
+                                timer.start();
+                            } else {  // this must be the end to a phase
+                                if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
+                                    scroggleHelper.nextPhase();
+                                    scroggleHelper.setMyTurn(true);
+                                    scroggleHelper.setMove(body);
+                                    opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                            opponentUsername, scroggleHelper.getOpponentScore()));
+                                    phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+                                    timer.start();  // phase two starts
+                                } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
+                                    scroggleHelper.setMove(body);
+                                    opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                            opponentUsername, scroggleHelper.getOpponentScore()));
+                                    timerText.setText(getString(R.string.text_game_over));
+                                    showWinner();
+                                    sendMessage(TITLE_GAME_ENDS, null);  // let the opponent decide the winner himself
+                                }
+                            }
+                            break;
+                        case TITLE_GAME_ENDS:
+                            showWinner();
+                            break;
+                    }
+                }
+            };
 
-        timer = new CountDownTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND,
-                MILLISECONDS_PER_SECOND) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timerText.setText(String.format(getString(R.string.text_timer),
-                        millisUntilFinished / MILLISECONDS_PER_SECOND));
-                scroggleHelper.setTimeLeft(millisUntilFinished);
-            }
+            pair();
 
-            @Override
-            public void onFinish() {
-                scroggleHelper.turnEnds();
-                sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
-                timerText.setText(getString(R.string.text_opponent_turn));
-                scroggleHelper.clearAllSelected();
-            }
-        };
+            timer = new CountDownTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND,
+                    MILLISECONDS_PER_SECOND) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    timerText.setText(String.format(getString(R.string.text_timer),
+                            millisUntilFinished / MILLISECONDS_PER_SECOND));
+                    scroggleHelper.setTimeLeft(millisUntilFinished);
+                }
+
+                @Override
+                public void onFinish() {
+                    scroggleHelper.turnEnds();
+                    sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
+                    timerText.setText(getString(R.string.text_opponent_turn));
+                    scroggleHelper.clearAllSelected();
+                }
+            };
+        }
     }
 
     @Override
