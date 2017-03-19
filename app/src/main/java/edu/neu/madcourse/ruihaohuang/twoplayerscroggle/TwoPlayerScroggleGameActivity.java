@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -56,8 +57,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
 
-    private static final String STRING_NULL = "null";
-
     public static final String TITLE_INIT_BOARD = "two_player_scroggle.init_board";
     public static final String TITLE_TURN_CHANGE = "two_player_scroggle.turn_change";
     public static final String TITLE_GAME_ENDS = "two_player_scroggle.game_ends";
@@ -98,6 +97,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     // only one timer is needed in two player mode
     CountDownTimer timer;
+
+    private MediaPlayer mediaPlayer;
+    private boolean playMusic = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,6 +246,22 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (playMusic) {
+            pauseMusic();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (playMusic) {
+            resumeMusic();
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((receiver),
@@ -263,6 +281,18 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         if (opponentToken != null) {
             sendLeaveMessage();
         }
+    }
+
+    private void pauseMusic() {
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+        mediaPlayer.release();
+    }
+
+    private void resumeMusic() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.scroggle_bgm);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     private void pair() {
