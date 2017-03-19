@@ -151,21 +151,26 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                         assigningBoardDialog.dismiss();
                         break;
                     case TITLE_TURN_CHANGE:
-                        scroggleHelper.setMove(body);
-                        opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
-                                opponentUsername, scroggleHelper.getOpponentScore()));
-
                         // behaviors related to turn change
                         if (scroggleHelper.getMyTurnsLeft() > 0) {
+                            scroggleHelper.setMove(body);
+                            opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                    opponentUsername, scroggleHelper.getOpponentScore()));
                             scroggleHelper.setMyTurn(true);
                             timer.start();
                         } else {  // this must be the end to a phase
                             if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
                                 scroggleHelper.setMyTurn(true);
+                                scroggleHelper.setMove(body);
+                                opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                        opponentUsername, scroggleHelper.getOpponentScore()));
                                 scroggleHelper.nextPhase();
                                 phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
                                 timer.start();  // phase two starts
                             } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
+                                scroggleHelper.setMove(body);
+                                opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                        opponentUsername, scroggleHelper.getOpponentScore()));
                                 timerText.setText(getString(R.string.text_game_over));
                                 // TODO: decide the winner and notify the opponent
                                 sendMessage(TITLE_GAME_ENDS, null);

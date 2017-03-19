@@ -419,14 +419,16 @@ class TwoPlayerScroggleHelper {
                     move += String.valueOf(selectedSmallTile);
                     move += COMMA;
                 }
-                move = move.substring(0, move.length() - 1);
                 break;
             case TWO:
                 for (int position: selectedTiles) {
                     move += String.valueOf(position);
                     move += COMMA;
                 }
-                move = move.substring(0, move.length() - 1);
+                break;
+        }
+        if (move.length() > 0) {
+            move = move.substring(0, move.length() - 1);
         }
         return move;
     }
