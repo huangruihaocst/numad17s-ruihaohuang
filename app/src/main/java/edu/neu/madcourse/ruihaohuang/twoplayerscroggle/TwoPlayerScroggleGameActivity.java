@@ -151,12 +151,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                         assigningBoardDialog.dismiss();
                         break;
                     case TITLE_TURN_CHANGE:
-                        // TODO: change board and score
-                        if (body.equals(STRING_NULL)) {  // opponent's turn ends but he didn't make any valid move
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), body, Toast.LENGTH_LONG).show();
-                        }
+                        scroggleHelper.setMove(body);
+                        opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
+                                opponentUsername, scroggleHelper.getOpponentScore()));
 
                         // behaviors related to turn change
                         if (scroggleHelper.getMyTurnsLeft() > 0) {
@@ -164,9 +161,10 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             timer.start();
                         } else {  // this must be the end to a phase
                             if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
+                                scroggleHelper.setMyTurn(true);
                                 scroggleHelper.nextPhase();
                                 phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
-                                timer.start();  // Phase two starts
+                                timer.start();  // phase two starts
                             } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
                                 timerText.setText(getString(R.string.text_game_over));
                                 // TODO: decide the winner and notify the opponent
@@ -195,7 +193,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 scroggleHelper.turnEnds();
-                sendMessage(TITLE_TURN_CHANGE, null);
+                sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
                 timerText.setText(getString(R.string.text_opponent_turn));
                 scroggleHelper.clearAllSelected();
             }

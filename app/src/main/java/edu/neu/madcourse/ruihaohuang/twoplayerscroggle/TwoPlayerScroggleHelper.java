@@ -26,8 +26,7 @@ class TwoPlayerScroggleHelper {
     private static final int NO_SELECTED = -1;
     private static final int ASCII_OF_A = 97;  // lowercase
 
-    static final String TYPE_SPLITTER = "////";
-    static final String PHASE_SPLITTER = "///";
+    static final String TYPE_SPLITTER = "///";
     static final String CONTENT_SPLITTER = "//";
     static final String COMMA = ",";
 
@@ -148,6 +147,10 @@ class TwoPlayerScroggleHelper {
 
     int getMyScore() {
         return myScore;
+    }
+
+    int getOpponentScore() {
+        return opponentScore;
     }
 
     void pause() {
@@ -407,8 +410,7 @@ class TwoPlayerScroggleHelper {
     }
 
     String getSerializedMove() {
-        String move = phase.toString();
-        move += PHASE_SPLITTER;
+        String move = "";
         switch (phase) {
             case ONE:
                 move += String.valueOf(selectedLargeTile);
@@ -427,5 +429,35 @@ class TwoPlayerScroggleHelper {
                 move = move.substring(0, move.length() - 1);
         }
         return move;
+    }
+
+    void setMove(String move) {
+        if (move.split(TYPE_SPLITTER).length == 1) {  // don't need to change board
+            opponentScore = Integer.parseInt(move.split(TYPE_SPLITTER)[0]);
+        } else {
+            // reference: http://stackoverflow.com/questions/5585779/how-to-convert-a-string-to-an-int-in-java
+            opponentScore = Integer.parseInt(move.split(TYPE_SPLITTER)[0]);
+            move = move.split(TYPE_SPLITTER)[1];
+            switch (phase) {
+                case ONE:
+                    int opponentSelectedLargeTile = Integer.parseInt(move.split(CONTENT_SPLITTER)[0]);
+                    ArrayList<Integer> opponentSelectedSmallTiles = new ArrayList<>();
+                    String[] array = move.split(CONTENT_SPLITTER)[1].split(COMMA);
+                    for (String smallTile: array) {
+                        opponentSelectedSmallTiles.add(Integer.parseInt(smallTile));
+                    }
+                    for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+                        if (opponentSelectedSmallTiles.contains(i)) {
+                            board.getSubTiles()[opponentSelectedLargeTile].getSubTiles()[i].setRemaining();
+                        } else {
+                            board.getSubTiles()[opponentSelectedLargeTile].getSubTiles()[i].setDisappeared();
+                        }
+                    }
+                    unavailableLargeTiles.add(opponentSelectedLargeTile);
+                    break;
+                case TWO:
+                    break;
+            }
+        }
     }
 }
