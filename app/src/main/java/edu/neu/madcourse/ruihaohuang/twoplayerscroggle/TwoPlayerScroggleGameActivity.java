@@ -10,7 +10,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -84,11 +86,13 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private String token;
     private String opponentToken;
     private String opponentUsername;
-    private boolean willGoFirst;
 
     private BroadcastReceiver receiver;
 
     ProgressDialog assigningBoardDialog;
+
+    // only one timer is needed in two player mode
+    CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +106,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         myScoreText = (TextView) findViewById(R.id.text_my_score);
         opponentScoreText = (TextView) findViewById(R.id.text_opponent_score);
 
-        phaseText.setText(String.format(getString(R.string.text_phase), "ONE"));
+        phaseText.setText(String.format(getString(R.string.text_phase),
+                TwoPlayerScroggleHelper.Phase.ONE.toString()));
         phaseText.setTypeface(null, Typeface.BOLD);
-        timerText.setText(String.format(getString(R.string.text_timer), 10));
         myScoreText.setText(String.format(getString(R.string.text_my_score), 0));
         opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
                 getString(R.string.text_opponent), 0));
@@ -139,6 +143,22 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         };
 
         pair();
+
+        timer = new CountDownTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND,
+                MILLISECONDS_PER_SECOND) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerText.setText(String.format(getString(R.string.text_timer),
+                        millisUntilFinished / MILLISECONDS_PER_SECOND));
+                scroggleHelper.setTimeLeft(millisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText(String.format(getString(R.string.text_timer), 0));
+                Toast.makeText(getApplicationContext(), "Turn finished", Toast.LENGTH_LONG).show();
+            }
+        };
     }
 
     @Override
@@ -209,7 +229,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                     // wait for his opponent. Decide who will go first
                                     if (dataSnapshot.child("users").getChildrenCount() == 0) {
                                         goFirst = generateGoFirst();
-                                        willGoFirst = (goFirst == 1);
                                         databaseReference.child("users")
                                                 .child(username + " " + String.valueOf(goFirst))
                                                 .setValue(token);
@@ -256,7 +275,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         this.opponentUsername = opponentUsername;
         this.opponentToken = opponentToken;
         removeAllPossibleData(opponentUsername);
-        willGoFirst = (goFirst == 1);
+        boolean willGoFirst = (goFirst == 1);
         if (willGoFirst) {
             initBoard();  // the one who goes first decides the board
             // set content for all the tiles following the rule
@@ -264,6 +283,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             boardAssignHelper.assignBoard(board);
             String boardArrangement = getBoardArrangement();
             sendMessage(TITLE_BOARD, boardArrangement);
+            timer.start();
         } else {
             assigningBoardDialog = new ProgressDialog(TwoPlayerScroggleGameActivity.this);
             assigningBoardDialog.setCancelable(false);
@@ -271,6 +291,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             assigningBoardDialog.setTitle(getString(R.string.text_assigning_board));
             assigningBoardDialog.show();
             initBoard();
+            timerText.setText(getString(R.string.text_opponent_turn));
         }
         opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
                 opponentUsername, 0));
@@ -279,6 +300,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
         scroggleHelper = new TwoPlayerScroggleHelper(getApplicationContext(), TwoPlayerScroggleGameActivity.this,
                 board);
+        scroggleHelper.setGoFirst(willGoFirst);
     }
 
     private void initBoard() {

@@ -55,6 +55,7 @@ class TwoPlayerScroggleHelper {
     private SoundPool soundPool;
     private float volume = 1f;
     private int hintsLeft;
+    private boolean goFirst;
 
     TwoPlayerScroggleHelper(Context context, Activity activity, Tile board) {
         this.context = context;
@@ -106,6 +107,14 @@ class TwoPlayerScroggleHelper {
 
     long getTimeLeft() {
         return timeLeft;
+    }
+
+    void setGoFirst(boolean goFirst) {
+        this.goFirst = goFirst;
+    }
+
+    boolean isGoFirst() {
+        return goFirst;
     }
 
     void setTimeLeft(long timeLeft) {

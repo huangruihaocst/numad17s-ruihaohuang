@@ -265,6 +265,7 @@
     <string name="text_show_score">Your score is %1$d</string>
     <string name="text_tutorial">Tutorial-Phase %1$s</string>
     <string name="text_opponent">Opponent</string>
+    <string name="text_opponent_turn">Opponent\'s turn</string>
     <string name="text_tutorial_phase_one">
         Select letters from the same tile continuously to form words. \
         The current letter must be next to the last one (up/down/diagonal). \

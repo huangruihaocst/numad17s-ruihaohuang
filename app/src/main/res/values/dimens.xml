@@ -11,9 +11,9 @@
     <dimen name="dictionary_button_clear_size">45dp</dimen>
     <dimen name="acknowledgements_text_size">20sp</dimen>
     <dimen name="control_button_text_size">15sp</dimen>
-    <dimen name="timer_text_size">20sp</dimen>
-    <dimen name="score_text_size">20sp</dimen>
-    <dimen name="phase_text_size">20sp</dimen>
+    <dimen name="timer_text_size">18sp</dimen>
+    <dimen name="score_text_size">15sp</dimen>
+    <dimen name="phase_text_size">18sp</dimen>
     <dimen name="control_buttons_margin_left_right">6dp</dimen>
     <dimen name="chat_with_size">20sp</dimen>
     <dimen name="chat_history_height">300dp</dimen>
