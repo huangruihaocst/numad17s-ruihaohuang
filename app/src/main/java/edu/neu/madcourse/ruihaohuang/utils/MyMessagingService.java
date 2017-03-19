@@ -17,7 +17,7 @@ public class MyMessagingService extends FirebaseMessagingService {
     static final public String COPA_RESULT = "com.controlj.copame.backend.COPAService.REQUEST_PROCESSED";
     static final public String COPA_MESSAGE = "com.controlj.copame.backend.COPAService.COPA_MSG";
 
-    public static final String splitter = "///";
+    public static final String SPLITTER = "/////";
 
     LocalBroadcastManager broadcastManager;
 
@@ -32,8 +32,8 @@ public class MyMessagingService extends FirebaseMessagingService {
         String title = remoteMessage.getNotification().getTitle();
         String body = remoteMessage.getNotification().getBody();
         Intent intent = new Intent(COPA_RESULT);
-        intent.putExtra(COPA_MESSAGE, title + splitter + body);
-        Log.d("Received message", title + splitter + body);
+        intent.putExtra(COPA_MESSAGE, title + SPLITTER + body);
+        Log.d("Received message", title + SPLITTER + body);
         broadcastManager.sendBroadcast(intent);
     }
 }

@@ -26,6 +26,11 @@ class TwoPlayerScroggleHelper {
     private static final int NO_SELECTED = -1;
     private static final int ASCII_OF_A = 97;  // lowercase
 
+    static final String TYPE_SPLITTER = "////";
+    static final String PHASE_SPLITTER = "///";
+    static final String CONTENT_SPLITTER = "//";
+    static final String COMMA = ",";
+
     // actually it should be final, but its construction needs context
     private HashMap<Character, Integer> scoreMap;
 
@@ -265,16 +270,20 @@ class TwoPlayerScroggleHelper {
                 || (x1 + 1 == x2 && y1 == y2) || (x1 + 1 == x2 && y1 - 1 == y2) || (x1 + 1 == x2 && y1 + 1 == y2));
     }
 
-    // check if the current word is a valid word and update myScore
-    void checkWord() {
+    /**
+     * check if the current word is a valid word and update myScore
+     * @return true iff should change turn. E.g. get points.
+     */
+    boolean checkWord() {
         String word = getWord();
         if (word.isEmpty()) {
-            return;
+            return false;
         }
+        boolean shouldChangeTurn = false;
         switch (phase) {
             case ONE:
                 if (selectedLargeTile == NO_SELECTED) {
-                    return;
+                    return false;
                 }
                 if (dictionaryHelper.wordExists(word)) {
                     soundPool.play(soundValidWord, volume, volume, 1, 0, 1f);
@@ -285,6 +294,7 @@ class TwoPlayerScroggleHelper {
                     Toast.makeText(context, String.format(context.getString(R.string.toast_word_found),
                             word, add), Toast.LENGTH_SHORT).show();
                     myScore += add;
+                    shouldChangeTurn = true;
                     for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
                         if (selectedSmallTiles.contains(i)) {
                             board.getSubTiles()[selectedLargeTile].getSubTiles()[i].setRemaining();
@@ -314,6 +324,7 @@ class TwoPlayerScroggleHelper {
                                     * context.getResources().getInteger(R.integer.magnification);
                         }
                         myScore += add;
+                        shouldChangeTurn = true;
                         Toast.makeText(context, String.format(context.getString(R.string.toast_word_found),
                                 word, add), Toast.LENGTH_SHORT).show();
                     } else {  // cannot detect the same word
@@ -332,6 +343,7 @@ class TwoPlayerScroggleHelper {
             default:
                 break;
         }
+        return shouldChangeTurn;
     }
 
     private String getWord() {
@@ -392,5 +404,28 @@ class TwoPlayerScroggleHelper {
                 --hintsLeft;
             }
         }
+    }
+
+    String getSerializedMove() {
+        String move = phase.toString();
+        move += PHASE_SPLITTER;
+        switch (phase) {
+            case ONE:
+                move += String.valueOf(selectedLargeTile);
+                move += CONTENT_SPLITTER;
+                for (int selectedSmallTile: selectedSmallTiles) {
+                    move += String.valueOf(selectedSmallTile);
+                    move += COMMA;
+                }
+                move = move.substring(0, move.length() - 1);
+                break;
+            case TWO:
+                for (int position: selectedTiles) {
+                    move += String.valueOf(position);
+                    move += COMMA;
+                }
+                move = move.substring(0, move.length() - 1);
+        }
+        return move;
     }
 }

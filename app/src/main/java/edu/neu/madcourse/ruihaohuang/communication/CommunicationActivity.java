@@ -86,8 +86,8 @@ public class CommunicationActivity extends AppCompatActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
-                    String title = content.split(MyMessagingService.splitter)[0];
-                    String body = content.split(MyMessagingService.splitter)[1];
+                    String title = content.split(MyMessagingService.SPLITTER)[0];
+                    String body = content.split(MyMessagingService.SPLITTER)[1];
                     switch (title) {
                         case TITLE_CHAT:
                             ((TextView) findViewById(R.id.text_history))

@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +54,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
 
-    public static final String TITLE_BOARD = "two_player_scroggle.board";
+    private static final String STRING_NULL = "null";
+
+    public static final String TITLE_INIT_BOARD = "two_player_scroggle.init_board";
     public static final String TITLE_TURN_CHANGE = "two_player_scroggle.turn_change";
     public static final String TITLE_GAME_ENDS = "two_player_scroggle.game_ends";
 
@@ -123,8 +124,17 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scroggleHelper.checkWord();
+                // must call before checkWord()
+                String move = scroggleHelper.getSerializedMove();
+                boolean shouldChangeTurn = scroggleHelper.checkWord();
                 myScoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getMyScore()));
+                if (shouldChangeTurn) {
+                    sendMessage(TITLE_TURN_CHANGE, scroggleHelper.getMyScore()
+                    + TwoPlayerScroggleHelper.TYPE_SPLITTER + move);
+                    scroggleHelper.turnEnds();
+                    timer.cancel();
+                    timerText.setText(getString(R.string.text_opponent_turn));
+                }
             }
         });
 
@@ -132,15 +142,23 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String content = intent.getStringExtra(MyMessagingService.COPA_MESSAGE);
-                String title = content.split(MyMessagingService.splitter)[0];
-                String body = content.split(MyMessagingService.splitter)[1];
+                String title = content.split(MyMessagingService.SPLITTER)[0];
+                String body = content.split(MyMessagingService.SPLITTER)[1];
                 switch (title) {
-                    case TITLE_BOARD:
+                    case TITLE_INIT_BOARD:
                         initBoard();
                         boardAssignHelper.assignBoard(board, body);
                         assigningBoardDialog.dismiss();
                         break;
                     case TITLE_TURN_CHANGE:
+                        // TODO: change board and score
+                        if (body.equals(STRING_NULL)) {  // opponent's turn ends but he didn't make any valid move
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), body, Toast.LENGTH_LONG).show();
+                        }
+
+                        // behaviors related to turn change
                         if (scroggleHelper.getMyTurnsLeft() > 0) {
                             scroggleHelper.setMyTurn(true);
                             timer.start();
@@ -150,14 +168,14 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                 phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
                                 timer.start();  // Phase two starts
                             } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
-                                Toast.makeText(getApplicationContext(), "game ends", Toast.LENGTH_LONG).show();
+                                timerText.setText(getString(R.string.text_game_over));
                                 // TODO: decide the winner and notify the opponent
                                 sendMessage(TITLE_GAME_ENDS, null);
                             }
                         }
                         break;
                     case TITLE_GAME_ENDS:
-                        Toast.makeText(getApplicationContext(), "Game ends", Toast.LENGTH_LONG).show();
+                        timerText.setText(getString(R.string.text_game_over));
                         break;
                 }
             }
@@ -176,10 +194,10 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                timerText.setText(String.format(getString(R.string.text_timer), 0));
                 scroggleHelper.turnEnds();
                 sendMessage(TITLE_TURN_CHANGE, null);
                 timerText.setText(getString(R.string.text_opponent_turn));
+                scroggleHelper.clearAllSelected();
             }
         };
     }
@@ -245,7 +263,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String u = usernameEditText.getText().toString();
-                                if (!u.isEmpty() && !u.contains(" ") && !dataSnapshot.child("users").hasChild(u)) {
+                                if (!u.isEmpty() && !u.contains(" ") && !usernameExist(dataSnapshot, u)) {
                                     username = u;
                                     token = FirebaseInstanceId.getInstance().getToken();
                                     int goFirst = -1;
@@ -268,9 +286,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_no_username), Toast.LENGTH_LONG).show();
                                 } else if (u.contains(" ")) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_username_contains_space), Toast.LENGTH_LONG).show();
-                                } else if (dataSnapshot.child("users").hasChild(u)
-                                        || dataSnapshot.child("users").hasChild(u + " 0")
-                                        || dataSnapshot.child("users").hasChild(u + " 1")) {
+                                } else if (usernameExist(dataSnapshot, u)) {
                                     Toast.makeText(getApplicationContext(), getString(R.string.toast_username_already_registered), Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -305,7 +321,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             // that each BOARD_SIZE * BOARD_SIZE tile can form a word
             boardAssignHelper.assignBoard(board);
             String boardArrangement = getBoardArrangement();
-            sendMessage(TITLE_BOARD, boardArrangement);
+            sendMessage(TITLE_INIT_BOARD, boardArrangement);
             timer.start();
         } else {
             assigningBoardDialog = new ProgressDialog(TwoPlayerScroggleGameActivity.this);
@@ -422,5 +438,11 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    private boolean usernameExist(DataSnapshot dataSnapshot, String username) {
+        return dataSnapshot.child("users").hasChild(username)
+                || dataSnapshot.child("users").hasChild(username + " 0")
+                || dataSnapshot.child("users").hasChild(username + " 1");
     }
 }
