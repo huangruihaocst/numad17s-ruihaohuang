@@ -30,6 +30,10 @@ class TwoPlayerScroggleHelper {
     static final String CONTENT_SPLITTER = "//";
     static final String COMMA = ",";
 
+    static final int WIN = 1;
+    static final int LOSE = -1;
+    static final int TIE = 0;
+
     // actually it should be final, but its construction needs context
     private HashMap<Character, Integer> scoreMap;
 
@@ -458,8 +462,23 @@ class TwoPlayerScroggleHelper {
                     unavailableLargeTiles.add(opponentSelectedLargeTile);
                     break;
                 case TWO:
+                    // do not need to set
                     break;
             }
+        }
+    }
+
+    /**
+     * Decide who is the winner
+     * @return WIN if the player wins, LOSE if the opponent wins, TIE if ties
+     */
+    int decideWinner() {
+        if (myScore > opponentScore) {
+            return WIN;
+        } else if (myScore < opponentScore) {
+            return LOSE;
+        } else {
+            return TIE;
         }
     }
 }

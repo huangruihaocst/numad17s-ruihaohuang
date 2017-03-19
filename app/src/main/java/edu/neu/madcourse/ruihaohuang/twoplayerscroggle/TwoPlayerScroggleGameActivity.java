@@ -160,11 +160,11 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             timer.start();
                         } else {  // this must be the end to a phase
                             if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
+                                scroggleHelper.nextPhase();
                                 scroggleHelper.setMyTurn(true);
                                 scroggleHelper.setMove(body);
                                 opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
                                         opponentUsername, scroggleHelper.getOpponentScore()));
-                                scroggleHelper.nextPhase();
                                 phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
                                 timer.start();  // phase two starts
                             } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
@@ -172,13 +172,13 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                 opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
                                         opponentUsername, scroggleHelper.getOpponentScore()));
                                 timerText.setText(getString(R.string.text_game_over));
-                                // TODO: decide the winner and notify the opponent
-                                sendMessage(TITLE_GAME_ENDS, null);
+                                showWinner();
+                                sendMessage(TITLE_GAME_ENDS, null);  // let the opponent decide the winner himself
                             }
                         }
                         break;
                     case TITLE_GAME_ENDS:
-                        timerText.setText(getString(R.string.text_game_over));
+                        showWinner();
                         break;
                 }
             }
@@ -447,5 +447,32 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         return dataSnapshot.child("users").hasChild(username)
                 || dataSnapshot.child("users").hasChild(username + " 0")
                 || dataSnapshot.child("users").hasChild(username + " 1");
+    }
+
+    private void showWinner() {
+        // game over
+        int gameResult = scroggleHelper.decideWinner();
+        AlertDialog.Builder builder = new AlertDialog.Builder(TwoPlayerScroggleGameActivity.this);
+        builder.setTitle(getString(R.string.text_game_over));
+        switch (gameResult) {
+            case TwoPlayerScroggleHelper.WIN:
+                builder.setMessage(getString(R.string.text_win));
+                break;
+            case TwoPlayerScroggleHelper.LOSE:
+                builder.setMessage(getString(R.string.text_lose));
+                break;
+            case TwoPlayerScroggleHelper.TIE:
+                builder.setMessage(getString(R.string.text_tie));
+                break;
+        }
+        builder.setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onBackPressed();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }
