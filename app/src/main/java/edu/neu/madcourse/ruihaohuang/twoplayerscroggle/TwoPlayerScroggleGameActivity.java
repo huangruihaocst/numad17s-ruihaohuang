@@ -57,6 +57,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     public static final String TITLE_BOARD = "two_player_scroggle.board";
     public static final String TITLE_TURN_CHANGE = "two_player_scroggle.turn_change";
+    public static final String TITLE_GAME_ENDS = "two_player_scroggle.game_ends";
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -142,20 +143,21 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                     case TITLE_TURN_CHANGE:
                         if (scroggleHelper.getMyTurnsLeft() > 0) {
                             scroggleHelper.setMyTurn(true);
-                            Toast.makeText(getApplicationContext(), "Changed to my turn", Toast.LENGTH_LONG).show();
-                            if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
-
-                            } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
-
-                            }
+                            timer.start();
                         } else {  // this must be the end to a phase
-                            // TODO: phase ends. Change phase or end game.
                             if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
-
+                                scroggleHelper.nextPhase();
+                                phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
+                                timer.start();  // Phase two starts
                             } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
-
+                                Toast.makeText(getApplicationContext(), "game ends", Toast.LENGTH_LONG).show();
+                                // TODO: decide the winner and notify the opponent
+                                sendMessage(TITLE_GAME_ENDS, null);
                             }
                         }
+                        break;
+                    case TITLE_GAME_ENDS:
+                        Toast.makeText(getApplicationContext(), "Game ends", Toast.LENGTH_LONG).show();
                         break;
                 }
             }
@@ -177,7 +179,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 timerText.setText(String.format(getString(R.string.text_timer), 0));
                 scroggleHelper.turnEnds();
                 sendMessage(TITLE_TURN_CHANGE, null);
-                Toast.makeText(getApplicationContext(), "Turn finished", Toast.LENGTH_LONG).show();
+                timerText.setText(getString(R.string.text_opponent_turn));
             }
         };
     }

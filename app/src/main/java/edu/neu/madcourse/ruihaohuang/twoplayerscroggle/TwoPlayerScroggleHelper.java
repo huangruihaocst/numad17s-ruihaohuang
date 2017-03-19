@@ -247,6 +247,7 @@ class TwoPlayerScroggleHelper {
                         board.getSubTiles()[i].setDisappeared();
                     }
                 }
+                myTurnsLeft = context.getResources().getInteger(R.integer.my_turns_in_each_phase);
                 break;
             case TWO:
             default:
