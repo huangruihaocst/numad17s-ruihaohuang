@@ -18,6 +18,7 @@
     <integer name="time_left_warning_phase_two">10</integer>
     <integer name="hints_amount">1</integer>
     <integer name="time_each_turn">15</integer>
+    <integer name="my_turns_in_each_phase">4</integer>
 
     <!--1 point: E, A, I, O, N, R, T, L, S, U;-->
     <!--2 points: D, G;-->

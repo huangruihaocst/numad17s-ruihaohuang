@@ -56,6 +56,8 @@ class TwoPlayerScroggleHelper {
     private float volume = 1f;
     private int hintsLeft;
     private boolean goFirst;
+    private boolean isMyTurn;
+    private int myTurnsLeft;
 
     TwoPlayerScroggleHelper(Context context, Activity activity, Tile board) {
         this.context = context;
@@ -74,6 +76,7 @@ class TwoPlayerScroggleHelper {
         unavailableLargeTiles = new ArrayList<>();
         scoreMap = createScoreMap();
         hintsLeft = context.getResources().getInteger(R.integer.hints_amount);
+        myTurnsLeft = context.getResources().getInteger(R.integer.my_turns_in_each_phase);
 
         if (Build.VERSION.SDK_INT >= 21) {
             SoundPool.Builder builder = new SoundPool.Builder();
@@ -109,12 +112,29 @@ class TwoPlayerScroggleHelper {
         return timeLeft;
     }
 
+    int getMyTurnsLeft() {
+        return myTurnsLeft;
+    }
+
+    void turnEnds() {
+        isMyTurn = false;
+        --myTurnsLeft;
+    }
+
     void setGoFirst(boolean goFirst) {
         this.goFirst = goFirst;
     }
 
-    boolean isGoFirst() {
+    boolean goFirst() {
         return goFirst;
+    }
+
+    void setMyTurn(boolean isMyTurn) {
+        this.isMyTurn = isMyTurn;
+    }
+
+    boolean isMyTurn() {
+        return isMyTurn;
     }
 
     void setTimeLeft(long timeLeft) {
@@ -138,6 +158,9 @@ class TwoPlayerScroggleHelper {
     }
 
     void selectSmallTile(int large, int small) {
+        if (!isMyTurn || myTurnsLeft <= 0) {
+            return;
+        }
         switch (phase){
             case ONE:
                 if (unavailableLargeTiles.contains(large)) {
