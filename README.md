@@ -5,6 +5,9 @@
 - Android Support Library revision 24 or newer
 
 ##Versions
+- Version 1.4:
+ - Add two player Scroggle game.
+ - Add a top scorer list for single player game.
 - Version 1.3:
  - Add demo codes for Firebase. It is in the form of a chatting application.
 - Version 1.2:
