@@ -17,7 +17,7 @@ public class MyMessagingService extends FirebaseMessagingService {
     static final public String COPA_RESULT = "com.controlj.copame.backend.COPAService.REQUEST_PROCESSED";
     static final public String COPA_MESSAGE = "com.controlj.copame.backend.COPAService.COPA_MSG";
 
-    public static final String SPLITTER = "/////";
+    public static final String SPLITTER = "////";
 
     LocalBroadcastManager broadcastManager;
 

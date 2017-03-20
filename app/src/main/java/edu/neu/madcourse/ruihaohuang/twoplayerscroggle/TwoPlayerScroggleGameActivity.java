@@ -103,6 +103,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     private boolean playMusic = true;
 
     private Button controlButton;
+    private Button hintsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +224,17 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                     } else {
                         resume();
                     }
+                }
+            });
+
+            hintsButton = (Button) findViewById(R.id.button_hints);
+            hintsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (scroggleHelper.hintsAvailable()) {
+                        scroggleHelper.showHints();
+                    }
+                    updateHintsState();
                 }
             });
         }
@@ -415,6 +427,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 board);
         scroggleHelper.setGoFirst(willGoFirst);
         scroggleHelper.setMyTurn(willGoFirst);
+        updateHintsState();
     }
 
     private void initBoard() {
@@ -474,6 +487,13 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 boardAssignment += largeTile.getSubTiles()[j].getContent();
             }
         }
+        boardAssignment += TwoPlayerScroggleHelper.TYPE_SPLITTER;
+        for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+            boardAssignment += board.getSubTiles()[i].getWord();
+            boardAssignment += TwoPlayerScroggleHelper.COMMA;
+        }
+        boardAssignment = boardAssignment.substring(0, boardAssignment.length() - 1);
+        Toast.makeText(getApplicationContext(), boardAssignment, Toast.LENGTH_LONG).show();
         return boardAssignment;
     }
 
@@ -564,5 +584,11 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 scroggleHelper.clearAllSelected();
             }
         };
+    }
+
+    private void updateHintsState() {
+        if (!scroggleHelper.hintsAvailable()) {
+            hintsButton.setEnabled(false);
+        }
     }
 }

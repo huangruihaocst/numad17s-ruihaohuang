@@ -20,15 +20,15 @@ import edu.neu.madcourse.ruihaohuang.utils.Tile;
  * Created by huangruihao on 2017/3/17.
  */
 
-class TwoPlayerScroggleHelper {
+public class TwoPlayerScroggleHelper {
     public static final String tag = "TwoPlayerScroggleHelper";
     private static final int BOARD_SIZE = Tile.BOARD_SIZE;
     private static final int NO_SELECTED = -1;
     private static final int ASCII_OF_A = 97;  // lowercase
 
-    static final String TYPE_SPLITTER = "///";
+    public static final String TYPE_SPLITTER = "///";
     static final String CONTENT_SPLITTER = "//";
-    static final String COMMA = ",";
+    public static final String COMMA = ",";
 
     static final int WIN = 1;
     static final int LOSE = -1;

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActivity;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleHelper;
 import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 /**
@@ -35,10 +37,18 @@ public class BoardAssignHelper {
     public void assignBoard(Tile board, String boardArrangement) {
         for (int i = 0;i < BOARD_SIZE * BOARD_SIZE; ++i) {
             Tile largeTile = board.getSubTiles()[i];
+            largeTile.setContent(boardArrangement.substring(i * BOARD_SIZE * BOARD_SIZE,
+                    (i + 1) * BOARD_SIZE * BOARD_SIZE));
             for (int j = 0;j < BOARD_SIZE * BOARD_SIZE; ++j) {
                 largeTile.getSubTiles()[j].setContent(
                         String.valueOf(boardArrangement.charAt(i * BOARD_SIZE * BOARD_SIZE + j)));
             }
+        }
+        String[] words = boardArrangement.split(TwoPlayerScroggleHelper.TYPE_SPLITTER)[1]
+                .split(TwoPlayerScroggleHelper.COMMA);
+        for (int i = 0; i < BOARD_SIZE * BOARD_SIZE; ++i) {
+            Tile largeTile = board.getSubTiles()[i];
+            largeTile.setWord(words[i]);
         }
     }
 
