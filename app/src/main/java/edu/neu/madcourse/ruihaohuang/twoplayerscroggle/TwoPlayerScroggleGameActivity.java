@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -238,6 +239,34 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 }
             });
         }
+
+        final ImageButton volumeButton = (ImageButton) findViewById(R.id.button_volume);
+        volumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (playMusic) {
+                    // reference: http://stackoverflow.com/questions/32210559/call-requires-api-level-16-current-min-is-14
+                    if (Build.VERSION.SDK_INT >= 16) {
+                        volumeButton.setBackground(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_off));
+                    } else {
+                        volumeButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_off));
+                    }
+                    pauseMusic();
+                } else {
+                    if (Build.VERSION.SDK_INT >= 16) {
+                        volumeButton.setBackground(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_up));
+                    } else {
+                        volumeButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.scroggle_volume_up));
+                    }
+                    resumeMusic();
+                }
+                playMusic = !playMusic;
+            }
+        });
     }
 
     private void pause() {
@@ -493,7 +522,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             boardAssignment += TwoPlayerScroggleHelper.COMMA;
         }
         boardAssignment = boardAssignment.substring(0, boardAssignment.length() - 1);
-        Toast.makeText(getApplicationContext(), boardAssignment, Toast.LENGTH_LONG).show();
         return boardAssignment;
     }
 
