@@ -46,6 +46,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.neu.madcourse.ruihaohuang.R;
+import edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
 import edu.neu.madcourse.ruihaohuang.utils.MyMessagingService;
@@ -65,6 +66,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     public static final String TITLE_INIT_BOARD = "two_player_scroggle.init_board";
     public static final String TITLE_TURN_CHANGE = "two_player_scroggle.turn_change";
     public static final String TITLE_GAME_ENDS = "two_player_scroggle.game_ends";
+    private static final String TITLE_LEAVE = "two_player_scroggle.leave";
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -214,6 +216,19 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             break;
                         case TITLE_GAME_ENDS:
                             showWinner();
+                            break;
+                        case TITLE_LEAVE:
+                            AlertDialog.Builder builder = new AlertDialog.Builder(TwoPlayerScroggleGameActivity.this);
+                            builder.setTitle(String.format(getString(R.string.text_has_left), opponentUsername))
+                                    .setMessage(getString(R.string.text_opponent_left))
+                                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            onBackPressed();
+                                        }
+                                    }).setCancelable(false);
+                            builder.create().show();
+                            pause();
                             break;
                     }
                 }
@@ -498,7 +513,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     }
 
     private void sendLeaveMessage() {
-        // TODO: send message to opponent if you player leaves
+        sendMessage(TITLE_LEAVE, null);
     }
 
     private int generateGoFirst() {

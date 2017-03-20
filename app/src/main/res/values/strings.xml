@@ -291,6 +291,7 @@
     <string name="text_no_network_access">Internet is not available. Please check your network.</string>
     <string name="text_has_left">%1$s has left</string>
     <string name="text_reconnect">Please find a new user to chat with.</string>
+    <string name="text_opponent_left">Please find a new opponent.</string>
     <string name="text_assigning_board">Assigning board&#8230;</string>
 
     <string name="info_permission_denied">Permission Denied</string>

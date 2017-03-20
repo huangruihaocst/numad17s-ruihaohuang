@@ -104,8 +104,9 @@ public class CommunicationActivity extends AppCompatActivity {
                                         public void onClick(DialogInterface dialog, int which) {
                                             onBackPressed();
                                         }
-                                    });
+                                    }).setCancelable(false);
                             builder.create().show();
+                            break;
                     }
                 }
             };
