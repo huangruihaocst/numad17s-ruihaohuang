@@ -263,6 +263,33 @@
         &lt;strong&gt;Zhongxi Wang (wang.zhongx@husky.neu.edu):&#160;&lt;/strong&gt;helped me figure out a way to test the demo code offered by TAs.
         &lt;/p&gt;
     </string>
+    <string name="acknowledgements_two_player_scroggle">
+        &lt;h3&gt;References&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;a href="http://stackoverflow.com/questions/6204972/override-dialog-onbackpressed"&gt;
+        http://stackoverflow.com/questions/6204972/override-dialog-onbackpressed&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/28401093/problems-generating-a-math-random-number-either-0-or-1"&gt;
+        http://stackoverflow.com/questions/28401093/problems-generating-a-math-random-number-either-0-or-1&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/5585779/how-to-convert-a-string-to-an-int-in-java"&gt;
+        http://stackoverflow.com/questions/5585779/how-to-convert-a-string-to-an-int-in-java&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/5804043/convert-long-into-integer"&gt;
+        http://stackoverflow.com/questions/5804043/convert-long-into-integer&lt;/a&gt;,
+        &lt;br/&gt;
+        &lt;a href="https://developer.android.com/index.html"&gt;
+        Android Documentation&lt;/a&gt;,
+        &lt;br/&gt;
+        and &lt;a href="https://firebase.google.com/docs/"&gt;
+        Firebase Documentation
+        &lt;/a&gt;.
+        &lt;/p&gt;
+        &lt;h3&gt;People who helped me&lt;/h3&gt;
+        &lt;p&gt;
+        &lt;strong&gt;Aocheng Wang (THU):&#160;&lt;/strong&gt;helped me figure out how to implement asynchronous play.
+        &lt;/p&gt;
+    </string>
 
     <string name="text_timer">Time Left: %1$d</string>
     <string name="text_score">Score: %1$d</string>
