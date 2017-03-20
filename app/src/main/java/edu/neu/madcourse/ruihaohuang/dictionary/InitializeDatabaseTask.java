@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleHelper;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActivity;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleHelper;
 
 /**
  * Created by huangruihao on 2017/2/2.
@@ -169,6 +171,8 @@ class InitializeDatabaseTask extends AsyncTask <Void, Integer, Void> {
                 SQLiteDatabase.OPEN_READONLY));
         if (callerTag.equals(ScroggleGameActivity.tag) || callerTag.equals(ScroggleHelper.tag)) {
             ((ScroggleGameActivity) activity).startGame();
+        } else if (callerTag.equals(TwoPlayerScroggleGameActivity.tag) || callerTag.equals(TwoPlayerScroggleHelper.tag)) {
+            ((TwoPlayerScroggleGameActivity) activity).pair();
         }
     }
 }

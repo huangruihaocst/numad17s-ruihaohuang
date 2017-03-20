@@ -15,6 +15,8 @@ import android.widget.Toast;
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleGameActivity;
 import edu.neu.madcourse.ruihaohuang.scroggle.ScroggleHelper;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleGameActivity;
+import edu.neu.madcourse.ruihaohuang.twoplayerscroggle.TwoPlayerScroggleHelper;
 
 /**
  * Created by huangruihao on 2017/2/1.
@@ -98,6 +100,27 @@ public class DictionaryHelper {
         } catch (SQLiteException e) {
             e.printStackTrace();
             new InitializeDatabaseTask(context, activity, callerTag).execute();
+        }
+    }
+
+    public boolean dbExists() {
+        try {
+            // reference: http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application
+            String databasePath;
+            if(android.os.Build.VERSION.SDK_INT >= 17){
+                databasePath = context.getApplicationInfo().dataDir + "/databases/";
+            } else {
+                databasePath = "/data/data/" + context.getPackageName() + "/databases/";
+            }
+            db = SQLiteDatabase.openDatabase(databasePath + DictionaryDbHelper.DATABASE_NAME, null,
+                    SQLiteDatabase.OPEN_READONLY);
+            if (!checkDatabaseIntegrity()) {
+                throw new SQLiteException();
+            }
+            return true;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

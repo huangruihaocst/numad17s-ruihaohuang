@@ -1,11 +1,13 @@
 package edu.neu.madcourse.ruihaohuang.twoplayerscroggle;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -53,6 +55,7 @@ import edu.neu.madcourse.ruihaohuang.utils.Tile;
 public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     public static final String tag = "TwoPlayerScroggleGameActivity";
+    private static final String TUTORIAL_KEY = "DoubleTutorialKey";
 
     private final static String SERVER_KEY = "key=AAAAfWGUWtM:APA91bFNCTZfeLBBYem4PEhwq3FW-VQzTdoMcdbPzrn8kOQnHs0SRkYnyTle22pjE_cMAQNmk-5ssizDGAlamjvoKR-l51ZZS1YvIbwAklmmFR0lEsAjR02IyCiPrXAxX5WjIJnI_cxX";
 
@@ -132,6 +135,10 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         } else {
+            initBoard();  // the one who goes first decides the board
+            scroggleHelper = new TwoPlayerScroggleHelper(TwoPlayerScroggleGameActivity.this, this,
+                    board);
+
             phaseText = (TextView) findViewById(R.id.text_phase);
             timerText = (TextView) findViewById(R.id.text_timer);
             myScoreText = (TextView) findViewById(R.id.text_my_score);
@@ -212,7 +219,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 }
             };
 
-            pair();
+            if (scroggleHelper.dbExists()) {
+                pair();
+            }
 
             setTimer(getResources().getInteger(R.integer.time_each_turn) * MILLISECONDS_PER_SECOND);
 
@@ -355,7 +364,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
-    private void pair() {
+    public void pair() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -430,8 +439,9 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         this.opponentToken = opponentToken;
         removeAllPossibleData(opponentUsername);
         boolean willGoFirst = (goFirst == 1);
+        scroggleHelper.setGoFirst(willGoFirst);
+        scroggleHelper.setMyTurn(willGoFirst);
         if (willGoFirst) {
-            initBoard();  // the one who goes first decides the board
             // set content for all the tiles following the rule
             // that each BOARD_SIZE * BOARD_SIZE tile can form a word
             boardAssignHelper.assignBoard(board);
@@ -444,7 +454,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             assigningBoardDialog.setCanceledOnTouchOutside(false);
             assigningBoardDialog.setTitle(getString(R.string.text_assigning_board));
             assigningBoardDialog.show();
-            initBoard();
             timerText.setText(getString(R.string.text_opponent_turn));
         }
         opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
@@ -452,10 +461,6 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), String.format(getString(R.string.toast_show_opponent),
                 opponentUsername, willGoFirst ? getString(R.string.toast_you): opponentUsername),
                 Toast.LENGTH_LONG).show();
-        scroggleHelper = new TwoPlayerScroggleHelper(getApplicationContext(), TwoPlayerScroggleGameActivity.this,
-                board);
-        scroggleHelper.setGoFirst(willGoFirst);
-        scroggleHelper.setMyTurn(willGoFirst);
         updateHintsState();
     }
 

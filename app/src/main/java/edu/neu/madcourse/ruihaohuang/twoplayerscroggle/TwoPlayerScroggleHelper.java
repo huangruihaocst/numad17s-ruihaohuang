@@ -481,4 +481,8 @@ public class TwoPlayerScroggleHelper {
             return TIE;
         }
     }
+
+    boolean dbExists() {
+        return dictionaryHelper.dbExists();
+    }
 }

@@ -27,7 +27,7 @@ import edu.neu.madcourse.ruihaohuang.utils.Tile;
 
 public class ScroggleGameActivity extends AppCompatActivity {
     public static final String tag = "ScroggleGameActivity";
-    private static final String TUTORIAL_KEY = "TutorialKey";
+    private static final String TUTORIAL_KEY = "SingleTutorialKey";
     private static final int MILLISECONDS_PER_SECOND = 1000;
     private static final int TIME_IS_UP = 0;
 
