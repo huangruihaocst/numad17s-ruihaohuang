@@ -176,7 +176,7 @@ public class DictionaryHelper {
     }
 
     // if the exist database has the last word, it must be complete, otherwise incomplete
-    private boolean checkDatabaseIntegrity() {
+    public boolean checkDatabaseIntegrity() {
         String query = "SELECT * FROM ";
         query += DictionaryReaderContract.ShortWordsEntry.TABLE_NAME + " WHERE "
                 + DictionaryReaderContract.ShortWordsEntry.COLUMN_WORDS_NAME + " = "

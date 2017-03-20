@@ -1,13 +1,11 @@
 package edu.neu.madcourse.ruihaohuang.twoplayerscroggle;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -46,7 +44,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.neu.madcourse.ruihaohuang.R;
-import edu.neu.madcourse.ruihaohuang.communication.CommunicationActivity;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
 import edu.neu.madcourse.ruihaohuang.utils.MyMessagingService;
@@ -234,7 +231,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                 }
             };
 
-            if (scroggleHelper.dbExists()) {
+            if (scroggleHelper.dbValid()) {
                 pair();
             }
 

@@ -40,6 +40,13 @@ public class ScroggleMainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.button_top_scorer_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScroggleMainActivity.this, ScroggleTopScorerListActivity.class));
+            }
+        });
+
         findViewById(R.id.button_acknowledgements).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

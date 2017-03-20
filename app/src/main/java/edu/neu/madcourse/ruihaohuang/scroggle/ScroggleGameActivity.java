@@ -20,6 +20,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import edu.neu.madcourse.ruihaohuang.R;
 import edu.neu.madcourse.ruihaohuang.dictionary.DictionaryHelper;
 import edu.neu.madcourse.ruihaohuang.utils.BoardAssignHelper;
@@ -355,6 +361,31 @@ public class ScroggleGameActivity extends AppCompatActivity {
             builder.create().show();
         }
         setDoesNotNeedTutorial();
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int first = (int) (long) dataSnapshot.child("score").child("first").getValue();
+                int second = (int) (long) dataSnapshot.child("score").child("second").getValue();
+                int third = (int) (long) dataSnapshot.child("score").child("third").getValue();
+                int score = scroggleHelper.getScore();
+                if (score >= first) {
+                    databaseReference.child("score").child("first").setValue(score);
+                    databaseReference.child("score").child("second").setValue(first);
+                    databaseReference.child("score").child("third").setValue(second);
+                } else if (score < first && score >= second) {
+                    databaseReference.child("score").child("second").setValue(score);
+                    databaseReference.child("score").child("third").setValue(second);
+                } else if (score < second && score >= third) {
+                    databaseReference.child("score").child("third").setValue(score);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void pause() {
@@ -445,7 +476,7 @@ public class ScroggleGameActivity extends AppCompatActivity {
     public void startGame() {
         if (needTutorial && !isFinishing()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(String.format(getString(R.string.text_tutorial), scroggleHelper.getPhase().toString()))
+            builder.setTitle(String.format(getString(R.string.text_tutorial), ScroggleHelper.Phase.ONE.toString()))
                     .setMessage(String.format(getString(R.string.text_tutorial_phase_one),
                             getResources().getInteger(R.integer.time_phase_one)))
                     .setPositiveButton(getString(R.string.button_start), new DialogInterface.OnClickListener() {

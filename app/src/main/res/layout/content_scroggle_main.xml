@@ -29,8 +29,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/button_top_scorer_list"
+        android:text="@string/button_top_scorer_list"
+        android:layout_below="@+id/button_acknowledgements"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/button_quit"
         android:id="@+id/button_quit"
-        android:layout_below="@+id/button_acknowledgements"/>
+        android:layout_below="@+id/button_top_scorer_list"/>
 
 </RelativeLayout>

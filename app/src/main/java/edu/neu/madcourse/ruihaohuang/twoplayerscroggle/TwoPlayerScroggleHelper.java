@@ -482,7 +482,7 @@ public class TwoPlayerScroggleHelper {
         }
     }
 
-    boolean dbExists() {
-        return dictionaryHelper.dbExists();
+    boolean dbValid() {
+        return dictionaryHelper.dbExists() && dictionaryHelper.checkDatabaseIntegrity();
     }
 }
