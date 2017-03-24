@@ -9,9 +9,11 @@
     tools:showIn="@layout/activity_two_player_scroggle_acknowledgements">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="368dp"
         android:layout_height="wrap_content"
         android:id="@+id/text_acknowledgements"
-        android:textSize="@dimen/acknowledgements_text_size"/>
+        android:textSize="@dimen/acknowledgements_text_size"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>

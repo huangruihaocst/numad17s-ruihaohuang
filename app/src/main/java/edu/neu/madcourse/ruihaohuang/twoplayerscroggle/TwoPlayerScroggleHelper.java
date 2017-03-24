@@ -65,6 +65,7 @@ public class TwoPlayerScroggleHelper {
     private int hintsLeft;
     private boolean goFirst;
     private boolean isMyTurn;
+    private boolean isOpponentActive;
     private int myTurnsLeft;
 
     TwoPlayerScroggleHelper(Context context, Activity activity, Tile board) {
@@ -133,10 +134,6 @@ public class TwoPlayerScroggleHelper {
         this.goFirst = goFirst;
     }
 
-    boolean goFirst() {
-        return goFirst;
-    }
-
     void setMyTurn(boolean isMyTurn) {
         this.isMyTurn = isMyTurn;
     }
@@ -147,6 +144,14 @@ public class TwoPlayerScroggleHelper {
 
     void setTimeLeft(long timeLeft) {
         this.timeLeft = timeLeft;
+    }
+
+    void setOpponentActive(boolean isOpponentActive) {
+        this.isOpponentActive = isOpponentActive;
+    }
+
+    boolean isOpponentActive() {
+        return isOpponentActive;
     }
 
     int getMyScore() {
@@ -425,13 +430,9 @@ public class TwoPlayerScroggleHelper {
                 }
                 break;
             case TWO:
-                for (int position: selectedTiles) {
-                    move += String.valueOf(position);
-                    move += COMMA;
-                }
                 break;
         }
-        if (move.length() > 0) {
+        if (phase == Phase.ONE && move.length() > 0) {
             move = move.substring(0, move.length() - 1);
         }
         return move;

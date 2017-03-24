@@ -5,6 +5,8 @@
 - Android Support Library revision 24 or newer
 
 ##Versions
+- Version 1.4.1:
+ - Improve asynchronous play.
 - Version 1.4:
  - Add two player Scroggle game.
  - Add a top scorer list for single player game.

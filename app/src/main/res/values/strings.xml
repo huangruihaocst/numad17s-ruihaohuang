@@ -278,6 +278,9 @@
         &lt;a href="http://stackoverflow.com/questions/5804043/convert-long-into-integer"&gt;
         http://stackoverflow.com/questions/5804043/convert-long-into-integer&lt;/a&gt;,
         &lt;br/&gt;
+        &lt;a href="http://stackoverflow.com/questions/37554274/open-app-on-firebase-notification-received-fcm"&gt;
+        http://stackoverflow.com/questions/37554274/open-app-on-firebase-notification-received-fcm&lt;/a&gt;,
+        &lt;br/&gt;
         &lt;a href="https://developer.android.com/index.html"&gt;
         Android Documentation&lt;/a&gt;,
         &lt;br/&gt;
@@ -301,9 +304,11 @@
     <string name="text_tutorial">Tutorial-Phase %1$s</string>
     <string name="text_opponent">Opponent</string>
     <string name="text_opponent_turn">Opponent\'s turn</string>
+    <string name="text_waiting_for_opponent">Waiting for the opponent</string>
     <string name="text_win">You win!</string>
     <string name="text_lose">You lose!</string>
     <string name="text_tie">Tie!</string>
+    <string name="text_your_turn">It\'s your turn</string>
     <string name="text_tutorial_phase_one">
         Select letters from the same tile continuously to form words. \
         The current letter must be next to the last one (up/down/diagonal). \

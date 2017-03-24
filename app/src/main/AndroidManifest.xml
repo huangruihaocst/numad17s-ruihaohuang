@@ -85,15 +85,24 @@
             android:name=".twoplayerscroggle.TwoPlayerScroggleGameActivity"
             android:label="@string/title_activity_two_player_scroggle_game"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode= "singleTop">
+            <!--reference: http://stackoverflow.com/questions/37554274/open-app-on-firebase-notification-received-fcm-->
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".twoplayerscroggle.TwoPlayerScroggleAcknowledgementsActivity"
             android:label="@string/title_activity_two_player_scroggle_acknowledgements"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".scroggle.ScroggleTopScorerListActivity"
             android:label="@string/title_activity_scroggle_top_scorer_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

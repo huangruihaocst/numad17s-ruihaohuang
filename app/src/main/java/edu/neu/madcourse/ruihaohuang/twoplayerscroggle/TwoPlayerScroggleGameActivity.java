@@ -53,7 +53,6 @@ import edu.neu.madcourse.ruihaohuang.utils.Tile;
 public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     public static final String tag = "TwoPlayerScroggleGameActivity";
-    private static final String TUTORIAL_KEY = "DoubleTutorialKey";
 
     private final static String SERVER_KEY = "key=AAAAfWGUWtM:APA91bFNCTZfeLBBYem4PEhwq3FW-VQzTdoMcdbPzrn8kOQnHs0SRkYnyTle22pjE_cMAQNmk-5ssizDGAlamjvoKR-l51ZZS1YvIbwAklmmFR0lEsAjR02IyCiPrXAxX5WjIJnI_cxX";
 
@@ -64,6 +63,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
     public static final String TITLE_TURN_CHANGE = "two_player_scroggle.turn_change";
     public static final String TITLE_GAME_ENDS = "two_player_scroggle.game_ends";
     private static final String TITLE_LEAVE = "two_player_scroggle.leave";
+    public static final String TITLE_NOTIFY = "two_player_scroggle.notify";
+    private static final String TITLE_BACK = "two_player_scroggle.back";
 
     private Tile board;
     // BOARD_SIZE * BOARD_SIZE large tiles
@@ -107,6 +108,8 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
 
     private Button controlButton;
     private Button hintsButton;
+
+    private String messageCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,11 +166,18 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                     boolean shouldChangeTurn = scroggleHelper.checkWord();
                     myScoreText.setText(String.format(getString(R.string.text_score), scroggleHelper.getMyScore()));
                     if (shouldChangeTurn) {
-                        sendMessage(TITLE_TURN_CHANGE, scroggleHelper.getMyScore()
-                                + TwoPlayerScroggleHelper.TYPE_SPLITTER + move);
                         scroggleHelper.turnEnds();
                         timer.cancel();
-                        timerText.setText(getString(R.string.text_opponent_turn));
+                        if (scroggleHelper.isOpponentActive()) {
+                            sendMessage(TITLE_TURN_CHANGE, scroggleHelper.getMyScore()
+                                    + TwoPlayerScroggleHelper.TYPE_SPLITTER + move);
+                            timerText.setText(getString(R.string.text_opponent_turn));
+                        } else {
+                            sendMessage(TITLE_NOTIFY, null);
+                            timerText.setText(getString(R.string.text_waiting_for_opponent));
+                            messageCache = scroggleHelper.getMyScore()
+                                    + TwoPlayerScroggleHelper.TYPE_SPLITTER + move;
+                        }
                     }
                 }
             });
@@ -194,13 +204,14 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                                 timer.start();
                             } else {  // this must be the end to a phase
                                 if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.ONE) {
+                                    scroggleHelper.setMove(body);
                                     scroggleHelper.nextPhase();
                                     scroggleHelper.setMyTurn(true);
-                                    scroggleHelper.setMove(body);
                                     opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
                                             opponentUsername, scroggleHelper.getOpponentScore()));
                                     phaseText.setText(String.format(getString(R.string.text_phase), scroggleHelper.getPhase().toString()));
                                     timer.start();  // phase two starts
+                                    updateHintsState();
                                 } else if (scroggleHelper.getPhase() == TwoPlayerScroggleHelper.Phase.TWO) {
                                     scroggleHelper.setMove(body);
                                     opponentScoreText.setText(String.format(getString(R.string.text_opponent_score),
@@ -215,17 +226,17 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
                             showWinner();
                             break;
                         case TITLE_LEAVE:
-                            AlertDialog.Builder builder = new AlertDialog.Builder(TwoPlayerScroggleGameActivity.this);
-                            builder.setTitle(String.format(getString(R.string.text_has_left), opponentUsername))
-                                    .setMessage(getString(R.string.text_opponent_left))
-                                    .setPositiveButton(getString(R.string.button_back), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            onBackPressed();
-                                        }
-                                    }).setCancelable(false);
-                            builder.create().show();
-                            pause();
+                            scroggleHelper.setOpponentActive(false);
+                            break;
+                        case TITLE_BACK:
+                            scroggleHelper.setOpponentActive(true);
+                            if (!scroggleHelper.isMyTurn()) {  // the opponent came back from inactive
+                                if (messageCache != null && !messageCache.isEmpty()) {
+                                    sendMessage(TITLE_TURN_CHANGE, messageCache);
+                                    messageCache = null;
+                                }
+                                timerText.setText(getString(R.string.text_opponent_turn));
+                            }
                             break;
                     }
                 }
@@ -340,6 +351,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         if (playMusic) {
             resumeMusic();
         }
+        sendMessage(TITLE_BACK, null);
     }
 
     @Override
@@ -453,6 +465,7 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
         boolean willGoFirst = (goFirst == 1);
         scroggleHelper.setGoFirst(willGoFirst);
         scroggleHelper.setMyTurn(willGoFirst);
+        scroggleHelper.setOpponentActive(true);
         if (willGoFirst) {
             // set content for all the tiles following the rule
             // that each BOARD_SIZE * BOARD_SIZE tile can form a word
@@ -624,8 +637,14 @@ public class TwoPlayerScroggleGameActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 scroggleHelper.turnEnds();
-                sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
-                timerText.setText(getString(R.string.text_opponent_turn));
+                if (scroggleHelper.isOpponentActive()) {
+                    sendMessage(TITLE_TURN_CHANGE, String.valueOf(scroggleHelper.getMyScore()));
+                    timerText.setText(getString(R.string.text_opponent_turn));
+                } else {
+                    sendMessage(TITLE_NOTIFY, null);
+                    timerText.setText(getString(R.string.text_waiting_for_opponent));
+                    messageCache = String.valueOf(scroggleHelper.getMyScore());
+                }
                 scroggleHelper.clearAllSelected();
             }
         };
